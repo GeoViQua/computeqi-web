@@ -1,0 +1,25 @@
+<div class="row<%= " space" if projects.size > 2 %>">
+  <div class="span4">
+    <div class="boxed clickable">
+      <h3>
+        <%= link_to send("new_#{type}_project_path") do %>
+          <i class="icon-plus-sign"></i>
+          <!-- <span class="pre-icon">&#43;</span> --> Create
+        <% end %>
+      </h3>
+      Build a new <%= type %> project
+    </div>
+  </div>
+
+  <% projects.each_with_index do |project, index| %>
+    <% if (index + 1) % 3 == 0 %>
+      </div>
+      <div class="row<%= " space" if projects.size > index + 3 %>">
+    <% end %>
+    <div class="span4">
+      <div class="boxed clickable">
+        <%= render partial: "project", locals: { project: project } %>
+      </div>
+    </div>
+  <% end %>
+</div>

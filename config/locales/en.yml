@@ -1,0 +1,9 @@
+# Sample localization file for English. Add more files in this directory for other locales.
+# See https://github.com/svenfuchs/rails-i18n/tree/master/rails%2Flocale for starting points.
+
+en:
+  home:
+    index:
+      emulator_intro: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla dui ligula, ullamcorper ullamcorper posuere ac, facilisis nec nibh."
+      sensitivity_analysis_intro: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla dui ligula, ullamcorper ullamcorper posuere ac, facilisis nec nibh."
+      validation_intro: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla dui ligula, ullamcorper ullamcorper posuere ac, facilisis nec nibh."

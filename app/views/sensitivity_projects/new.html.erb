@@ -1,0 +1,100 @@
+<div class="page-header">
+  <h1>Sensitivity analysis project</h1>
+</div>
+
+<div class="row">
+  <div class="span6">
+    <h2>Emulator project</h2>
+    <%= simple_form_for @project do |f| %>
+      <%= f.input :emulator_project, include_blank: false, collection: current_user.emulator_projects.collect {|project| [project.name, project.id] } %>
+
+      <%= f.button :submit %>
+    <% end %>
+  </div>
+
+  <div class="span6">
+    <h2>Simulator specification</h2>
+    <%= simple_form_for @project do |f| %>
+      <%= f.simple_fields_for :simulator_specification do |b| %>
+        <%= b.input :service_url, include_blank: false, collection: [["http://uncertws.aston.ac.uk:8080/ps/service"]] %>
+        <%= b.input :process_name, include_blank: false, collection: [] %>
+
+        <div class="control-group select optional">
+          <label class="select optional control-label">Inputs</label>
+          <div id="inputs"></div>
+        </div>
+
+        <div class="control-group select optional">
+          <label class="select optional control-label">Outputs</label>
+          <div id="outputs"></div>
+        </div>
+      <% end %>
+
+      <%= f.button :submit %>
+    <% end %>
+  </div>
+</div>
+
+<script>
+
+$(document).ready(function() {
+  $('#sensitivity_project_simulator_specification_attributes_service_url').on('change', function() {
+    refreshProcessList();
+  });
+
+  $('#sensitivity_project_simulator_specification_attributes_process_name').on('change', function() {
+    refreshIOList();
+  });
+
+  refreshProcessList();
+});
+
+function refreshProcessList() {
+  var s = $('#sensitivity_project_simulator_specification_attributes_service_url');
+  var p = $('#sensitivity_project_simulator_specification_attributes_process_name');
+  p.children().remove();
+
+  var request = {
+    type: 'GetProcessIdentifiersRequest',
+    serviceURL: s.val()
+  };
+
+  $.post($e.api_path, { request: JSON.stringify(request) }, function(data) {
+    var ids = data.processIdentifiers;
+    for (var i = 0; i < ids.length; i++) {
+      p.append('<option value="' + ids[i] + '">' + ids[i] + '</option>');
+    }
+    refreshIOList();
+  }, 'json');
+}
+
+function refreshIOList() {
+  var s = $('#sensitivity_project_simulator_specification_attributes_service_url');
+  var p = $('#sensitivity_project_simulator_specification_attributes_process_name');
+  var i = $('#inputs');
+  var o = $('#outputs');
+  i.children().remove();
+  o.children().remove();
+
+  var request = {
+    type: 'GetProcessDescriptionRequest',
+    serviceURL: s.val(),
+    processIdentifier: p.val()
+  };
+
+  $.post($e.api_path, { request: JSON.stringify(request) }, function(data) {
+    var pd = data.processDescription;
+    var id = pd.inputDescriptions;
+    var od = pd.outputDescriptions;
+    for (var n = 0; n < id.length; n++) {
+      i.append('<input type="hidden" name="sensitivity_project[simulator_specification_attributes][inputs_attributes][][name]" value="' + id[n].identifier + '"/> <span>' + id[n].identifier + '</span>');
+    }
+    console.log(data);
+
+    for (var n = 0; n < od.length; n++) {
+      o.append('<input type="hidden" name="sensitivity_project[simulator_specification_attributes][outputs_attributes][][name]" value="' + od[n].identifier + '"/> <span>' + od[n].identifier + '</span>');
+    }
+  }, 'json');
+}
+
+</script>

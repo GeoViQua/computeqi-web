@@ -1,0 +1,37 @@
+en:
+  simple_form:
+    "yes": 'Yes'
+    "no": 'No'
+    required:
+      text: 'required'
+      mark: '*'
+      # You can uncomment the line below if you need to overwrite the whole required html.
+      # When using html, text and mark won't be used.
+      # html: '<abbr title="required">*</abbr>'
+    error_notification:
+      default_message: "Some errors were found, please take a look:"
+    # Labels and hints examples
+    labels:
+      user:
+        email: "E-mail address"
+      simulator_specification:
+        service_url: "Service URL"
+      input_screening:
+        num_trajectories: "Number of trajectories"
+        discretisation_level: "Discretisation level"
+        delta_p: "Delta P"
+      emulator:
+        training_size: "Training size"
+        mean_function: "Mean function"
+        cov_function: "Covariance function"
+        length_scale: "Length scale"
+        process_variance: "Process variance"
+        nugget_variance: "Nugget variance"
+      analysis:
+        design_size: "Design size"
+        num_boot: "Number of bootstrap replicates"
+        conf_level: "Conﬁdence level for bootstrap conﬁdence intervals"
+    # hints:
+    #   username: 'User name to sign in.'
+    #   password: 'No special characters, please.'
+

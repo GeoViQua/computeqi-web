@@ -1,0 +1,11 @@
+<div class="btn-group">
+  <% if false and parent.has_run? %>
+    <%= link_to "View Run", emulator_project_runs_path(parent), class: "btn" %>
+  <% else %>
+    <%= simple_form_for [parent, Run.new], html: { class: "form-inline" } do |f| %>
+      <%= f.button :submit %>
+      <%= f.input :simulator_specification_id, as: :hidden, input_html: { value: parent.simulator_specification.id } %>
+      <%= f.input :design_id, as: :hidden, input_html: { value: object.id } %>
+    <% end %>
+  <% end %>
+</div>

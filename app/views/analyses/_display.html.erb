@@ -1,0 +1,90 @@
+<script>
+var values;
+var plot;
+var mainPlot;
+var totalPlot;
+
+$(function() {
+  // load values, could be ajax
+  values = <%= @analysis.analysis_values.first.to_hash.to_json.html_safe %>;
+
+  // create plots
+  // FIX!! doesn't quite work with ajax slide - labels aren't sligned
+  <% if @analysis.sobol? %>
+  plot = createCombinedSensitivityPlot('plot-container', values);
+  mainPlot = createSensitivityPlot('main-plot-container', values, 'main');
+  totalPlot = createSensitivityPlot('total-plot-container', values, 'total');
+
+  $('#check').on('change', function() {
+    if ($(this).is(':checked')) {
+      // combined
+      $('#plot-container').show();
+      $('#main-plot-container').hide();
+      $('#total-plot-container').hide();
+    } else {
+      // single
+      $('#plot-container').hide();
+      $('#main-plot-container').show();
+      $('#total-plot-container').show();
+    }
+  });
+  <% else %>
+  plot = createFastPlot('plot-container', values);
+  <% end %>
+  
+  // listener for form
+  $('#controls form').on('submit', function() {
+    return false;
+  });
+
+  $('#controls select').on('change', function() {
+    <% if @analysis.sobol? %>
+    remoteUpdateSensitivityPlots(plot, mainPlot, totalPlot, '<%= sensitivity_project_analysis_path(@project, @analysis) %>' + '.json', { output_id: $('#output').val() });
+    <% else %>
+    remoteUpdateFastPlot(plot, '<%= sensitivity_project_analysis_path(@project, @analysis) %>' + '.json', { output_id: $('#output').val() });
+    <% end %>
+    return false;
+  }); 
+});
+</script>
+
+<%= render partial: "shared/toolbar", locals: { text: "Took #{distance_of_time_in_words Time.parse(@analysis.proc_start_time.to_s), Time.parse(@analysis.proc_end_time.to_s), true} to perform #{@analysis.analysis_method.capitalize} analysis.", parent: @project, object: @analysis, export_options: [] } %>
+
+<div class="row">
+  <div class="span12">
+    <div class="tabbable">
+      <ul class="nav nav-tabs">
+        <li class="active"><a href="#plots" data-toggle="tab">Plots</a></li>
+        <li><a href="#images" data-toggle="tab">Images</a></li>
+      </ul>
+      <div class="tab-content">
+        <div class="tab-pane active" id="plots">
+          <div id="controls">
+            <form class="well form-inline">
+              <label for="output">Output</label>
+              <select id="output" class="output-medium">
+                <% @analysis.analysis_values.each do |value| %>
+                <% output = value.output %>
+                <%= content_tag(:option, value: output.id) { output.name } %>
+                <% end %>
+              </select>
+              <% if @analysis.sobol? %>
+                <label for="check">Single plot</label>
+                <input id="check" type="checkbox" checked />
+              <% end %>
+            </form>
+          </div>
+          <div id="plot-container" class="plot"></div>
+          <div id="main-plot-container" class="plot hide"></div>
+          <div id="total-plot-container" class="plot hide"></div>
+        </div>
+        <div class="tab-pane" id="images">
+          <% @analysis.analysis_values.each do |value| %>
+            <h2><%= value.output.name %></h2>
+            <%= image_tag(value.plot_url) %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

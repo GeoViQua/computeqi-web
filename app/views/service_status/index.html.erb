@@ -1,0 +1,20 @@
+<%= javascript_include_tag "service_status" %>
+
+<%= page_header "Service status", "Check the current status of services." %>
+
+<div class="row">
+  <div class="span4 api">
+    <h2>API <span class="status"><%= image_tag "loading.gif" %></span></h2>
+    <p>The <%= link_to "API", api_path %> provides all backend functionality.</p>
+  </div>
+
+  <div class="span4 matlab">
+    <h2>MATLAB <span class="status"><%= image_tag "loading.gif" %></span></h2>
+    <p>We use <a href="http://www.mathworks.co.uk/products/matlab/">MATLAB</a> to perform input screening, Latin hypercube sampling, and emulator learning. The API communicates with a single instance of MATLAB using a <a href="#">small library</a>.</p>
+  </div>
+
+  <div class="span4 rserve">
+    <h2>R <span class="status"><%= image_tag "loading.gif" %></span></h2>
+    <p>Our sensitivity analysis tool depends on R, and specifically the <a href="http://cran.r-project.org/web/packages/sensitivity/index.html">sensitivity package</a>. <a href="http://www.rforge.net/Rserve/">Rserve</a> is used for communication between the API and instances of R.</p>
+  </div>
+</div>

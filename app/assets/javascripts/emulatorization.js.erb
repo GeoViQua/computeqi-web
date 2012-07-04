@@ -1,0 +1,11 @@
+<%
+url = Rails.application.routes.url_helpers
+sub_path = ENV["RAILS_RELATIVE_URL_ROOT"] || ""
+%>
+
+var $e = (function ($) {
+  return {
+    api_path: '<%= sub_path + url.api_path %>',
+    service_status_path: '<%= sub_path + url.service_status_path %>'
+  };
+}) (jQuery);

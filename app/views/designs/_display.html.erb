@@ -1,0 +1,54 @@
+<script>
+var plot;
+
+$(function() {
+  // create histogram
+  plot = createHistogram('histogram-container', <%= @design.design_values.first.to_hash.to_json.html_safe %>, 'points', $('#bins').val());
+  
+  // listener for form
+  $('#controls form').on('submit', function() {
+    return false;
+  });
+
+  $('#controls select,input').on('change', function(e) {
+    remoteUpdateHistogram(plot, '<%= emulator_project_design_path(@project, @design) %>' + '.json', { input_id: $('#input').val() }, 'points', $('#bins').val());
+    return false;
+  }); 
+});
+</script>
+
+<%= simple_form_for [@project, Run.new] do |f| %>
+  <%# f.input :simulator_specification_id, as: :hidden, input_html: { value: @project.simulator_specification.id } %>
+  <%# f.input :design_id, as: :hidden, input_html: { value: @project.design.id } %>
+  <%# f.button :submit %>
+<% end %>
+
+<%= render partial: "shared/toolbar", locals: { text: "This #{@design.sampling_method.upcase} design has #{pluralize(@design.size, 'point')} for #{pluralize(@design.design_values.size, 'input')}.", parent: @project, object: @design, export_options: ["matlab", "r", "json"] } %>
+
+<div class="row">
+  <div class="span12">
+    <div class="tabbable">
+      <ul class="nav nav-tabs">
+        <li class="active"><a href="#histogram" data-toggle="tab">Histogram</a></li>
+      </ul>
+      <div class="tab-content">
+        <div class="tab-pane active" id="histogram">
+          <div id="controls">
+            <form class="well form-inline">
+              <label for="input">Input</label>
+              <select id="input" class="input-large">
+                <% @design.design_values.each do |value| %>
+                <% input = value.input %>
+                <%= content_tag(:option, value: input.id) { input.name } %>
+                <% end %>
+              </select>
+              <label for="bins">Bins</label>
+              <input id="bins" type="number" value="10" step="5" class="input-small" />
+            </form>
+          </div>
+          <div id="histogram-container" class="plot"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

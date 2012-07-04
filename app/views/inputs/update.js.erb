@@ -1,0 +1,21 @@
+// tight input screening coupling
+<% if @updated %>
+// get name
+var name = '<%= escape_javascript @input.name %>';
+// display message?
+
+
+$('#popup').fadeOut(function() {
+  // find series and remove it
+  for (var i = 0; i < plot.series.length; i++) {
+    var series = plot.series[i];
+    if (series.name === name) {
+      series.remove(false);
+      plot.redraw();
+      break;
+    }
+  }
+});
+<% else %>
+alert('Oops! ' + '<%= escape_javascript @error_messages.first %>');
+<% end %>

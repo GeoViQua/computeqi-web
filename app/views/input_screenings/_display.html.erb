@@ -1,0 +1,66 @@
+<script>
+var plot;
+
+$(function() {
+  // create chart
+  plot = createScreeningPlot('plot-container', <%= @input_screening.screening_values.first.to_hash.to_json.html_safe %>);
+  
+  // listener for form
+  $('#controls form').on('submit', function() {
+    return false;
+  });
+
+  $('#controls select,input').on('change', function() {
+    remoteUpdateScreeningPlot(plot, '<%= emulator_project_input_screening_path(@project, @input_screening) %>' + '.json', { output_id: $('#output').val() });
+    return false;
+  });
+    
+});
+</script>
+
+<%= render partial: "shared/toolbar", locals: { text: "Took #{distance_of_time_in_words Time.parse(@input_screening.proc_start_time.to_s), Time.parse(@input_screening.proc_end_time.to_s), true} to perform input screening with #{@input_screening.num_trajectories} trajectories, a discretisation level of #{@input_screening.discretisation_level} and delta P at #{@input_screening.delta_p}.", parent: @project, object: @input_screening, export_options: ["matlab", "r", "json"], export_filter: @input_screening.screening_values.collect {|value| value.output }.uniq } %>
+
+<div id="popup" class="right">
+</div>
+
+<div class="row">
+  <div class="span12">
+    <div class="tabbable">
+      <ul class="nav nav-tabs">
+        <li class="active"><a href="#plot" data-toggle="tab">Plot</a></li>
+      </ul>
+      <div class="tab-content">
+        <div class="tab-pane active" id="plot">
+          <div id="controls">
+            <form class="well form-inline">
+              <label for="output">Output</label>
+              <select id="output" class="input-medium">
+                <% @input_screening.screening_values.collect {|value| value.output }.uniq.each do |output| %>
+                <%= content_tag(:option, value: output.id) { output.name } %>
+                <% end %>
+              </select>
+            </form>
+          </div>
+          <div id="plot-container" class="plot"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<textarea class="template hide" data-simulator-specification-url="<%= url_for [@project, @project.simulator_specification] %>">
+  <div class="top">
+    <h3>{{name}}</h3>
+    <span class="close">x</span>
+  </div>
+  <div class="content">
+    <div>meanStarEE: {{meanStarEE}}, stdEE: {{stdEE}}</div>
+    <div>minimum: {{minimumValue}}, maximum: {{maximumValue}}</div>
+    <form class="form-inline" method="put" action="{{url}}" data-remote="true">
+      <input type="hidden" name="input[minimum_value]" value="" />
+      <input type="hidden" name="input[maximum_value]" value="" />
+      <input type="text" class="input-small" placeholder="Value" name="input[fixed_value]" value="{{fixedValue}}">
+      <button type="submit" class="btn">Fix input</button>
+    </form>
+  </div>
+</textarea>

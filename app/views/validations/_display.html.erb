@@ -1,0 +1,42 @@
+<script>
+var values;
+var scorePlot;
+var outputPlot;
+
+$(function() {
+  // load in values, should be ajax really
+  values = <%= @validation.validation_values.first.to_hash.to_json.html_safe %>;
+
+  // create score plot
+  scorePlot = createValidationPlot('score-plot-container', values);
+
+  // flot has some plotting issues if not visible
+  $('a[data-toggle="tab"]').on('shown', function(e) {
+    if ($(e.target).attr('href') == '#output-plot' && outputPlot == null) {
+      outputPlot = createValidationOutputPlot('output-plot-container', values);
+    }
+  });
+});
+</script>
+
+
+<%= render partial: "shared/toolbar", locals: { text: "Took #{distance_of_time_in_words_to_now Time.now - (@validation.simulator_time / 1000000000.0).seconds} to evaluate simulator, #{distance_of_time_in_words_to_now Time.now - (@validation.emulator_time / 1000000000.0).seconds, true} to evaluate emulator. RMSE is #{number_with_precision(@validation.validation_values.first.rmse)}.", parent: @project, object: @validation, export_options: ["json"] } %>
+
+<div class="row">
+  <div class="span12">
+    <div class="tabbable">
+      <ul class="nav nav-tabs">
+        <li class="active"><a href="#score-plot" data-toggle="tab">Standard score</a></li>
+        <li><a href="#output-plot" data-toggle="tab">Output comparison</a></li>
+      </ul>
+      <div class="tab-content">
+        <div class="tab-pane active" id="score-plot">
+          <div id="score-plot-container" class="plot"></div>
+        </div>
+        <div class="tab-pane" id="output-plot">
+          <div id="output-plot-container" class="plot square"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

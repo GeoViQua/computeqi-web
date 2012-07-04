@@ -1,0 +1,50 @@
+<script>
+var plot;
+
+$(function() {
+  // create histogram
+  plot = createHistogram('histogram-container', <%= @run.run_values.first.to_hash.to_json.html_safe %>, 'results', $('#bins').val());
+  
+  // listener for form
+  $('#controls form').on('submit', function() {
+    return false;
+  });
+
+  $('#controls select,input').on('change', function() {
+    remoteUpdateHistogram(plot, '<%= emulator_project_run_path(@project, @run) %>' + '.json', { output_id: $('#output').val() }, 'results', $('#bins').val());
+    return false;
+  }); 
+});
+</script>
+
+<%= render partial: "shared/toolbar", locals: { text: "Took #{distance_of_time_in_words Time.parse(@run.proc_start_time.to_s), Time.parse(@run.proc_end_time.to_s), true} to perform #{pluralize @run.size, "run"}.", parent: @project, object: @run, export_options: ["matlab", "r", "json"] } %>
+
+<%# "#{@run.proc_start_time} to #{@run.proc_end_time}" %>
+
+<div class="row">
+  <div class="span12">
+    <div class="tabbable">
+      <ul class="nav nav-tabs">
+        <li class="active"><a href="#histogram" data-toggle="tab">Histogram</a></li>
+      </ul>
+      <div class="tab-content">
+        <div class="tab-pane active" id="histogram">
+          <div id="controls">
+            <form class="well form-inline">
+              <label for="output">Output</label>
+              <select id="output" class="output-medium">
+                <% @run.run_values.each do |value| %>
+                <% output = value.output %>
+                <%= content_tag(:option, value: output.id) { output.name } %>
+                <% end %>
+              </select>
+              <label for="bins">Bins</label>
+              <input id="bins" type="number" value="10" step="5" class="input-small" />
+            </form>
+          </div>
+          <div id="histogram-container" class="plot"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

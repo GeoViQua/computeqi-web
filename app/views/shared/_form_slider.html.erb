@@ -1,0 +1,10 @@
+<div class="control-group<%= " error" if object.errors.has_key?(field) %>">
+  <label class="string control-label"><%=t "simple_form.labels.#{parent}.#{field}" %></label>
+  <div class="controls form-slider">
+    <input type="range" min="<%= min %>" max="<%= max %>" step="<%= step %>" value="<%= value %>" />
+    <input type="text" name="<%= "#{parent.to_s}[#{field.to_s}]" %>" value="<%= value %>" />
+    <% if object.errors.has_key?(field) %>
+      <span class="help-inline"><%= object.errors[field].first %></span>
+    <% end %>
+  </div>
+</div>

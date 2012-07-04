@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>emulatorization</title>
+    <%= stylesheet_link_tag "application" %>
+    <%= yield :stylesheets %>
+    <%= csrf_meta_tags %>
+  </head>
+  <body>
+
+    <%= javascript_include_tag "//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" %>
+    <%= javascript_include_tag "//ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js" %>
+    <%= javascript_include_tag "application" %>
+    <%= yield :javascripts %>
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <%= link_to "emulatorization", root_url, class: "brand" %>
+          <% if user_signed_in? %>
+          <ul class="nav">
+            <li>
+              <%= link_to "build an emulator", emulator_projects_path %>
+            </li>
+            <li>
+              <%= link_to "perform sensitivity analysis", sensitivity_projects_path %>
+            </li>
+            <li>
+              <%# link_to "validate a model", validation_projects_path %>
+            </li>
+            <li>
+              <%= link_to "service status", service_status_path %>
+            </li>
+          </ul>
+          <ul class="nav pull-right">
+            <li class="dropdown" id="menu1">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#menu1">
+                <%= current_user.full_name %>
+                <b class="caret"></b>
+              </a>
+              <ul class="dropdown-menu">
+                <li>
+                  <%= link_to "Sign out", destroy_user_session_path, method: :delete %>
+                </li>
+              </ul>
+            </li>
+          </ul>
+          <% end %>
+        </div>
+      </div>
+    </div>
+
+    <% if content_for?(:subnav) %>
+      <div class="subnav subnav-fixed">
+        <ul class="nav nav-pills">
+          <%= yield(:subnav) %>
+        </ul>
+      </div>
+    <% end %>
+    
+    <div class="container">
+      <div class="main-content<%= content_for?(:subnav) ? " has-subnav" : nil %>">
+        <%= content_for?(:content) ? yield(:content) : yield %>
+      </div>
+<!--       <div class="footer">
+        <strong>emulatorization</strong> has received funding from the European Community's Seventh Framework Programme (FP7/2007-2013) under grant agreement n° [248488].<br />
+        It was developed as part of the <a href="http://www.uncertweb.org/">UncertWeb - uncertainty-enabled model web</a> project.
+      </div> -->
+    </div>
+
+  </body>
+</html>

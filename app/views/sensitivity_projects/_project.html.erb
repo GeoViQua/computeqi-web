@@ -1,0 +1,6 @@
+<h3>
+  <%= project_status_icon(project) %>
+  <%= link_to project.name, project %>
+</h3>
+<%= project.uses_emulator? ? "Emulator" : "Simulator" %>.
+Created <%= project.created_at.strftime("%B %e, %Y") %>

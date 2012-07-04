@@ -1,0 +1,48 @@
+<%= javascript_include_tag "export" %>
+<div class="row toolbar">
+  <div class="span8">
+    <div class="toolbar-info">
+      <%= text %>
+    </div>
+  </div>
+  <div class="span4">
+    <div class="btn-toolbar pull-right">
+      <%= render partial: "buttons", locals: { object: object, parent: parent } rescue nil %>
+      <div class="btn-group">
+        <%= link_to "New", send("new_#{parent ? parent.class.to_s.underscore + "_" : ""}#{object.class.to_s.underscore}_path", parent), class: "btn" %>
+      </div>
+      <% if defined?(export_options) and !export_options.nil? and !export_options.empty? %>
+      <div class="btn-group export" data-resource-path="<%= send("#{parent ? parent.class.to_s.underscore + "_" : ""}#{object.class.to_s.underscore}_path", parent, object) %>" data-filter="output_id">
+        <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+          Export
+          <b class="caret"></b>
+        </a>
+        <ul class="dropdown-menu">
+          <% do_filter = defined?(export_filter) and !export_filter.nil? %>
+          <% available_options = [{ format: "matlab", text: "MATLAB" }, { format: "r", text: "R"}] %>
+          <% available_options.select {|opt| export_options.include?(opt[:format]) }.each do |option| %>
+          <li class="export-option<%= do_filter ? " enable-filter" : "" %>" data-format="<%= option[:format] %>">
+            <a href="#"><%= option[:text] %></a>
+            <% if do_filter %>
+            <select class="hide">
+              <option>Select output&hellip;</option>
+              <% export_filter.each do |filter| %>
+              <%= content_tag(:option, value: filter.id) { filter.to_s } %>
+              <% end %>
+            </select>
+            <% end %>
+            <textarea class="hide"></textarea>
+          </li>
+          <% end %>
+          <% if export_options.include?("json") %>
+          <li class="export-option" data-format="json">
+            <a href="#">JSON object</a>
+            <textarea class="hide"></textarea>
+          </li>
+          <% end %>
+        </ul>
+      </div>
+      <% end %>
+    </div>
+  </div>
+</div>

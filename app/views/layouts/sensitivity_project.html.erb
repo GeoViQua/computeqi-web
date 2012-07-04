@@ -1,0 +1,6 @@
+<% content_for :content do %>
+  <%= render "header" %>
+  <%= render partial: "shared/flashes" %>
+  <%= yield %>
+<% end %>
+<%= render template: "layouts/application" %>

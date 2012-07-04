@@ -1,0 +1,35 @@
+<div class="row space">
+  <% ["simulator_specification", "input_screening", "design", "run", "emulator", "validation"].each_with_index do |name, index| %>
+    <% if index == 3 %>
+      </div>
+      <div class="row">
+    <% end %>
+    <div class="span4">
+      <div class="boxed clickable">
+        <h3>
+          <% if name != "simulator_specification" %>
+            <%= remotable_status_icon @project.send(name) %>
+          <% else %>
+            <% if @project.simulator_specification.complete? %>
+              <i class="icon-ok-sign" class="icon-ok-sign" rel="tooltip" title="Complete"></i>
+            <% end %>
+          <% end %>
+          <% if @project.send("allow_#{name}?") %>
+            <%= link_to send("emulator_project_#{name}s_path", @project) do %>
+              <%= name.humanize %>
+            <% end %>
+          <% else %>
+            <%= name.humanize %>
+          <% end %>
+        </h3>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce sit amet elementum mauris. Vivamus congue mattis tellus, sed sollicitudin lacus fermentum vitae. Donec blandit augue quis tortor ultrices malesuada.
+          <%# needs = @project.send("needs_for_#{name}") %>
+          <%# if !needs.empty? %>
+            <!-- <small><%# needs.to_sentence.capitalize %> required.</small> -->
+          <%# end %>
+        </p>
+      </div>
+    </div>
+  <% end %>
+</div>

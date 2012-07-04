@@ -1,0 +1,32 @@
+<% content_for :javascripts do %>
+  <%= javascript_include_tag "home" %>
+<% end %>
+
+<%= render partial: "shared/flashes" %>
+
+<div class="hero-unit">
+  <h1>Welcome!</h1>
+  <p>Emulating the web, one model at a time.</p>
+  <p>
+    <% unless user_signed_in? %>
+      <%= link_to "Get started »", new_user_registration_path, class: "btn btn-primary btn-large" %>
+    <% end %>
+  </p>
+</div>
+
+<div class="row">
+  <div class="span4">
+    <h2>Emulator</h2>
+    <p><%= t ".emulator_intro" %></p>
+  </div>
+
+  <div class="span4">
+    <h2>Sensitivity Analysis</h2>
+    <p><%= t ".sensitivity_analysis_intro" %></p>
+  </div>
+
+  <div class="span4">
+    <h2>Validation</h2>
+    <p><%= t ".validation_intro" %></p>
+  </div>
+</div>

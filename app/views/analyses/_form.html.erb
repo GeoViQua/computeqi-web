@@ -1,0 +1,31 @@
+<%= javascript_include_tag "forms" %>
+<script>
+$(function() {
+  $('.btn-group .btn').on('click', function() {
+    var fieldset = $('#' + $(this).data('value') + '-params');
+    $('fieldset[id$="-params"]').slideUp('fast', function() {
+      fieldset.slideDown('fast');
+    });
+  });
+});
+</script>
+<div class="row">
+  <div class="span7">
+    <%= simple_form_for [@project, @analysis], html: { class: 'form-horizontal' } do |f| %>
+      <%= f.error_notification %>
+      
+      <%= f.input :design_size %>
+      <%= render partial: "shared/form_toggle", locals: { field: :analysis_method, parent: f.object_name.to_sym, value: @analysis.analysis_method, collection: ["sobol", "fast"] } %>
+
+      <fieldset id="sobol-params"<%= " class=hide" if @analysis.analysis_method != "sobol" %>>
+        <legend>Sobol parameters</legend>
+        <%= f.input :num_boot %>
+        <%= f.input :conf_level %>
+      </fieldset>
+
+      <div class="form-actions">
+        <%= f.button :submit %>
+      </div>
+    <% end %>
+  </div>
+</div>

@@ -1,0 +1,39 @@
+<%= javascript_include_tag "forms" %>
+<div class="row">
+  <div class="span7">
+    <%= simple_form_for [@project, @emulator], html: { class: 'form-horizontal' } do |f| %>
+
+      <%= f.error_notification %>
+
+      <%= f.input :output, collection: @project.simulator_specification.outputs, selected: @emulator.output %>
+
+      <%= render partial: "shared/form_slider", locals: { field: :training_size, parent: f.object_name.to_sym, object: @emulator, min: 0, max: @project.design.size, step: 10, value: @emulator.training_size } %>
+
+      <%= render partial: "shared/form_toggle", locals: { field: :normalisation, parent: f.object_name.to_sym, value: @emulator.normalisation, collection: [["Enabled", "true"], ["Disabled", "false"]] } %>
+
+      <%= render partial: "shared/form_toggle", locals: { field: :mean_function, parent: f.object_name.to_sym, value: @emulator.mean_function, collection: ["zero", "constant", "linear", "quadratic"] } %>
+
+      <%= render partial: "shared/form_toggle", locals: { field: :cov_function, parent: f.object_name.to_sym, value: @emulator.cov_function, collection: ["squared_exponential", "matern"] } %>
+      
+      <%= f.input :length_scale %>
+
+      <%= f.input :process_variance %>
+
+      <div class="control-group<%= " error" if @emulator.errors.has_key?(:nugget_variance) %>">
+        <label class="control-label"><%=t "simple_form.labels.emulator.nugget_variance" %></label>
+        <div class="controls form-togglable">
+          <input type="hidden" name="emulator[nugget_variance_enabled]" value="<%= @emulator.nugget_variance_enabled %>" />
+          <button class="btn<%= " active" if @emulator.nugget_variance_enabled %>" data-toggle="button">Enable</button>
+          <input type="text" name="emulator[nugget_variance]" value="<%= @emulator.nugget_variance %>" <%= "disabled" if !@emulator.nugget_variance_enabled %> />
+          <% if @emulator.errors.has_key?(:nugget_variance) %>
+          <span class="help-inline"><%= @emulator.errors[:nugget_variance].first %></span>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <%= f.button :submit %>
+      </div>
+    <% end %>
+  </div>
+</div>

@@ -1,0 +1,37 @@
+<div class="row">
+  <div class="span6">
+    <div class="boxed clickable">
+      <h3>
+        <% if @project.emulator_project != nil %>
+          <% if @project.emulator_project.has_emulator? %>
+            <i class="icon-ok-sign" class="icon-ok-sign" rel="tooltip" title="Complete"></i>
+          <% end %>
+          <%= link_to "Emulator project", emulator_project_path(@project.emulator_project) %>
+        <% else %>
+          <% if @project.simulator_specification.complete? %>
+            <i class="icon-ok-sign" class="icon-ok-sign" rel="tooltip" title="Complete"></i>
+          <% end %>
+          <%= link_to "Simulator specification", sensitivity_project_simulator_specifications_path(@project) %>
+        <% end %>
+      </h3>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce sit amet elementum mauris. Vivamus congue mattis tellus, sed sollicitudin lacus fermentum vitae. Donec blandit augue quis tortor ultrices malesuada.
+      </p>
+    </div>
+  </div>
+  <div class="span6">
+    <div class="boxed clickable">
+      <h3>
+        <%= remotable_status_icon(@project.analysis) %>
+        <% if @project.allow_analysis? %>
+          <%= link_to "Analysis", sensitivity_project_analyses_path(@project) %>
+        <% else %>
+          Analysis
+        <% end %>
+      </h3>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce sit amet elementum mauris. Vivamus congue mattis tellus, sed sollicitudin lacus fermentum vitae. Donec blandit augue quis tortor ultrices malesuada.
+      </p>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,17 @@
+<% array_name = "#{parent.to_s}[#{field.to_s}]" %>
+<div class="control-group">
+  <label class="string control-label"><%=t "simple_form.labels.#{parent}.#{field}" %></label>
+  <div class="controls form-array" data-array-name="<%= array_name %>">
+    <p class="nothing-block<%= " hide" if array.size > 0 %>">
+  	  There's nothing here! <a class="add" href="#">Click to add something</a>.
+  	  <%= hidden_field_tag "#{array_name}[]", nil, id: nil %>
+    </p>
+    <% array.each do |value| %>
+  	<div class="form-array-value">
+      <%= text_field_tag "#{array_name}[]", value, id: nil %>
+      <a class="add" href="#"><i class="icon-plus-sign"></i></a>
+      <a class="remove" href="#"><i class="icon-minus-sign"></i></a>
+    </div>
+    <% end %>
+  </div>
+</div>

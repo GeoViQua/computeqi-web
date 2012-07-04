@@ -1,0 +1,21 @@
+<% content_for :subnav do %>
+  <li>
+    <%= link_to @project do %>
+      <i class="icon-home"></i>
+      <strong><%= @project.name %></strong>
+    <% end %>
+  </li>
+  <% ["simulator_specification", "input_screening", "design", "run", "emulator", "validation"].each do |name| %>
+  <li<%= controller.controller_name == "#{name}s" ? ' class="active"'.html_safe : '' %>>
+    <%= link_to send("emulator_project_#{name}s_path", @project) do %>
+      <%= name.humanize %> 
+    <% end %>
+  </li>
+  <% end %>
+<% end %>
+<% content_for :content do %>
+  <%= render "header" %>
+  <%= render partial: "shared/flashes" %>
+  <%= yield %>
+<% end %>
+<%= render template: "layouts/application" %>
