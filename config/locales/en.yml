@@ -7,3 +7,5 @@ en:
       emulator_intro: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla dui ligula, ullamcorper ullamcorper posuere ac, facilisis nec nibh."
       sensitivity_analysis_intro: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla dui ligula, ullamcorper ullamcorper posuere ac, facilisis nec nibh."
       validation_intro: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla dui ligula, ullamcorper ullamcorper posuere ac, facilisis nec nibh."
+  designs:
+    strap: "Create a sample set of points to train and validate your emulator."
