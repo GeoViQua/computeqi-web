@@ -9,7 +9,7 @@
   <p>Emulating the web, one model at a time.</p>
   <p>
     <% unless user_signed_in? %>
-      <%= link_to "Get started »", new_user_registration_path, class: "btn btn-primary btn-large" %>
+      <%= link_to "Get started »", new_user_session_path, class: "btn btn-primary btn-large" %>
     <% end %>
   </p>
 </div>
