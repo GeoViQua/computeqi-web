@@ -31,6 +31,8 @@ en:
         design_size: "Design size"
         num_boot: "Number of bootstrap replicates"
         conf_level: "Conﬁdence level for bootstrap conﬁdence intervals"
+      validation:
+        design_size: "Design size"
     # hints:
     #   username: 'User name to sign in.'
     #   password: 'No special characters, please.'
