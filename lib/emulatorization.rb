@@ -17,7 +17,7 @@ module Emulatorization
     def self.send_string(request, user_opts = {})
       # defaults
       opts = {
-        open_timeout: 1.second,
+        open_timeout: 5.second,
         read_timeout: nil
       }
       opts.merge! user_opts
