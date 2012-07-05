@@ -35,7 +35,6 @@ class Analysis
   end
 
   def calculate_defaults
-    logger.info self.inspect
     parent = self.sensitivity_project
     if parent.uses_emulator?
       parent = parent.emulator_project
