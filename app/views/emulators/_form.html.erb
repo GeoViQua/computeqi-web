@@ -7,7 +7,7 @@
 
       <%= f.input :output, collection: @project.simulator_specification.outputs, selected: @emulator.output %>
 
-      <%= render partial: "shared/form_slider", locals: { field: :training_size, parent: f.object_name.to_sym, object: @emulator, min: 0, max: @project.design.size, step: 10, value: @emulator.training_size } %>
+      <%= render partial: "shared/form_slider", locals: { field: :training_size, parent: f.object_name.to_sym, object: @emulator, min: 0, max: @project.design.size, step: 10, value: @emulator.training_size, help: "The remainder can be used for validation." } %>
 
       <%= render partial: "shared/form_toggle", locals: { field: :normalisation, parent: f.object_name.to_sym, value: @emulator.normalisation, collection: [["Enabled", "true"], ["Disabled", "false"]] } %>
 

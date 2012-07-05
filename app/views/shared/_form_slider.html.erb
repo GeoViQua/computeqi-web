@@ -6,5 +6,8 @@
     <% if object.errors.has_key?(field) %>
       <span class="help-inline"><%= object.errors[field].first %></span>
     <% end %>
+    <% if defined?(help) and !help.nil? %>
+      <p class="help-block"><%= help %></p>
+    <% end %>
   </div>
 </div>
