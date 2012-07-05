@@ -7,6 +7,7 @@ class Emulator
   
   field :training_size, type: Integer
   field :training_indices, type: Array
+  field :validation_indices, type: Array
   field :mean_function, type: String, default: "constant"
   field :cov_function, type: String, default: "squared_exponential"
   field :length_scale, type: Float
@@ -67,8 +68,8 @@ class Emulator
       outputs: outputs,
       inputDescriptions: input_descriptions,
       outputDescriptions: output_descriptions,
-      trainingDesign: self.design.to_hash,
-      trainingEvaluationResult: self.run.to_hash,
+      design: self.design.to_hash,
+      evaluationResult: self.run.to_hash,
       meanFunction: self.mean_function,
       covarianceFunction: self.cov_function,
       lengthScale: self.length_scale,
@@ -126,45 +127,36 @@ class Emulator
     project = self.emulator_project
     spec = project.simulator_specification
 
-    # # existing
-    # full_design = project.design
-    # full_run = project.run
+    # existing
+    full_design = project.design
+    full_run = project.run
 
-    # # generate random indices
-    # p = [*0...full_design.size]
-    # self.training_indices = self.training_size.times.collect { p.sample }
+    # generate random indices
+    # http://synthesis.sbecker.net/articles/2007/06/05/random-permutation-in-ruby
+    p = [*0...full_design.size]
+    1.upto(p.length - 1) do |i|
+      j = rand(i + 1)
+      p[i], p[j] = p[j], p[i]
+    end
+    self.training_indices = p.slice(0, self.training_size)
+    self.validation_indices = p.slice(self.training_size, full_design.size - self.training_size)
 
-    # # create sampled design
-    # self.design = self.create_design(simulator_specification: spec, size: self.training_size)
-    # full_design.design_values.each do |dv|
-    #   self.design.design_values.create(input: dv.input, points: self.training_indices.collect {|i| dv.points[i] })
-    # end
+    # create sampled design
+    self.design = self.create_design(simulator_specification: spec, size: self.training_size)
+    full_design.design_values.each do |dv|
+      self.design.design_values.create(input: dv.input, points: self.training_indices.collect {|i| dv.points[i] })
+    end
 
-    # # create sampled run
-    # self.run = self.create_run(simulator_specification: spec, design: self.design, size: self.training_size)
-    # full_run.run_values.each do |rv|
-    #   self.run.run_values.create(output: rv.output, points: self.training_indices.collect {|i| rv.points[i] })
-    # end
+    # create sampled run
+    self.run = self.create_run(simulator_specification: spec, design: self.design, size: self.training_size)
+    selected_run = full_run.run_values.where(output_id: self.output.id).first
+    self.run.run_values.create(output: self.output, points: self.training_indices.collect {|i| selected_run.points[i] })
     
     # request hash
-    # { type: 'LearningRequest',
-    #   trainingDesign: self.design.to_hash,
-    #   trainingEvaluationResult: self.run.to_hash,
-    #   selectedOutputIdentifier: self.output.name,
-    #   meanFunction: self.mean_function,
-    #   covarianceFunction: self.cov_function,
-    #   lengthScale: self.length_scale,
-    #   processVariance: self.process_variance,
-    #   nuggetVariance: self.nugget_variance_enabled ? self.nugget_variance : nil,
-    #   normalisation: self.normalisation
-    # }
-
-     # request hash
     { type: 'LearningRequest',
-      design: project.design.to_hash,
-      evaluationResult: project.run.to_hash,
+      design: self.design.to_hash,
+      evaluationResult: self.run.to_hash,
       selectedOutputIdentifier: self.output.name,
-      trainingSetSize: self.training_size,
       meanFunction: self.mean_function,
       covarianceFunction: self.cov_function,
       lengthScale: self.length_scale,
@@ -172,6 +164,20 @@ class Emulator
       nuggetVariance: self.nugget_variance_enabled ? self.nugget_variance : nil,
       normalisation: self.normalisation
     }
+
+    #  # request hash
+    # { type: 'LearningRequest',
+    #   design: project.design.to_hash,
+    #   evaluationResult: project.run.to_hash,
+    #   selectedOutputIdentifier: self.output.name,
+    #   trainingSetSize: self.training_size,
+    #   meanFunction: self.mean_function,
+    #   covarianceFunction: self.cov_function,
+    #   lengthScale: self.length_scale,
+    #   processVariance: self.process_variance,
+    #   nuggetVariance: self.nugget_variance_enabled ? self.nugget_variance : nil,
+    #   normalisation: self.normalisation
+    # }
   end
   
   def handle(response)
@@ -185,14 +191,14 @@ class Emulator
     result = response['result']
     # skipping predictedMean, predictedVariance (arrays)
 
-    design = self.create_design(simulator_specification: spec, size: result['trainingDesign']['size'])
-    result['trainingDesign']['map'].each do |set|
+    design = self.create_design(simulator_specification: spec, size: result['design']['size'])
+    result['design']['map'].each do |set|
       input = inputs.where(:name => set['inputIdentifier']).first
       design.design_values.create(input: input, points: set['points'])
     end
     
     run = self.create_run(simulator_specification: spec, design: design, size: design.size)
-    result['trainingEvaluationResult'].each do |set|
+    result['evaluationResult'].each do |set|
       output = outputs.where(:name => set['outputIdentifier']).first
       run.run_values.create(output: output, points: set['results'])
     end
