@@ -1,10 +1,7 @@
 # encoding: utf-8
 
 class AnalysisPlotUploader < CarrierWave::Uploader::Base
-
-  # Include RMagick or MiniMagick support:
-  # include CarrierWave::RMagick
-  # include CarrierWave::MiniMagick
+  include CarrierWave::RMagick
 
   # Choose what kind of storage to use for this uploader:
   storage :file
@@ -23,11 +20,10 @@ class AnalysisPlotUploader < CarrierWave::Uploader::Base
 
   # Process files as they are uploaded:
   process :trim
-  
-  #
-  # def scale(width, height)
-  #   # do something
-  # end
+
+  def trim
+    manipulate! {|img| img.trim }
+  end
 
   # Create different versions of your uploaded files:
   # version :thumb do

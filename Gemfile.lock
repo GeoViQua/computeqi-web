@@ -124,6 +124,7 @@ GEM
     rake (0.9.2.2)
     rdoc (3.12)
       json (~> 1.4)
+    rmagick (2.13.1)
     simple_form (2.0.2)
       actionpack (~> 3.0)
       activemodel (~> 3.0)
@@ -163,6 +164,7 @@ DEPENDENCIES
   less-rails-bootstrap
   mongoid
   rails (= 3.2.1)
+  rmagick
   simple_form
   therubyracer
   thin
