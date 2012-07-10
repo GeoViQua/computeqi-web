@@ -22,7 +22,8 @@ class AnalysisPlotUploader < CarrierWave::Uploader::Base
   # end
 
   # Process files as they are uploaded:
-  # process :scale => [200, 300]
+  # process :trim
+  
   #
   # def scale(width, height)
   #   # do something

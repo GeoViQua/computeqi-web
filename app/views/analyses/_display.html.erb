@@ -33,18 +33,23 @@ $(function() {
   <% end %>
   
   // listener for form
-  $('#controls form').on('submit', function() {
+  $('.controls form').on('submit', function() {
     return false;
   });
 
-  $('#controls select').on('change', function() {
+  $('#plot-controls select').on('change', function() {
     <% if @analysis.sobol? %>
-    remoteUpdateSensitivityPlots(plot, mainPlot, totalPlot, '<%= sensitivity_project_analysis_path(@project, @analysis) %>' + '.json', { output_id: $('#output').val() });
+    remoteUpdateSensitivityPlots(plot, mainPlot, totalPlot, '<%= sensitivity_project_analysis_path(@project, @analysis) %>' + '.json', { output_id: $(this).val() });
     <% else %>
-    remoteUpdateFastPlot(plot, '<%= sensitivity_project_analysis_path(@project, @analysis) %>' + '.json', { output_id: $('#output').val() });
+    remoteUpdateFastPlot(plot, '<%= sensitivity_project_analysis_path(@project, @analysis) %>' + '.json', { output_id: $(this).val() });
     <% end %>
     return false;
-  }); 
+  });
+
+  $('#image-controls select').on('change', function() {
+    $('#images .image').hide();
+    $('#images .image[data-id="' + $(this).val() + '"]').show();
+  });
 });
 </script>
 
@@ -59,10 +64,10 @@ $(function() {
       </ul>
       <div class="tab-content">
         <div class="tab-pane active" id="plots">
-          <div id="controls">
+          <div id="plot-controls" class="controls">
             <form class="well form-inline">
               <label for="output">Output</label>
-              <select id="output" class="output-medium">
+              <select name="output" class="output-medium">
                 <% @analysis.analysis_values.each do |value| %>
                 <% output = value.output %>
                 <%= content_tag(:option, value: output.id) { output.name } %>
@@ -79,9 +84,21 @@ $(function() {
           <div id="total-plot-container" class="plot hide"></div>
         </div>
         <div class="tab-pane" id="images">
-          <% @analysis.analysis_values.each do |value| %>
-            <h2><%= value.output.name %></h2>
-            <%= image_tag(value.plot_url) %>
+          <div id="image-controls" class="controls">
+            <form class="well form-inline">
+              <label for="output">Output</label>
+              <select name="output" class="output-medium">
+                <% @analysis.analysis_values.each do |value| %>
+                <% output = value.output %>
+                <%= content_tag(:option, value: value.id) { output.name } %>
+                <% end %>
+              </select>
+            </form>
+          </div>
+          <% @analysis.analysis_values.each_with_index do |value, i| %>
+            <div data-id="<%= value.id %>" class="image<%= " hide" unless i == 0 %>">
+              <%= image_tag(value.plot_url) %>
+            </div>
           <% end %>
         </div>
       </div>
