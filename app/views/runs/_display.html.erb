@@ -6,11 +6,11 @@ $(function() {
   plot = createHistogram('histogram-container', <%= @run.run_values.first.to_hash.to_json.html_safe %>, 'results', $('#bins').val());
   
   // listener for form
-  $('#controls form').on('submit', function() {
+  $('.inline-controls form').on('submit', function() {
     return false;
   });
 
-  $('#controls select,input').on('change', function() {
+  $('.inline-controls select,input').on('change', function() {
     remoteUpdateHistogram(plot, '<%= emulator_project_run_path(@project, @run) %>' + '.json', { output_id: $('#output').val() }, 'results', $('#bins').val());
     return false;
   }); 
@@ -29,7 +29,7 @@ $(function() {
       </ul>
       <div class="tab-content">
         <div class="tab-pane active" id="histogram">
-          <div id="controls">
+          <div class="inline-controls">
             <form class="well form-inline">
               <label for="output">Output</label>
               <select id="output" class="output-medium">

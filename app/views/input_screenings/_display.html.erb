@@ -6,11 +6,11 @@ $(function() {
   plot = createScreeningPlot('plot-container', <%= @input_screening.screening_values.first.to_hash.to_json.html_safe %>);
   
   // listener for form
-  $('#controls form').on('submit', function() {
+  $('.inline-controls form').on('submit', function() {
     return false;
   });
 
-  $('#controls select,input').on('change', function() {
+  $('.inline-controls select,input').on('change', function() {
     remoteUpdateScreeningPlot(plot, '<%= emulator_project_input_screening_path(@project, @input_screening) %>' + '.json', { output_id: $('#output').val() });
     return false;
   });
@@ -31,7 +31,7 @@ $(function() {
       </ul>
       <div class="tab-content">
         <div class="tab-pane active" id="plot">
-          <div id="controls">
+          <div class="inline-controls">
             <form class="well form-inline">
               <label for="output">Output</label>
               <select id="output" class="input-medium">
