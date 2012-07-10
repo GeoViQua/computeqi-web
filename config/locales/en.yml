@@ -7,5 +7,24 @@ en:
       emulator_intro: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla dui ligula, ullamcorper ullamcorper posuere ac, facilisis nec nibh."
       sensitivity_analysis_intro: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla dui ligula, ullamcorper ullamcorper posuere ac, facilisis nec nibh."
       validation_intro: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla dui ligula, ullamcorper ullamcorper posuere ac, facilisis nec nibh."
+  simulator_specifications:
+    strap: "Set ranges on the simulator inputs."
+    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce sit amet elementum mauris. Vivamus congue mattis tellus, sed sollicitudin lacus fermentum vitae. Donec blandit augue quis tortor ultrices malesuada."
+  input_screenings:
+    strap: "Screenings."
+    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce sit amet elementum mauris. Vivamus congue mattis tellus, sed sollicitudin lacus fermentum vitae. Donec blandit augue quis tortor ultrices malesuada."
   designs:
     strap: "Create a sample set of points to train and validate your emulator."
+    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce sit amet elementum mauris. Vivamus congue mattis tellus, sed sollicitudin lacus fermentum vitae. Donec blandit augue quis tortor ultrices malesuada."
+  runs:
+    strap: "Evaluate the simulator using your design."
+    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce sit amet elementum mauris. Vivamus congue mattis tellus, sed sollicitudin lacus fermentum vitae. Donec blandit augue quis tortor ultrices malesuada."
+  emulators:
+    strap: "Train your emulator."
+    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce sit amet elementum mauris. Vivamus congue mattis tellus, sed sollicitudin lacus fermentum vitae. Donec blandit augue quis tortor ultrices malesuada."
+  validations:
+    strap: "Validate your emulator."
+    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce sit amet elementum mauris. Vivamus congue mattis tellus, sed sollicitudin lacus fermentum vitae. Donec blandit augue quis tortor ultrices malesuada."
+  analyses:
+    strap: "Run sensitivity analysis on your simulator or emulator."
+    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce sit amet elementum mauris. Vivamus congue mattis tellus, sed sollicitudin lacus fermentum vitae. Donec blandit augue quis tortor ultrices malesuada."
