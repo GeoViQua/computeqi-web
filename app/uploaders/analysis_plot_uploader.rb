@@ -22,7 +22,7 @@ class AnalysisPlotUploader < CarrierWave::Uploader::Base
   # end
 
   # Process files as they are uploaded:
-  # process :trim
+  process :trim
   
   #
   # def scale(width, height)
