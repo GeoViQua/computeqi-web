@@ -60,7 +60,7 @@ class Analysis
 
     # add parameters
     if self.analysis_method == "sobol"
-      request_hash.merge!({
+      request_hash = request_hash.update({
         numBoot: self.num_boot,
         confidenceLevel: self.conf_level
       })
