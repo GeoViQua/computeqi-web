@@ -1,0 +1,100 @@
+#total-plot-container {
+  margin-top: 25px;
+}
+
+.plot {
+  width: 940px;
+  height: 400px;
+  &.square {
+    height: 940px;
+  }
+  overflow: hidden;
+}
+
+#flot-tooltip {
+  position: absolute;
+  display: none;
+  border: none;
+  .border-radius(4px);
+  padding: 2px;
+  background-color: @navbarBackground;
+  opacity: 0.9;
+
+  pre {
+    margin: 0;
+  }
+}
+
+#popup {
+  display: none;
+  position: absolute;
+  z-index: 999;
+  padding: 5px 10px 5px 10px;
+  background: white;
+  border: 3px solid #c2e1f5;
+  .border-radius(10px);
+
+  &.left {
+    &:after {
+      border-left-color: white;
+    }
+    &:before {
+      border-left-color: inherit;
+    }
+    &:before, &:after {
+      left: 100%;
+    }
+  }
+
+  &.right {
+    &:after {
+      border-right-color: white;
+    }
+    &:before {
+      border-right-color: inherit;
+    }
+    &:before, &:after {
+      right: 100%;
+    }
+  }
+
+  &:before, &:after {
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+  }
+
+  &:after {
+    border-width: 15px;
+    top: 50%;
+    margin-top: -15px;
+  }
+  &:before {
+    border-width: 19px;
+    top: 50%;
+    margin-top: -19px;
+  }
+
+  .top {
+    h3 {
+      float: left;
+    }
+    .close {
+      float: right;
+      margin-top: -5px;
+      margin-left: 10px;
+      margin-right: -5px;
+    }
+  }
+
+  .content {
+    clear: both;
+    .form-inline {
+      margin-top: 8px;
+      margin-bottom: 4px;
+    }
+  }
+}
