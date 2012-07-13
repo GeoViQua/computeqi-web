@@ -2,4 +2,4 @@
   <%= project_status_icon(project) %>
   <%= link_to project.name, project %>
 </h3>
-<p>Created on <%= project.created_at.strftime("%B %e, %Y") %></p>
+<p>Last updated <%= project.updated_at.strftime("%B %e, %Y %H:%m") %></p>
