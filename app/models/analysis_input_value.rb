@@ -17,9 +17,9 @@ class AnalysisInputValue
   field :total_max_ci, type: Float
 
   # fast fields
-  field :d1, type: Float
-  field :dt, type: Float
-  field :v, type: Float
+  field :main_effect, type: Float
+  field :interactions, type: Float
+  field :variance, type: Float
   
   def to_hash
     hash = { inputIdentifier: self.input.name }
@@ -39,9 +39,9 @@ class AnalysisInputValue
       })
     else
       hash.merge!({
-        d1: self.d1,
-        dt: self.dt,
-        v: self.v
+        mainEffect: self.main_effect,
+        interactions: self.interactions,
+        variance: self.variance
       })
     end
   end

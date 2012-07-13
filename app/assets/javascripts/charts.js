@@ -30,8 +30,8 @@ function parseFastData(json) {
     ticks.push([x, result.inputIdentifier]);
 
     // values
-    main.push([x, result.d1 / result.v]);
-    interactions.push([x, 1 - result.dt / result.v - result.d1 / result.v]);
+    main.push([x, result.mainEffect / result.variance]);
+    interactions.push([x, 1 - result.interactions / result.variance - result.mainEffect / result.variance]);
   }
 
   return { ticks: ticks, data: [

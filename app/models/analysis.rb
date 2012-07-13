@@ -125,9 +125,9 @@ class Analysis
         else
           value.analysis_input_values.create(
             input: input,
-            d1: input_result['d1'],
-            dt: input_result['dt'],
-            v: input_result['v']
+            main_effect: input_result['mainEffect'],
+            interactions: input_result['interactions'],
+            variance: input_result['variance']
           )
         end
       end
