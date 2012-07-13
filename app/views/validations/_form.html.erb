@@ -2,7 +2,7 @@
 <div class="row">
   <div class="span7">
     <%= simple_form_for [@project, @validation], html: { class: 'form-horizontal' } do |f| %>
-      <%= render partial: "shared/form_slider", locals: { field: :design_size, parent: f.object_name.to_sym, object: @validation, min: 0, max: @project.emulator.validation_indices.size, step: 10, value: @validation.design_size, help: "Design remainder after learning." } %>
+      <%= render partial: "shared/form_slider", locals: { field: :design_size, parent: f.object_name.to_sym, object: @validation, min: 0, max: @project.emulator.validation_indices.size, step: 10, value: @validation.design_size, help: "Design remainder after training." } %>
 
       <div class="form-actions">
         <%= f.button :submit %>
