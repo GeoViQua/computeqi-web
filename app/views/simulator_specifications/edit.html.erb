@@ -5,12 +5,12 @@ $(function() {
     btn.button('toggle');
     var div = btn.parent().parent().parent();
     if (btn.text() == 'Fixed') {
-      div.siblings(':nth-child(5), :nth-child(6)').slideUp('fast', function() {
-        div.siblings(':nth-child(4)').slideDown('fast');
+      div.siblings(':nth-child(4), :nth-child(5)').slideUp('fast', function() {
+        div.siblings(':nth-child(3)').slideDown('fast');
       });
     } else {
-      div.siblings(':nth-child(4)').slideUp('fast', function() {
-        div.siblings(':nth-child(5), :nth-child(6)').slideDown('fast');
+      div.siblings(':nth-child(3)').slideUp('fast', function() {
+        div.siblings(':nth-child(4), :nth-child(5)').slideDown('fast');
       });
     }
     return false;
@@ -28,7 +28,7 @@ $(function() {
 <% end %>
 
 <%= simple_form_for [@project, @spec], :html => { :class => 'form-horizontal' } do |f| %>
-  <%= f.input :service_url %>
+  <%= f.input :service_url, input_html: { class: "span5" } %>
   <%# f.input :process_name, hint: @spec.process_description %>
 
   <div class="row" style="margin-top: 20px;">
