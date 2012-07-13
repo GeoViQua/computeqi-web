@@ -21,7 +21,7 @@ class Input
   validates_numericality_of :maximum_value, if: :variable?
   
   def fixed_or_variable
-    if fixed_value != nil and (minimum_value != nil or maximum_value != nil)
+    if fixed_value.nil? and (minimum_value.nil? or maximum_value.nil?)
       errors.add(:fixed_value, "The input can either have a fixed value, or a range.")
     end
   end
