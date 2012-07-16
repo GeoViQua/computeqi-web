@@ -1,6 +1,6 @@
 <script>
 
-$(document).ready(function() {
+$(function() {
   $('#emulator_project_simulator_specification_attributes_service_url').on('change', function() {
     refreshProcessList();
   });
@@ -10,6 +10,25 @@ $(document).ready(function() {
   });
 
   refreshProcessList();
+
+var opts = {
+  lines: 11, // The number of lines to draw
+  length: 3, // The length of each line
+  width: 2, // The line thickness
+  radius: 4, // The radius of the inner circle
+  rotate: 0, // The rotation offset
+  color: '#000', // #rgb or #rrggbb
+  speed: 1.2, // Rounds per second
+  trail: 60, // Afterglow percentage
+  shadow: false, // Whether to render a shadow
+  hwaccel: false, // Whether to use hardware acceleration
+  className: 'spinner', // The CSS class to assign to the spinner
+  zIndex: 2e9, // The z-index (defaults to 2000000000)
+  top: 'auto', // Top position relative to parent in px
+  left: 'auto' // Left position relative to parent in px
+};
+
+  $('.busy').spin(opts);
 });
 
 function appendHiddenInputs(parent, identifier, params) {
@@ -24,6 +43,8 @@ function appendHiddenInputs(parent, identifier, params) {
 }
 
 function refreshProcessList() {
+  $('#process-select').slideUp('fast');
+  $('#service-select .busy').fadeIn('fast');
   $('input[type="submit"]').prop('disabled', true);
 
   var s = $('#emulator_project_simulator_specification_attributes_service_url');
@@ -40,11 +61,15 @@ function refreshProcessList() {
     for (var i = 0; i < ids.length; i++) {
       p.append('<option value="' + ids[i] + '">' + ids[i] + '</option>');
     }
+    $('#service-select .busy').fadeOut('fast');
+    $('#process-select').slideDown('fast');
     refreshIOList();
   }, 'json');
 }
 
 function refreshIOList() {
+  $('#process-select .help-block').slideUp('fast');
+  $('#process-select .busy').fadeIn('fast');
   $('input[type="submit"]').prop('disabled', true);
 
   var s = $('#emulator_project_simulator_specification_attributes_service_url');
@@ -90,6 +115,11 @@ function refreshIOList() {
     }
     //o.append('<span class="help-block">' + otext.substring(0, otext.length - 2) + '</span>');
 
+    $('#process-select .help-block').html(pd.detail);
+    if (pd.detail) {
+      $('#process-select .help-block').slideDown('fast');
+    }
+    $('#process-select .busy').fadeOut('fast');
     $('input[type="submit"]').prop('disabled', false);
   }, 'json');
 }
@@ -106,8 +136,27 @@ function refreshIOList() {
     <%= simple_form_for @project, html: { class: 'form-horizontal' } do |f| %>
       <%= f.simple_fields_for :simulator_specification do |b| %>
 
-        <%= b.input :service_url, include_blank: false, collection: [["http://uncertws.aston.ac.uk:8080/ps/service"]] %>
-        <%= b.input :process_name, include_blank: false, collection: [] %>
+        <%# b.input :service_url, include_blank: false, collection: [["http://uncertws.aston.ac.uk:8080/ps/service"]] %>
+        <div id="service-select" class="control-group select optional">
+          <label class="select optional control-label" for="emulator_project_simulator_specification_attributes_service_url">Service URL</label>
+          <div class="controls">
+            <select class="select optional" id="emulator_project_simulator_specification_attributes_service_url" name="emulator_project[simulator_specification_attributes][service_url]">
+              <option value="http://uncertws.aston.ac.uk:8080/ps/service">http://uncertws.aston.ac.uk:8080/ps/service</option>
+            </select>
+            <div class="busy hide"></div>
+          </div>
+        </div>
+
+        <%# b.input :process_name, include_blank: false, collection: [] %>
+        <div id="process-select" class="control-group select optional hide">
+          <label class="select optional control-label" for="emulator_project_simulator_specification_attributes_process_name">Process name</label>
+          <div class="controls">
+            <select class="select optional" id="emulator_project_simulator_specification_attributes_process_name" name="emulator_project[simulator_specification_attributes][process_name]"></select>
+            <div class="busy hide"></div>
+            <p class="help-block hide"></p>
+          </div>
+        </div>
+        
         <%= b.input :process_description, as: :hidden %>
 
         <div id="inputs"></div>
