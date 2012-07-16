@@ -31,7 +31,7 @@ $(function() {
   <%= f.input :service_url, input_html: { class: "span5" } %>
   <%# f.input :process_name, hint: @spec.process_description %>
 
-  <div class="row" style="margin-top: 20px;">
+  <div class="row space-top">
     <% index = 0 %>
     <%= f.simple_fields_for :inputs do |b| %>
       <% if index % 2 == 0 %>
