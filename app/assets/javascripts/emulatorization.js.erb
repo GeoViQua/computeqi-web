@@ -4,8 +4,43 @@ sub_path = ENV["RAILS_RELATIVE_URL_ROOT"] || ""
 %>
 
 var $e = (function ($) {
+  var paths = {
+    api: '<%= sub_path + url.api_path %>',
+    service_status: '<%= sub_path + url.service_status_path %>'
+  };
+
   return {
-    api_path: '<%= sub_path + url.api_path %>',
-    service_status_path: '<%= sub_path + url.service_status_path %>'
+    getPath: function(controllerName) {
+      return paths[controllerName];
+    },
+    apiRequest: function(request, successCallback, errorCallback) {
+      // build ajax settings
+      var settings = {
+        url: this.getPath('api'),
+        dataType: 'json',
+        type: 'POST',
+        data: { request: JSON.stringify(request) }
+      };
+
+      if (successCallback) {
+        // callbacks
+        settings = $.extend(settings, { success: function(data) {
+          if (data.type === 'Exception' && error) {
+            errorCallback(data.message);
+          } else {
+            successCallback(data);
+          }
+        } });
+        if (errorCallback) {
+          settings = $.extend(settings, { error: function(jqXHR, textStatus, errorThrown) {
+            errorCallback([jqXHR.status, errorThrown].join(' '));
+          } });
+        }
+        return $.ajax(settings);
+      } else {
+        // deferred
+        return $.ajax(settings);
+      }
+    }
   };
 }) (jQuery);

@@ -1,5 +1,5 @@
 $(function() {
-  $.get($e.service_status_path, function(response) {
+  $.get($e.getPath('service_status'), function(response) {
     var okIcon = '<i class="icon-ok-sign"></i>';
     var errorIcon = '<i class="icon-exclamation-sign"></i>';
     if (response.type == 'StatusResponse') {

@@ -37,7 +37,7 @@ function refreshProcessList() {
     serviceURL: s.val()
   };
 
-  $.post($e.api_path, { request: JSON.stringify(request) }, function(data) {
+  $e.apiRequest(request, function(data) {
     var ids = data.processIdentifiers;
     for (var i = 0; i < ids.length; i++) {
       p.append('<option value="' + ids[i] + '">' + ids[i] + '</option>');
@@ -45,7 +45,9 @@ function refreshProcessList() {
     $('#service-select .busy').fadeOut('fast');
     $('#process-select').slideDown('fast');
     refreshIOList();
-  }, 'json');
+  }, function(error) {
+    console.log(error);
+  });
 }
 
 function refreshIOList() {
@@ -66,7 +68,7 @@ function refreshIOList() {
     processIdentifier: p.val()
   };
 
-  $.post($e.api_path, { request: JSON.stringify(request) }, function(data) {
+  $e.apiRequest(request, function(data) {
     var pd = data.processDescription;
     $('input[name="emulator_project[simulator_specification_attributes][process_description]"]').val(pd.detail);
 
@@ -102,5 +104,5 @@ function refreshIOList() {
     }
     $('#process-select .busy').fadeOut('fast');
     $('input[type="submit"]').prop('disabled', false);
-  }, 'json');
+  });
 }
