@@ -9,7 +9,7 @@
 //= require twitter/bootstrap/dropdown
 //= require twitter/bootstrap/tab
 //= require twitter/bootstrap/tooltip
-//= require spin/spin.min
+//= require spin/spin
 //= require spin/jquery.spin
 //= require mustache/mustache
 //= require emulatorization
