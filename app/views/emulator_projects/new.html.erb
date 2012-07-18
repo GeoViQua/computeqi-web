@@ -1,5 +1,3 @@
-<%= javascript_include_tag "emulator_projects" %>
-
 <div class="page-header">
   <h1>Emulator project</h1>
 </div>
@@ -7,35 +5,7 @@
 <div class="row">
   <div class="span7">
     <%= simple_form_for @project, html: { class: 'form-horizontal' } do |f| %>
-      <%= f.simple_fields_for :simulator_specification do |b| %>
-
-        <%# b.input :service_url, include_blank: false, collection: [["http://uncertws.aston.ac.uk:8080/ps/service"]] %>
-        <div id="service-select" class="control-group select optional">
-          <label class="select optional control-label" for="emulator_project_simulator_specification_attributes_service_url">Service URL</label>
-          <div class="controls">
-            <select class="select optional span4" id="emulator_project_simulator_specification_attributes_service_url" name="emulator_project[simulator_specification_attributes][service_url]">
-              <option value="http://uncertws.aston.ac.uk:8080/ps/service">http://uncertws.aston.ac.uk:8080/ps/service</option>
-            </select>
-            <div class="busy"></div>
-          </div>
-        </div>
-
-        <%# b.input :process_name, include_blank: false, collection: [] %>
-        <div id="process-select" class="control-group select optional hide">
-          <label class="select optional control-label" for="emulator_project_simulator_specification_attributes_process_name">Process name</label>
-          <div class="controls">
-            <select class="select optional" id="emulator_project_simulator_specification_attributes_process_name" name="emulator_project[simulator_specification_attributes][process_name]"></select>
-            <div class="busy hide"></div>
-            <p class="help-block hide"></p>
-          </div>
-        </div>
-        
-        <%= b.input :process_description, as: :hidden %>
-
-        <div id="inputs"></div>
-        <div id="outputs"></div>
-
-      <% end %>
+      <%= render partial: "shared/simulator_select", locals: { form: f } %>
 
       <div class="form-actions">
         <%= f.button :submit, disabled: 'disabled' %>

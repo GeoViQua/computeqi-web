@@ -1,0 +1,34 @@
+<%= javascript_include_tag "simulator_select" %>
+
+<fieldset class="simulator-select" data-parent="<%= form.object_name %>">
+  <% if defined?(legend) and !legend.nil? %>
+    <legend><%= legend %></legend>
+  <% end %>
+  <%= form.simple_fields_for :simulator_specification do |builder| %>
+    <%# b.input :service_url, include_blank: false, collection: [["http://uncertws.aston.ac.uk:8080/ps/service"]] %>
+    <div id="service-select" class="control-group select optional">
+      <label class="select optional control-label">Service URL</label>
+      <div class="controls">
+        <select class="select optional span4" name="<%= form.object_name %>[simulator_specification_attributes][service_url]">
+          <option value="http://uncertws.aston.ac.uk:8080/ps/service">http://uncertws.aston.ac.uk:8080/ps/service</option>
+        </select>
+        <div class="busy"></div>
+      </div>
+    </div>
+
+    <%# b.input :process_name, include_blank: false, collection: [] %>
+    <div id="process-select" class="control-group select optional hide">
+      <label class="select optional control-label">Process name</label>
+      <div class="controls">
+        <select class="select optional" name="<%= form.object_name %>[simulator_specification_attributes][process_name]"></select>
+        <div class="busy hide"></div>
+        <p class="help-block hide"></p>
+      </div>
+    </div>
+    
+    <%= builder.input :process_description, as: :hidden %>
+
+    <div id="inputs"></div>
+    <div id="outputs"></div>
+  <% end %>
+</fieldset>
