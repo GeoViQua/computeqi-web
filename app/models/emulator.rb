@@ -53,25 +53,19 @@ class Emulator
     
     # collect inputs
     inputs = []
-    input_descriptions = []
     spec.inputs.each do |input|
       inputs << input.to_hash
-      input_descriptions << { identifier: input.name, dataType: 'Numeric', encodingType: 'double' }
     end
     
     # collect outputs
     outputs = []
-    output_descriptions = []
     # spec.outputs.each do |output|
       outputs << output.to_hash
-      output_descriptions << { identifier: output.name, dataType: 'Numeric', encodingType: 'double' }
     # end
     
     # build hash
     hash = { inputs: inputs,
       outputs: outputs,
-      inputDescriptions: input_descriptions,
-      outputDescriptions: output_descriptions,
       design: self.design.to_hash,
       evaluationResult: self.run.to_hash,
       meanFunction: self.mean_function,

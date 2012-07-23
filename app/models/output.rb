@@ -14,7 +14,13 @@ class Output
   has_one :analysis_value
   
   def to_hash
-    { identifier: self.name }
+    d = { dataType: 'Numeric', encodingType: 'double' }
+    if self.description
+      d[:detail] = self.description
+    end
+     
+    { identifier: self.name,
+      description: d }
   end
   
   def to_s

@@ -39,11 +39,21 @@ class Input
   end
   
   def to_hash
-    if self.variable?
+    hash = if self.variable?
       { identifier: self.name, range: { min: self.minimum_value, max: self.maximum_value } }
     else
       { identifier: self.name, value: self.fixed_value }
     end
+
+    d = {
+      dataType: 'Numeric',
+      encodingType: 'double'
+    }
+    if self.description
+      d[:detail] = self.description
+    end
+    hash[:description] = d
+    hash
   end
   
 end
