@@ -1,6 +1,6 @@
 require "emulatorization"
 
-namespace :et do
+namespace :e do
 
   task :refresh_descriptions => :environment do
     SimulatorSpecification.all.each do |spec|
