@@ -2,14 +2,14 @@ $(function() {
   $('.btn-group[data-toggle="buttons-radio"] .btn').click(function() {
     var btn = $(this);
     btn.button('toggle');
-    var div = btn.parent().parent().parent();
+    var groups = btn.parent().parent().parent().siblings('.control-group');
     if (btn.text() == 'Fixed') {
-      div.siblings(':nth-child(4), :nth-child(5)').slideUp('fast', function() {
-        div.siblings(':nth-child(3)').slideDown('fast');
+      groups.slice(1).slideUp('fast', function() {
+        groups.eq(0).slideDown('fast');
       });
     } else {
-      div.siblings(':nth-child(3)').slideUp('fast', function() {
-        div.siblings(':nth-child(4), :nth-child(5)').slideDown('fast');
+      groups.eq(0).slideUp('fast', function() {
+        groups.slice(1).slideDown('fast');
       });
     }
     return false;
