@@ -2,36 +2,21 @@ class ProjectObserver < Mongoid::Observer
   observe :input, :design, :run, :emulator, :validation
 
   def after_destroy(object)
-    # get project
+    # get project and type
     project = get_project(object)
-
-    # destroy run, emulator, validation
     type = object.class
 
-    if [ Design ].include? type
-      run = project.run
-      run.destroy if !run.nil?
-    end
-
-    if [ Design, Run ].include? type
-      emulator = project.emulator
-      emulator.destroy if !emulator.nil?
-    end
-
-    if [ Design, Run, Emulator ].include? type
-      validation = project.validation
-      validation.destroy if !validation.nil?
-    end
+    # destroy everything dependent on this one
+    destroy_dependents(project, type)
   end
 
   def after_update(object)
-    # get project
+    # get project and type
     project = get_project(object)
-
-    # destroy everything!
     type = object.class
 
-    if [ Input ].include? type
+    # special type for input
+    if type == Input
       # if values changed
       if object.fixed_value_changed? || object.minimum_value_changed? || object.maximum_value_changed?
         input_screening = project.input_screening
@@ -54,6 +39,9 @@ class ProjectObserver < Mongoid::Observer
         validation = project.validation
         validation.destroy if !validation.nil?
       end
+    else
+      # for the rest destroy all dependent objects
+      destroy_dependents(project, type)
     end
   end
 
@@ -70,6 +58,23 @@ class ProjectObserver < Mongoid::Observer
       project = object.runnable
     elsif object.respond_to? "simulator_specification"
       project = object.simulator_specification.specable
+    end
+  end
+
+  def destroy_dependents(project, type)
+    if [ Design ].include? type
+      run = project.run
+      run.destroy if !run.nil?
+    end
+
+    if [ Design, Run ].include? type
+      emulator = project.emulator
+      emulator.destroy if !emulator.nil?
+    end
+
+    if [ Design, Run, Emulator ].include? type
+      validation = project.validation
+      validation.destroy if !validation.nil?
     end
   end
 
