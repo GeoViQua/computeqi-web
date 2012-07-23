@@ -83,6 +83,7 @@ $(function() {
         ];
         if (id[n].description) {
           arr.push({ name: 'description', value: id[n].description.detail });
+          arr.push({ name: 'uom', value: id[n].description.uom });
         }
         appendHiddenInputs(i, 'inputs_attributes', arr);
         // hidden for now
@@ -94,6 +95,7 @@ $(function() {
         var arr = [{ name: 'name', value: od[n].identifier }];
         if (od[n].description) {
           arr.push({ name: 'description', value: od[n].description.detail });
+          arr.push({ name: 'uom', value: od[n].description.uom });
         }
         appendHiddenInputs(o, 'outputs_attributes', arr);
         // hidden for now

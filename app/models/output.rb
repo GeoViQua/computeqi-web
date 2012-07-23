@@ -3,6 +3,7 @@ class Output
   
   field :name, type: String
   field :description, type: String
+  field :uom, type: String
   field :type, type: String, default: "Numeric"
   
   belongs_to :simulator_specification
@@ -17,6 +18,9 @@ class Output
     d = { dataType: 'Numeric', encodingType: 'double' }
     if self.description
       d[:detail] = self.description
+    end
+    if self.uom
+      d[:uom] = self.uom
     end
      
     { identifier: self.name,

@@ -4,6 +4,7 @@ class Input
   field :name, type: String
   field :description, type: String
   field :type, type: String, default: "Numeric"
+  field :uom, type: String
   
   field :fixed_value, type: Float
   field :minimum_value, type: Float
@@ -51,6 +52,9 @@ class Input
     }
     if self.description
       d[:detail] = self.description
+    end
+    if self.uom
+      d[:uom] = self.uom
     end
     hash[:description] = d
     hash

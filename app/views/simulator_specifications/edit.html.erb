@@ -18,8 +18,8 @@
       <div class="span6">
         <fieldset>
           <legend><%= b.object.name %></legend>
-          <% if b.object.description %>
-            <p style="padding: 10px 0;"><%= b.object.description %></p>
+          <% if b.object.description || b.object.uom %>
+            <p style="padding: 10px 0;"><%= b.object.description %> <%= b.object.uom %></p>
           <% end %>
           <div class="control-group string optional">
             <label class="string optional control-label">Type</label>
@@ -39,13 +39,13 @@
           <div class="control-group string optional<%= " hide" if b.object.fixed? %>">
             <label class="string optional control-label">Minimum value</label>
             <div class="controls">
-              <input class="string optional" name="simulator_specification[inputs_attributes][<%= index %>][minimum_value]" type="text" value="<%= b.object.minimum_value %>" />
+              <input class="string optional input-append" name="simulator_specification[inputs_attributes][<%= index %>][minimum_value]" type="text" value="<%= b.object.minimum_value %>" />
             </div>
           </div>
           <div class="control-group string optional<%= " hide" if b.object.fixed? %>">
             <label class="string optional control-label">Maximum value</label>
             <div class="controls">
-              <input class="string optional" name="simulator_specification[inputs_attributes][<%= index %>][maximum_value]" type="text" value="<%= b.object.maximum_value %>" />
+              <input class="string optional input-append" name="simulator_specification[inputs_attributes][<%= index %>][maximum_value]" type="text" value="<%= b.object.maximum_value %>" />
             </div>
           </div>
         </fieldset>
