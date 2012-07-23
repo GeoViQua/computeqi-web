@@ -71,27 +71,31 @@ $(function() {
       var pd = data.processDescription;
       $('input[name="' + $('.simulator-select').data('parent') + '[simulator_specification_attributes][process_description]"]').val(pd.detail);
 
-      var id = pd.inputDescriptions;
-      var od = pd.outputDescriptions;
+      var id = pd.inputs;
+      var od = pd.outputs;
       var itext = '';
       var otext = '';
       for (var n = 0; n < id.length; n++) {
-        appendHiddenInputs(i, 'inputs_attributes', [
+        var arr = [
           { name: 'name', value: id[n].identifier },
-          { name: 'description', value: id[n].detail },
           { name: 'minimum_value', value: '0' },
           { name: 'maximum_value', value: '1' }
-        ]);
+        ];
+        if (id[n].description) {
+          arr.push({ name: 'description', value: id[n].description.detail });
+        }
+        appendHiddenInputs(i, 'inputs_attributes', arr);
         // hidden for now
         itext += id[n].identifier + ', ';
       }
       //i.append('<span class="help-block">' + itext.substring(0, itext.length - 2) + '</span>');
 
       for (var n = 0; n < od.length; n++) {
-        appendHiddenInputs(o, 'outputs_attributes', [
-          { name: 'name', value: od[n].identifier },
-          { name: 'description', value: od[n].detail }
-        ]);
+        var arr = [{ name: 'name', value: od[n].identifier }];
+        if (od[n].description) {
+          arr.push({ name: 'description', value: od[n].description.detail });
+        }
+        appendHiddenInputs(o, 'outputs_attributes', arr);
         // hidden for now
         otext += od[n].identifier + ', ';
       }
