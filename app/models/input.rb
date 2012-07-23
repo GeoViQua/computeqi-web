@@ -20,6 +20,8 @@ class Input
   validates_numericality_of :fixed_value, if: :fixed?
   validates_numericality_of :minimum_value, if: :variable?
   validates_numericality_of :maximum_value, if: :variable?
+
+  before_save :nil_blanks
   
   def fixed_or_variable
     if fixed_value.nil? and (minimum_value.nil? or maximum_value.nil?)
@@ -58,6 +60,13 @@ class Input
     end
     hash[:description] = d
     hash
+  end
+
+  private
+
+  def nil_blanks
+    self.description = nil if self.description and self.description.empty?
+    self.uom = nil if self.uom and self.uom.empty?
   end
   
 end

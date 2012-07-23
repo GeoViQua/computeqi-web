@@ -13,6 +13,8 @@ class Output
   has_one :emulator
   has_one :validation_value
   has_one :analysis_value
+
+  before_save :nil_blanks
   
   def to_hash
     d = { dataType: 'Numeric', encodingType: 'double' }
@@ -30,4 +32,12 @@ class Output
   def to_s
     self.name
   end
+
+  private
+
+  def nil_blanks
+    self.description = nil if self.description and self.description.empty?
+    self.uom = nil if self.uom and self.uom.empty?
+  end
+  
 end
