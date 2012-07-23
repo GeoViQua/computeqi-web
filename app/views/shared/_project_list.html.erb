@@ -1,14 +1,6 @@
 <div class="row<%= " space-bottom" if projects.size > 0 %>">
   <div class="span12">
-    <div class="boxed clickable">
-      <h3>
-        <%= link_to send("new_#{type}_project_path") do %>
-          <i class="icon-plus-sign"></i>
-          <!-- <span class="pre-icon">&#43;</span> --> Create
-        <% end %>
-      </h3>
-      <p>Build a new <%= type %> project</p>
-    </div>
+    <%= link_to "Build a new #{type} project", send("new_#{type}_project_path") %>
   </div>
 </div>
 
@@ -17,8 +9,14 @@
     <div class="row<%= " space-bottom" if projects.size > index + 3 %>">
   <% end %>
   <div class="span4">
-    <div class="boxed clickable">
-      <%= render partial: "project", locals: { project: project } %>
+    <div class="box">
+      <div class="box-header">  
+        <h3><%= link_to project.name, project %></h3>
+      </div>
+      <div class="box-content">
+        <%= render partial: "project", locals: { project: project } %>
+        <%= link_to "remove", project, :confirm => "Are you sure you want to delete this project?", :method => :delete %>
+      </div>
     </div>
   </div>
   <% if (index + 1) % 3 == 0 or (index + 1) == projects.size %>

@@ -74,10 +74,10 @@ a:hover {
   }
 }
 
-.boxed {
+.box {
   padding: 0;
 
-  p {
+  .box-content {
     color: #7D7D7D;
     .border-radius(0 0 6px 6px);
     background: #E6E6E6;
@@ -85,23 +85,10 @@ a:hover {
     margin-bottom: 0;
   }
 
-  h3 {
+  .box-header {
     .border-radius(6px 6px 0 0);
     background: #93B7CD;
     padding: 6px 14px;
-  }
-
-  &.clickable {
-    &:hover {
-      // background-color: lighten(@gray, 60%);
-      cursor: pointer;
-    }
-    h3 a {
-      color: #333;
-      &:hover {
-        color: #333;
-      }
-    }
   }
 }
 

@@ -12,6 +12,7 @@
 //= require spin/spin
 //= require spin/jquery.spin
 //= require mustache/mustache
+//= require forms
 //= require emulatorization
 //= require_self
 
@@ -43,13 +44,13 @@ $(function() {
 
   $('.dropdown-toggle').dropdown();
 
-  $('.boxed.clickable').on('click', function() {
-    link = $(this).find('a').attr('href');
-    if (typeof(link) !== 'undefined') {
-      window.location = link;
-    }
-    return false;
-  });
+  // $('.boxed.clickable').on('click', function() {
+  //   link = $(this).find('a').attr('href');
+  //   if (typeof(link) !== 'undefined') {
+  //     window.location = link;
+  //   }
+  //   return false;
+  // });
 
   $('[rel="tooltip"]').tooltip();
   

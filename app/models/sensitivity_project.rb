@@ -71,7 +71,7 @@ class SensitivityProject
       if !self.simulator_specification.nil?
         self.name = self.simulator_specification.process_name
       elsif !self.emulator_project.nil?
-        self.name = self.emulator_project.simulator_specification.name
+        self.name = self.emulator_project.simulator_specification.process_name
       end
     end
   end
