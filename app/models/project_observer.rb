@@ -62,19 +62,21 @@ class ProjectObserver < Mongoid::Observer
   end
 
   def destroy_dependents(project, type)
-    if [ Design ].include? type
-      run = project.run
-      run.destroy if !run.nil?
-    end
+    if project.class == EmulatorProject
+      if [ Design ].include? type
+        run = project.run
+        run.destroy if !run.nil?
+      end
 
-    if [ Design, Run ].include? type
-      emulator = project.emulator
-      emulator.destroy if !emulator.nil?
-    end
+      if [ Design, Run ].include? type
+        emulator = project.emulator
+        emulator.destroy if !emulator.nil?
+      end
 
-    if [ Design, Run, Emulator ].include? type
-      validation = project.validation
-      validation.destroy if !validation.nil?
+      if [ Design, Run, Emulator ].include? type
+        validation = project.validation
+        validation.destroy if !validation.nil?
+      end
     end
   end
 

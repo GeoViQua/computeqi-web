@@ -11,6 +11,7 @@ class DesignValue
   def to_hash
     hash = { inputIdentifier: self.input.name,
       points: self.points }
-    hash.merge({ mean: self.mean, stdDev: self.std_dev }) if self.mean
+    hash = hash.merge({ mean: self.mean, stdDev: self.std_dev }) if self.mean
+    hash
   end
 end

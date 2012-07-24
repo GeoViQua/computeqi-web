@@ -171,7 +171,7 @@ class Emulator
     result = response['result']
     # skipping predictedMean, predictedVariance (arrays)
 
-    design = self.create_design(simulator_specification: spec, size: result['design']['size'])
+    self.design = self.create_design(simulator_specification: spec, size: result['design']['size'])
     result['design']['map'].each do |set|
       input = inputs.where(:name => set['inputIdentifier']).first
       value = design.design_values.build(input: input, points: set['points'])
@@ -182,7 +182,7 @@ class Emulator
       value.save
     end
     
-    run = self.create_run(simulator_specification: spec, design: design, size: design.size)
+    self.run = self.create_run(simulator_specification: spec, design: design, size: design.size)
     result['evaluationResult'].each do |set|
       output = outputs.where(:name => set['outputIdentifier']).first
       value = run.run_values.build(output: output, points: set['results'])

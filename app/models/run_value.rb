@@ -10,6 +10,7 @@ class RunValue
   
   def to_hash
     hash = { outputIdentifier: self.output.name, results: self.points }
-    hash.merge({ mean: self.mean, stdDev: self.std_dev }) if self.mean
+    hash = hash.merge({ mean: self.mean, stdDev: self.std_dev }) if self.mean
+    hash
   end
 end
