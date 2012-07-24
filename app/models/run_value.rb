@@ -5,8 +5,11 @@ class RunValue
   belongs_to :output
   
   field :points, type: Array
+  field :mean, type: Float
+  field :std_dev, type: Float
   
   def to_hash
-    { outputIdentifier: self.output.name, results: self.points }
+    hash = { outputIdentifier: self.output.name, results: self.points }
+    hash.merge({ mean: self.mean, stdDev: self.std_dev }) if self.mean
   end
 end

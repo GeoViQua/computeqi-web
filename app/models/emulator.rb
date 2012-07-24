@@ -15,10 +15,6 @@ class Emulator
   field :nugget_variance, type: Float, default: 0.0001
   field :nugget_variance_enabled, type: Boolean, default: false
   field :normalisation, type: Boolean, default: true
-  field :design_mean, type: Array
-  field :design_std_dev, type: Array
-  field :run_mean, type: Float
-  field :run_std_dev, type: Float
 
   # subset used to train
   has_one :design, as: :designable
@@ -58,13 +54,10 @@ class Emulator
     end
     
     # collect outputs
-    outputs = []
-    # spec.outputs.each do |output|
-      outputs << output.to_hash
-    # end
-    
-    # build hash
-    hash = { inputs: inputs,
+    outputs = [ output.to_hash ]
+
+    # return hash
+    { inputs: inputs,
       outputs: outputs,
       design: self.design.to_hash,
       evaluationResult: self.run.to_hash,
@@ -73,17 +66,6 @@ class Emulator
       lengthScale: self.length_scale,
       processVariance: self.process_variance,
       nuggetVariance: self.nugget_variance_enabled ? self.nugget_variance : nil }
-
-    # add normalisation parameters
-    if self.normalisation
-      hash[:designMean] = self.design_mean
-      hash[:designStdDev] = self.design_std_dev
-      hash[:evaluationResultMean] = self.run_mean
-      hash[:evaluationResultStdDev] = self.run_std_dev
-    end
-
-    # return
-    hash
   end
 
   def to_matlab
@@ -192,24 +174,27 @@ class Emulator
     design = self.create_design(simulator_specification: spec, size: result['design']['size'])
     result['design']['map'].each do |set|
       input = inputs.where(:name => set['inputIdentifier']).first
-      design.design_values.create(input: input, points: set['points'])
+      value = design.design_values.build(input: input, points: set['points'])
+      if set.has_key?('mean')
+        value.mean = set['mean']
+        value.std_dev = set['stdDev']
+      end
+      value.save
     end
     
     run = self.create_run(simulator_specification: spec, design: design, size: design.size)
     result['evaluationResult'].each do |set|
       output = outputs.where(:name => set['outputIdentifier']).first
-      run.run_values.create(output: output, points: set['results'])
+      value = run.run_values.build(output: output, points: set['results'])
+      if set.has_key?('mean')
+        value.mean = set['mean']
+        value.std_dev = set['stdDev']
+      end
+      value.save
     end
 
     self.length_scale = result['lengthScale']
     self.process_variance = result['processVariance']
-
-    if self.normalisation
-      self.design_mean = result['designMean']
-      self.design_std_dev = result['designStdDev']
-      self.run_mean = result['evaluationResultMean']
-      self.run_std_dev = result['evaluationResultStdDev']
-    end
   end
   
 end

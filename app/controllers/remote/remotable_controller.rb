@@ -39,6 +39,7 @@ module Remote
 
       if get_instance_object.save
         # start off task
+        get_instance_object.generate
         Delayed::Job.enqueue RemoteJob.new(get_instance_object)
 
         redirect_to send("#{project_singular}_#{instance_plural}_path", @project, nil)
