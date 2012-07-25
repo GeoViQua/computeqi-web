@@ -56,16 +56,23 @@ class Emulator
     # collect outputs
     outputs = [ output.to_hash ]
 
-    # return hash
-    { inputs: inputs,
+    # build hash
+    hash = { inputs: inputs,
       outputs: outputs,
       design: self.design.to_hash,
       evaluationResult: self.run.to_hash,
       meanFunction: self.mean_function,
       covarianceFunction: self.cov_function,
       lengthScale: self.length_scale,
-      processVariance: self.process_variance,
-      nuggetVariance: self.nugget_variance_enabled ? self.nugget_variance : nil }
+      processVariance: self.process_variance }
+
+    # add nugget
+    if self.nugget_variance_enabled
+      hash = hash.merge({ nuggetVariance: self.nugget_variance })
+    end
+
+    # return
+    hash
   end
 
   def to_matlab
