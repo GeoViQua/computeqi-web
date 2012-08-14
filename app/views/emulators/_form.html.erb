@@ -13,7 +13,7 @@
 
       <%= render partial: "shared/form_toggle", locals: { field: :mean_function, parent: f.object_name.to_sym, value: @emulator.mean_function, collection: ["zero", "constant", "linear", "quadratic"] } %>
 
-      <%= render partial: "shared/form_toggle", locals: { field: :cov_function, parent: f.object_name.to_sym, value: @emulator.cov_function, collection: ["squared_exponential", "matern"] } %>
+      <%= render partial: "shared/form_toggle", locals: { field: :cov_function, parent: f.object_name.to_sym, value: @emulator.cov_function, collection: ["matern", "squared_exponential"] } %>
       
       <%= f.input :length_scale %>
 

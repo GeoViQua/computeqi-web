@@ -8,8 +8,8 @@ class Emulator
   field :training_size, type: Integer
   field :training_indices, type: Array
   field :validation_indices, type: Array
-  field :mean_function, type: String, default: "constant"
-  field :cov_function, type: String, default: "squared_exponential"
+  field :mean_function, type: String, default: "linear"
+  field :cov_function, type: String, default: "matern"
   field :length_scale, type: Float
   field :nugget_variance, type: Float, default: 0.0001
   field :nugget_variance_enabled, type: Boolean, default: false
@@ -26,7 +26,7 @@ class Emulator
   validates_numericality_of :training_size
 
   validates_inclusion_of :mean_function, in: ["zero", "constant", "linear", "quadratic"]
-  validates_inclusion_of :cov_function, in: ["squared_exponential", "matern"]  
+  validates_inclusion_of :cov_function, in: ["matern", "squared_exponential"]  
 
   validates_presence_of :length_scale
   validates_numericality_of :length_scale
