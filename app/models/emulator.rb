@@ -11,7 +11,6 @@ class Emulator
   field :mean_function, type: String, default: "constant"
   field :cov_function, type: String, default: "squared_exponential"
   field :length_scale, type: Float
-  field :process_variance, type: Float
   field :nugget_variance, type: Float, default: 0.0001
   field :nugget_variance_enabled, type: Boolean, default: false
   field :normalisation, type: Boolean, default: true
@@ -31,9 +30,6 @@ class Emulator
 
   validates_presence_of :length_scale
   validates_numericality_of :length_scale
-
-  validates_presence_of :process_variance
-  validates_numericality_of :process_variance
 
   validates_presence_of :nugget_variance, if: Proc.new { self.nugget_variance_enabled }
   validates_numericality_of :nugget_variance, if: Proc.new { self.nugget_variance_enabled }
@@ -63,8 +59,7 @@ class Emulator
       evaluationResult: self.run.to_hash,
       meanFunction: self.mean_function,
       covarianceFunction: self.cov_function,
-      lengthScale: self.length_scale,
-      processVariance: self.process_variance }
+      lengthScale: self.length_scale }
 
     # add nugget
     if self.nugget_variance_enabled
@@ -147,7 +142,6 @@ class Emulator
       meanFunction: self.mean_function,
       covarianceFunction: self.cov_function,
       lengthScale: self.length_scale,
-      processVariance: self.process_variance,
       nuggetVariance: self.nugget_variance_enabled ? self.nugget_variance : nil,
       normalisation: self.normalisation
     }
@@ -201,7 +195,6 @@ class Emulator
     end
 
     self.length_scale = result['lengthScale']
-    self.process_variance = result['processVariance']
   end
   
 end

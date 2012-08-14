@@ -17,8 +17,6 @@
       
       <%= f.input :length_scale %>
 
-      <%= f.input :process_variance %>
-
       <div class="control-group<%= " error" if @emulator.errors.has_key?(:nugget_variance) %>">
         <label class="control-label"><%=t "simple_form.labels.emulator.nugget_variance" %></label>
         <div class="controls form-togglable">
