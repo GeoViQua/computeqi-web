@@ -44,9 +44,9 @@ class SensitivityProjectsController < ApplicationController
   def destroy
     @project = SensitivityProject.find(params[:id])
     if @project.destroy
-      flash[:success] = "Project removed."
+      flash[:success] = "Project deleted."
     else
-      flash[:error] = "Couldn't remove project."
+      flash[:error] = "Couldn't delete project."
     end
     redirect_to sensitivity_projects_path
   end
