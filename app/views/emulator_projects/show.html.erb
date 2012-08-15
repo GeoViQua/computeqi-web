@@ -7,13 +7,6 @@
     <div class="span4">
       <div class="boxed clickable">
         <h3>
-          <% if name != "simulator_specification" %>
-            <%= remotable_status_icon @project.send(name) %>
-          <% else %>
-            <% if @project.simulator_specification.complete? %>
-              <i class="icon-ok-sign" class="icon-ok-sign" rel="tooltip" title="Complete"></i>
-            <% end %>
-          <% end %>
           <% if @project.send("allow_#{name}?") %>
             <%= link_to send("emulator_project_#{name}s_path", @project) do %>
               <%= name.humanize %>
@@ -21,6 +14,15 @@
           <% else %>
             <%= name.humanize %>
           <% end %>
+          <span class="pull-right">
+            <% if name != "simulator_specification" %>
+              <%= remotable_status_icon @project.send(name) %>
+            <% else %>
+              <% if @project.simulator_specification.complete? %>
+                <i class="icon-ok-sign" class="icon-ok-sign" rel="tooltip" title="Complete"></i>
+              <% end %>
+            <% end %>
+          </span>
         </h3>
         <p>
           <%= t "#{name}s.description" %>
