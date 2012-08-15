@@ -2,7 +2,7 @@ class SensitivityProjectsController < ApplicationController
   layout :layout_by_action
 
   def index
-    @projects = SensitivityProject.all
+    @projects = current_user.sensitivity_projects
   end
   
   def show

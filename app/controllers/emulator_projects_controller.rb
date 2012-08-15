@@ -2,7 +2,7 @@ class EmulatorProjectsController < ApplicationController
   layout :layout_by_action
 
   def index
-    @projects = EmulatorProject.all
+    @projects = current_user.emulator_projects
   end
   
   def show
