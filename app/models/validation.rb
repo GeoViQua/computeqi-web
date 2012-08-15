@@ -37,8 +37,11 @@ class Validation
     full_design = project.design
     full_run = project.run
 
-    # select design and run
-    indices = self.emulator_project.emulator.validation_indices
+    # get indices to use for validation
+    # this should potentially be a random sample
+    indices = self.emulator_project.emulator.validation_indices[0...self.design_size]
+
+    # build design and runs
     self.design = self.create_design(simulator_specification: spec, size: self.design_size)
     full_design.design_values.each do |dv|
       self.design.design_values.create(input: dv.input, points: indices.collect {|i| dv.points[i] })
@@ -47,7 +50,7 @@ class Validation
     self.run = self.create_run(simulator_specification: spec, design: self.design, size: self.design_size)
     selected_run = full_run.run_values.where(output_id: emulator.output.id).first
     self.run.run_values.create(output: emulator.output, points: indices.collect {|i| selected_run.points[i] })
-    
+
     # request hash
     { type: 'ValidationRequest',
       emulator: emulator_hash,
