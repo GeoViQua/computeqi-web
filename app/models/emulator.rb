@@ -95,7 +95,7 @@ class Emulator
     end
 
     # add nugget
-    covf_params = [self.length_scale, Math.sqrt(self.process_variance)]
+    covf_params = [self.length_scale]
     if self.nugget_variance_enabled
       covf = "{'covSum',{#{covf},'covNoise'}}"
       covf_params << self.nugget_variance
@@ -145,20 +145,6 @@ class Emulator
       nuggetVariance: self.nugget_variance_enabled ? self.nugget_variance : nil,
       normalisation: self.normalisation
     }
-
-    #  # request hash
-    # { type: 'LearningRequest',
-    #   design: project.design.to_hash,
-    #   evaluationResult: project.run.to_hash,
-    #   selectedOutputIdentifier: self.output.name,
-    #   trainingSetSize: self.training_size,
-    #   meanFunction: self.mean_function,
-    #   covarianceFunction: self.cov_function,
-    #   lengthScale: self.length_scale,
-    #   processVariance: self.process_variance,
-    #   nuggetVariance: self.nugget_variance_enabled ? self.nugget_variance : nil,
-    #   normalisation: self.normalisation
-    # }
   end
   
   def handle(response)
