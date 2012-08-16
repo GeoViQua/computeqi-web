@@ -58,7 +58,11 @@ function createFastPlot(container, json) {
     xaxis: {
       ticks: parsed.ticks,
       rotateTicks: 45
-    }
+    },
+    yaxis: {
+      min: 0,
+      max: 1
+    },
   };
 
   // create
