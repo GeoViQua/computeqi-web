@@ -325,18 +325,14 @@ function createValidationOutputPlot(container, json) {
 
   // setup points
   var points = {
+    show: true,
+    radius: 4,
     errorbars: 'y',
-    yerr: { show: true, asymmetric: false, upperCap: '-', lowerCap: '-' }, 
+    yerr: { show: true, asymmetric: false, upperCap: '-', lowerCap: '-' }
   }
 
   // options
   var options = {
-    series: {
-      points: {
-        radius: 4,
-        show: true
-      }
-    },
     grid: {
       borderWidth: 0,
       hoverable: true
@@ -360,7 +356,10 @@ function createValidationOutputPlot(container, json) {
   
   // create plot
   var element = $('#' + container);
-  var plot = $.plot(element, [{ points: points, data: data }], options);
+  var plot = $.plot(element, [
+      { lines: { show: true }, data: [[ymin, ymin],[ymax, ymax]]},
+      { points: points, data: data }
+    ], options);
 
   // add hover listener
   element.bind('plothover', function(e, pos, item) {
@@ -368,9 +367,11 @@ function createValidationOutputPlot(container, json) {
       if (plot.previousPoint != item.dataIndex) {
         plot.previousPoint = item.dataIndex;
         $('#flot-tooltip').remove();
+        console.log(item);
         var x = item.datapoint[0].toFixed(DECIMAL_PLACES);
         var y = item.datapoint[1].toFixed(DECIMAL_PLACES);
-        showTooltip(item.pageX, item.pageY, '<pre>Simulator output = ' + x + '<br/> Emulator output = ' + y + '<br/>            2*SD = ' + item.datapoint[2].toFixed(DECIMAL_PLACES) + '</pre>');
+        var z = item.datapoint[2].toFixed(DECIMAL_PLACES)
+        showTooltip(item.pageX, item.pageY, '<pre>Simulator output = ' + x + '<br/> Emulator output = ' + y + '<br/>            2*SD = ' + z + '</pre>');
       }
     } else {
       plot.previousPoint = null;
