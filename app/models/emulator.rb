@@ -181,6 +181,7 @@ class Emulator
     end
 
     self.length_scale = result['lengthScale']
+    self.nugget_variance = result['nuggetVariance'] if self.nugget_variance_enabled
   end
   
 end
