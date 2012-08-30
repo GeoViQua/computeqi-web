@@ -9,7 +9,7 @@
     <div class="btn-toolbar pull-right">
       <%= render partial: "buttons", locals: { object: object, parent: parent } rescue nil %>
       <div class="btn-group">
-        <%= link_to "New", send("edit_#{parent ? parent.class.to_s.underscore + "_" : ""}#{object.class.to_s.underscore}_path", parent), class: "btn" %>
+        <%= link_to "New", send("new_#{parent ? parent.class.to_s.underscore + "_" : ""}#{object.class.to_s.underscore}_path", parent), class: "btn" %>
       </div>
       <% if defined?(export_options) and !export_options.nil? and !export_options.empty? %>
       <div class="btn-group export" data-resource-path="<%= send("#{parent ? parent.class.to_s.underscore + "_" : ""}#{object.class.to_s.underscore}_path", parent, object) %>" data-filter="output_id">
