@@ -1,4 +1,4 @@
-<%= render partial: "shared/toolbar", locals: { text: "Emulator for output '#{@emulator.output.name}' trained with #{@emulator.nugget_variance_enabled ? ' nugget variance ' + number_with_precision(@emulator.nugget_variance, precision: 5, strip_insignificant_zeros: false) + ' and ' : ''}normalisation #{(@emulator.normalisation ? "enabled" : "disabled")}.", parent: @project, object: @emulator, export_options: ["matlab", "json"] } %>
+<%= render partial: "shared/toolbar", locals: { text: "Emulator for output '#{@emulator.output.name}' trained with #{@emulator.nugget_variance_enabled ? ' nugget variance ' + number_with_precision(@emulator.nugget_variance, precision: 5, strip_insignificant_zeros: true) + ' and ' : ''}normalisation #{(@emulator.normalisation ? "enabled" : "disabled")}.", parent: @project, object: @emulator, export_options: ["matlab", "json"] } %>
 
 <div class="row">
   <div class="span12">
@@ -16,7 +16,7 @@
             <% @emulator.design.design_values.each_with_index do |value, i| %>
             <tr>
               <td><%= value.input.name %></td>
-              <td><%= @emulator.length_scales[i] %></td>
+              <td><%= number_with_precision(@emulator.length_scales[i], precision: 5, strip_insignificant_zeros: true) %></td>
             </tr>
             <% end %>
           </table>
