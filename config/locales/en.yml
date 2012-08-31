@@ -11,7 +11,7 @@ en:
     strap: "Set ranges on the simulator inputs."
     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce sit amet elementum mauris. Vivamus congue mattis tellus, sed sollicitudin lacus fermentum vitae. Donec blandit augue quis tortor ultrices malesuada."
   input_screenings:
-    strap: "Screenings."
+    strap: "Find important model inputs."
     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce sit amet elementum mauris. Vivamus congue mattis tellus, sed sollicitudin lacus fermentum vitae. Donec blandit augue quis tortor ultrices malesuada."
   designs:
     strap: "Create a sample set of points to train and validate your emulator."
