@@ -10,7 +10,8 @@ class Emulator
   field :validation_indices, type: Array
   field :mean_function, type: String, default: "linear"
   field :cov_function, type: String, default: "matern"
-  field :length_scale, type: Float
+  field :length_scale_multiplier, type: Float, default: 0.5
+  field :length_scales, type: Array
   field :nugget_variance, type: Float, default: 0.0001
   field :nugget_variance_enabled, type: Boolean, default: false
   field :normalisation, type: Boolean, default: true
@@ -28,8 +29,8 @@ class Emulator
   validates_inclusion_of :mean_function, in: ["zero", "constant", "linear", "quadratic"]
   validates_inclusion_of :cov_function, in: ["matern", "squared_exponential"]  
 
-  validates_presence_of :length_scale
-  validates_numericality_of :length_scale
+  validates_presence_of :length_scale_multiplier
+  validates_numericality_of :length_scale_multiplier
 
   validates_presence_of :nugget_variance, if: Proc.new { self.nugget_variance_enabled }
   validates_numericality_of :nugget_variance, if: Proc.new { self.nugget_variance_enabled }
@@ -59,7 +60,7 @@ class Emulator
       evaluationResult: self.run.to_hash,
       meanFunction: self.mean_function,
       covarianceFunction: self.cov_function,
-      lengthScale: self.length_scale }
+      lengthScaleMultiplier: self.length_scale_multiplier }
 
     # add nugget
     if self.nugget_variance_enabled
@@ -141,7 +142,7 @@ class Emulator
       selectedOutputIdentifier: self.output.name,
       meanFunction: self.mean_function,
       covarianceFunction: self.cov_function,
-      lengthScale: self.length_scale,
+      lengthScaleMultiplier: self.length_scale_multiplier,
       nuggetVariance: self.nugget_variance_enabled ? self.nugget_variance : nil,
       normalisation: self.normalisation
     }
@@ -180,7 +181,7 @@ class Emulator
       value.save
     end
 
-    self.length_scale = result['lengthScale']
+    self.length_scales = result['lengthScales']
     self.nugget_variance = result['nuggetVariance'] if self.nugget_variance_enabled
   end
   

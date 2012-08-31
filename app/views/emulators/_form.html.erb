@@ -14,7 +14,7 @@
 
       <%= render partial: "shared/form_toggle", locals: { field: :cov_function, parent: f.object_name.to_sym, value: @emulator.cov_function, collection: ["matern", "squared_exponential"] } %>
       
-      <%= f.input :length_scale %>
+      <%= f.input :length_scale_multiplier %>
 
       <div class="control-group<%= " error" if @emulator.errors.has_key?(:nugget_variance) %>">
         <label class="control-label"><%=t "simple_form.labels.emulator.nugget_variance" %></label>

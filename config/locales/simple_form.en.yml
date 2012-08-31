@@ -24,7 +24,7 @@ en:
         training_size: "Training size"
         mean_function: "Mean function"
         cov_function: "Covariance function"
-        length_scale: "Length scale"
+        length_scale_multiplier: "Length scale multiplier"
         process_variance: "Process variance"
         nugget_variance: "Nugget variance"
       analysis:
