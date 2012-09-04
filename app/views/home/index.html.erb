@@ -3,7 +3,7 @@
 <% end %>
 
 <div class="hero-unit">
-  <h1>Welcome!</h1>
+  <h1>Welcome<%= user_signed_in? ? " back" : nil %></h1>
   <p>Emulating the web, one model at a time.</p>
   <p>
     <% unless user_signed_in? %>
@@ -13,18 +13,13 @@
 </div>
 
 <div class="row">
-  <div class="span4">
-    <h2>Emulator</h2>
+  <div class="span6">
+    <h2>Emulation</h2>
     <p><%= t ".emulator_intro" %></p>
   </div>
 
-  <div class="span4">
-    <h2>Sensitivity Analysis</h2>
+  <div class="span6">
+    <h2>Sensitivity analysis</h2>
     <p><%= t ".sensitivity_analysis_intro" %></p>
-  </div>
-
-  <div class="span4">
-    <h2>Validation</h2>
-    <p><%= t ".validation_intro" %></p>
   </div>
 </div>
