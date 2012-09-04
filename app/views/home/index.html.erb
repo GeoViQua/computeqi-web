@@ -3,8 +3,8 @@
 <% end %>
 
 <div class="hero-unit">
-  <h1>Welcome<%= user_signed_in? ? " back" : nil %></h1>
-  <p>Emulating the web, one model at a time.</p>
+  <h1>Welcome<%= user_signed_in? ? " back!" : nil %></h1>
+  <p>Emulating the Web, one model at a time.</p>
   <p>
     <% unless user_signed_in? %>
       <%= link_to "Get started »", new_user_session_path, class: "btn btn-primary btn-large" %>

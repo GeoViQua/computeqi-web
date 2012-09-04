@@ -4,26 +4,26 @@
 en:
   home:
     index:
-      emulator_intro: "An emulator is a statistical representation (or surrogate) of a simulator (a computer code based implementation of a model of a given system). Emulators can be used as computationally efficient proxies for the simulator in a range of settings, such as Monte Carlo based uncertainty analysis and sensitivity analysis."
+      emulator_intro: "An emulator is a statistical representation of a simulator (a computer code based implementation of a model of a given system). Emulators can be used as computationally efficient proxies for the simulator in a range of settings, such as Monte Carlo based uncertainty analysis and sensitivity analysis."
       sensitivity_analysis_intro: "Sensitivity analysis is the study of how different sources of uncertainty in a model input contribute to the overall uncertainty in the output of a model. Sensitivity analysis can help to gain better understanding of a model, enabling a user to decide which inputs to focus acquiring accurate data for."
   simulator_specifications:
-    strap: "Set ranges on the simulator inputs."
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce sit amet elementum mauris. Vivamus congue mattis tellus, sed sollicitudin lacus fermentum vitae. Donec blandit augue quis tortor ultrices malesuada."
+    strap: "Set ranges or fixed values on the simulator inputs."
+    description: "Edit the specification to set ranges or fixed values on the simulator inputs. A complete specification allows an emulator to be trained, or sensitivity analysis performed, over the whole space."
   input_screenings:
-    strap: "Find important model inputs."
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce sit amet elementum mauris. Vivamus congue mattis tellus, sed sollicitudin lacus fermentum vitae. Donec blandit augue quis tortor ultrices malesuada."
+    strap: "Identify important model inputs."
+    description: "Perform screening to identify important inputs; those which have significant effect on the model output."
   designs:
-    strap: "Create a sample set of points to train and validate your emulator."
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce sit amet elementum mauris. Vivamus congue mattis tellus, sed sollicitudin lacus fermentum vitae. Donec blandit augue quis tortor ultrices malesuada."
+    strap: "Create a sample of input points."
+    description: "Create a sample of input points to train and validate your emulator. The sample of points is based on the ranges in your simulator specification."
   runs:
     strap: "Evaluate the simulator using your design."
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce sit amet elementum mauris. Vivamus congue mattis tellus, sed sollicitudin lacus fermentum vitae. Donec blandit augue quis tortor ultrices malesuada."
+    description: "Evaluate the simulator using your design. The output from the run is essential so the emulator knows what to fit to, and validate against."
   emulators:
-    strap: "Train your emulator."
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce sit amet elementum mauris. Vivamus congue mattis tellus, sed sollicitudin lacus fermentum vitae. Donec blandit augue quis tortor ultrices malesuada."
+    strap: "Train an emulator."
+    description: "Train an emulator using your design and simulator run. Adjust design size, mean and covariance function parameters to gain a better fit."
   validations:
-    strap: "Validate your emulator."
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce sit amet elementum mauris. Vivamus congue mattis tellus, sed sollicitudin lacus fermentum vitae. Donec blandit augue quis tortor ultrices malesuada."
+    strap: "Assess the accuracy of your emulator."
+    description: "Perform validation to assess the accuracy of your emulator. The remainder of the design set from training is compared with the related simulator run output."
   analyses:
-    strap: "Run sensitivity analysis on your simulator or emulator."
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce sit amet elementum mauris. Vivamus congue mattis tellus, sed sollicitudin lacus fermentum vitae. Donec blandit augue quis tortor ultrices malesuada."
+    strap: "Quantify the contributions of different uncertainty sources."
+    description: "Perform sensitivity analysis to quantify the contributions of different uncertainty sources to the overall output uncertainty of your simulator or emulator."
