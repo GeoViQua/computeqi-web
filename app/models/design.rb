@@ -14,7 +14,7 @@ class Design
   validates_inclusion_of :sampling_method, in: ["lhs"]
 
   def calculate_defaults
-    self.size = self.designable.simulator_specification.inputs.size * 30
+    self.size = self.designable.simulator_specification.inputs.size * 15
   end
   
   def to_hash
