@@ -36,7 +36,7 @@ class Emulator
   validates_numericality_of :nugget_variance, if: Proc.new { self.nugget_variance_enabled }
 
   def calculate_defaults
-    self.training_size = (self.emulator_project.design.size * 0.33).floor
+    self.training_size = (self.emulator_project.design.size * 0.66).floor
   end
   
   def to_hash
