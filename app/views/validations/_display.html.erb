@@ -20,7 +20,7 @@ $(function() {
 </script>
 
 
-<%= render partial: "shared/toolbar", locals: { text: "Took #{distance_of_time_in_words Time.parse(@validation.proc_start_time.to_s), Time.parse(@validation.proc_end_time.to_s), true} to perform validation.", parent: @project, object: @validation, export_options: ["json"] } %>
+<%= render partial: "shared/toolbar", locals: { text: "Took #{distance_of_time_in_words Time.parse(@validation.proc_start_time.to_s), Time.parse(@validation.proc_end_time.to_s), true} to perform validation. RMSE is #{number_with_precision(@validation.validation_values.first.rmse, precision: 3)}.", parent: @project, object: @validation, export_options: ["json"] } %>
 
 <div class="row">
   <div class="span12">
