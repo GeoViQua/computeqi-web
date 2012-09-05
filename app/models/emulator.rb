@@ -60,7 +60,7 @@ class Emulator
       evaluationResult: self.run.to_hash,
       meanFunction: self.mean_function,
       covarianceFunction: self.cov_function,
-      lengthScaleMultiplier: self.length_scale_multiplier }
+      lengthScales: self.length_scales }
 
     # add nugget
     if self.nugget_variance_enabled
