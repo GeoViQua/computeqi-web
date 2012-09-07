@@ -215,7 +215,7 @@ function createSensitivityPlot(container, json, type) {
     },
     yaxis: {
       min: -0.1,
-      max: 1
+      max: 1.1
     },
     series: { points: { show: true }}
   };
@@ -261,7 +261,7 @@ function createCombinedSensitivityPlot(container, json) {
     },
     yaxis: {
       min: -0.1,
-      max: 1
+      max: 1.1
     },
     series: { points: { show: true }}
   };
@@ -437,11 +437,11 @@ function createScreeningPlot(container, json) {
     title: { text: null },
     credits: { enabled: false },
     xAxis: { 
-      min: -0.1,
+      min: 0,
       title: { text: 'meanStarEE' }
     },
     yAxis: {
-      min: -0.1,
+      min: 0,
       title: { text: 'stdEE' }
     },
     plotOptions: {
