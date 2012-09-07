@@ -18,7 +18,7 @@ $(function() {
 });
 </script>
 
-<%= render partial: "shared/toolbar", locals: { text: "Took #{distance_of_time_in_words Time.parse(@input_screening.proc_start_time.to_s), Time.parse(@input_screening.proc_end_time.to_s), true} to perform input screening with #{@input_screening.num_trajectories} trajectories, a discretisation level of #{@input_screening.discretisation_level} and delta P at #{@input_screening.delta_p}.", parent: @project, object: @input_screening, export_options: ["matlab", "r", "json"], export_filter: @input_screening.screening_values.collect {|value| value.output }.uniq } %>
+<%= render partial: "shared/toolbar", locals: { text: "Took #{distance_of_time_in_words Time.parse(@input_screening.proc_start_time.to_s), Time.parse(@input_screening.proc_end_time.to_s), true} to perform input screening with #{@input_screening.num_trajectories} trajectories and a discretisation level of #{@input_screening.discretisation_level}.", parent: @project, object: @input_screening, export_options: ["matlab", "r", "json"], export_filter: @input_screening.screening_values.collect {|value| value.output }.uniq } %>
 
 <div class="row">
   <div class="span12">

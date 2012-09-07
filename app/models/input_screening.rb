@@ -7,7 +7,8 @@ class InputScreening
   
   field :num_trajectories, type: Integer, default: 5
   field :discretisation_level, type: Integer, default: 10
-  field :delta_p, type: Integer, default: 1
+
+  validates_numericality_of :discretisation_level, even: true
   
   def to_hash
     self.screening_values.collect {|value| value.to_hash }
@@ -25,8 +26,7 @@ class InputScreening
       inputs: spec.inputs.collect {|input| input.to_hash },
       outputs: spec.outputs.collect {|output| output.to_hash },
       numTrajectories: self.num_trajectories,
-      discretisationLevel: self.discretisation_level,
-      deltaP: self.delta_p }
+      discretisationLevel: self.discretisation_level }
   end
   
   def handle(response)
