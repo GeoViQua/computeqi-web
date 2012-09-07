@@ -214,8 +214,8 @@ function createSensitivityPlot(container, json, type) {
       rotateTicks: 45
     },
     yaxis: {
-      min: -2,
-      max: 2
+      min: -0.2,
+      max: 1
     },
     series: { points: { show: true }}
   };
