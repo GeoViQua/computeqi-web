@@ -76,10 +76,16 @@ $(function() {
       var itext = '';
       var otext = '';
       for (var n = 0; n < id.length; n++) {
+        var min = 0;
+        var max = 1;
+        if (id[n].range) {
+          min = id[n].range.min;
+          max = id[n].range.max;
+        }
         var arr = [
           { name: 'name', value: id[n].identifier },
-          { name: 'minimum_value', value: '0' },
-          { name: 'maximum_value', value: '1' }
+          { name: 'minimum_value', value: min },
+          { name: 'maximum_value', value: max }
         ];
         if (id[n].description) {
           arr.push({ name: 'description', value: id[n].description.detail });
