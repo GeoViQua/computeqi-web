@@ -19,7 +19,7 @@ class ProjectObserver < Mongoid::Observer
     if type == Input
       # if values changed
       if object.fixed_value_changed? || object.minimum_value_changed? || object.maximum_value_changed?
-        input_screening = project.input_screening
+        input_screening = project.input_screening rescue nil
         if !input_screening.nil?
           if object.fixed?
             # if it's going to fixed, we can keep the rest of the screening
@@ -28,15 +28,15 @@ class ProjectObserver < Mongoid::Observer
             input_screening.destroy
           end
         end
-        design = project.design
+        design = project.design rescue nil
         design.destroy if !design.nil?
         analysis = project.analysis rescue nil
         analysis.destroy if !analysis.nil?
-        run = project.run
+        run = project.run rescue nil
         run.destroy if !run.nil?
-        emulator = project.emulator
+        emulator = project.emulator rescue nil
         emulator.destroy if !emulator.nil?
-        validation = project.validation
+        validation = project.validation rescue nil
         validation.destroy if !validation.nil?
       end
     else

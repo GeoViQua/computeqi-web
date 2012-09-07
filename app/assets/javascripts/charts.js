@@ -436,8 +436,14 @@ function createScreeningPlot(container, json) {
     },
     title: { text: null },
     credits: { enabled: false },
-    xAxis: { title: { text: 'meanStarEE' } },
-    yAxis: { title: { text: 'stdEE' } },
+    xAxis: { 
+      min: 0,
+      title: { text: 'meanStarEE' }
+    },
+    yAxis: {
+      min: 0,
+      title: { text: 'stdEE' }
+    },
     plotOptions: {
       series: {
         events: {
