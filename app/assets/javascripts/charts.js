@@ -214,7 +214,7 @@ function createSensitivityPlot(container, json, type) {
       rotateTicks: 45
     },
     yaxis: {
-      min: -0.2,
+      min: -0.1,
       max: 1
     },
     series: { points: { show: true }}
@@ -260,8 +260,8 @@ function createCombinedSensitivityPlot(container, json) {
       rotateTicks: 45
     },
     yaxis: {
-      min: -2,
-      max: 2
+      min: -0.1,
+      max: 1
     },
     series: { points: { show: true }}
   };
@@ -437,11 +437,11 @@ function createScreeningPlot(container, json) {
     title: { text: null },
     credits: { enabled: false },
     xAxis: { 
-      min: 0,
+      min: -0.1,
       title: { text: 'meanStarEE' }
     },
     yAxis: {
-      min: 0,
+      min: -0.1,
       title: { text: 'stdEE' }
     },
     plotOptions: {
