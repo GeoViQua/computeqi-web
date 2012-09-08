@@ -353,12 +353,11 @@ function createValidationOutputPlot(container, json) {
       axisLabel: 'Emulator output',
     }]
   };
-
-  //{ lines: { show: true }, data: [[xmin, ymin],[xmax, ymax]]},
   
   // create plot
   var element = $('#' + container);
   var plot = $.plot(element, [
+      { lines: { show: true }, data: [[xmin, ymin],[xmax, ymax]]},
       { points: points, data: data }
     ], options);
 
