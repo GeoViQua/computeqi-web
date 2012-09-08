@@ -357,7 +357,7 @@ function createValidationOutputPlot(container, json) {
   // create plot
   var element = $('#' + container);
   var plot = $.plot(element, [
-      { lines: { show: true }, data: [[xmin, ymin],[xmax, ymax]]},
+      { lines: { show: true }, data: [[xmin, xmin],[xmax, xmax]]},
       { points: points, data: data }
     ], options);
 
