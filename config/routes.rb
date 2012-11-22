@@ -13,7 +13,7 @@ Emulatorization::Application.routes.draw do
     resources :designs
     resources :runs
     resources :emulators
-    resources :validations
+    resources :emulator_validations
   end
 
   resources :sensitivity_projects do

@@ -1,7 +1,7 @@
-class ValidationValue
+class EmulatorValidationValue
   include Mongoid::Document
   
-  belongs_to :validation
+  belongs_to :emulator_validation
   belongs_to :output
   
   field :z_scores, type: Array

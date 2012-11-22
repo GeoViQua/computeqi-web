@@ -13,7 +13,7 @@ class EmulatorProject
   has_one :design, as: :designable, dependent: :destroy
   has_one :run, as: :runnable, dependent: :destroy
   has_one :emulator, dependent: :destroy
-  has_one :validation, dependent: :destroy
+  has_one :emulator_validation, dependent: :destroy
   
   # fields
   field :name, type: String
@@ -25,7 +25,7 @@ class EmulatorProject
   before_save :copy_name
 
   def complete?
-    !self.validation.nil? and self.validation.success?
+    !self.emulator_validation.nil? and self.emulator_validation.success?
   end
 
   def busy?
@@ -34,7 +34,7 @@ class EmulatorProject
     (!self.design.nil? and (self.design.in_progress? or self.design.in_progress?)) or
     (!self.run.nil? and (self.run.in_progress? or self.run.queued?)) or
     (!self.emulator.nil? and (self.emulator.in_progress? or self.emulator.queued?)) or
-    (!self.validation.nil? and (self.validation.in_progress? or self.validation.queued?)) 
+    (!self.emulator_validation.nil? and (self.emulator_validation.in_progress? or self.emulator_validation.queued?)) 
   end
 
   def error?
@@ -43,7 +43,7 @@ class EmulatorProject
     (!self.design.nil? and self.design.error?) or
     (!self.run.nil? and self.run.error?) or
     (!self.emulator.nil? and self.emulator.error?) or
-    (!self.validation.nil? and self.validation.error?) 
+    (!self.emulator_validation.nil? and self.emulator_validation.error?) 
   end
 
   def allow_simulator_specification?
@@ -66,7 +66,7 @@ class EmulatorProject
     has_design? and has_run?
   end
 
-  def allow_validation?
+  def allow_emulator_validation?
     has_emulator?
   end
 
@@ -86,8 +86,8 @@ class EmulatorProject
     !self.emulator.nil? and self.emulator.success?
   end
 
-  def has_validation?
-    !self.validation.nil? and self.validation.success?
+  def has_emulator_validation?
+    !self.emulator_validation.nil? and self.emulator_validation.success?
   end
 
   def needs_for_simulator_specification
@@ -114,7 +114,7 @@ class EmulatorProject
     needs.reject {|need| send("has_#{need}?") }  
   end  
 
-  def needs_for_validation
+  def needs_for_emulator_validation
     needs = [ "simulator_specification", "design", "run", "emulator" ]
     needs.reject {|need| send("has_#{need}?") }
   end

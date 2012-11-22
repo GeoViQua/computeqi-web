@@ -1,9 +1,9 @@
-class Validation
+class EmulatorValidation
   include Mongoid::Document
   include Remote::Remotable
   
   belongs_to :emulator_project
-  has_many :validation_values
+  has_many :emulator_validation_values
   
   field :design_size, type: Integer
 
@@ -68,7 +68,7 @@ class Validation
     self.emulator_time = result['emulatorTime']
     result['outputResults'].each do |set|
       output = outputs.where(:name => set['outputIdentifier']).first
-      self.validation_values.create(output: output, z_scores: set['zScores'], simulator: set['simulator'],
+      self.emulator_validation_values.create(output: output, z_scores: set['zScores'], simulator: set['simulator'],
         emulator_mean: set['emulatorMean'], emulator_variance: set['emulatorVariance'], rmse: set['rmse'])
     end
   end

@@ -21,7 +21,7 @@ en:
   emulators:
     strap: "Train an emulator."
     description: "Train an emulator using your design and simulator run. Adjust design size, mean and covariance function parameters to gain a better fit."
-  validations:
+  emulator_validations:
     strap: "Assess the accuracy of your emulator."
     description: "Perform validation to assess the accuracy of your emulator. The remainder of the design set from training is compared with the related simulator run output."
   analyses:
