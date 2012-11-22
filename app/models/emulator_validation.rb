@@ -21,7 +21,7 @@ class EmulatorValidation
   
   def to_hash
     { emulatorTime: self.emulator_time,
-      outputResults: self.validation_values.collect {|value| value.to_hash } }
+      outputResults: self.emulator_validation_values.collect {|value| value.to_hash } }
   end
   
   def generate
