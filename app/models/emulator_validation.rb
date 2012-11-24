@@ -7,8 +7,6 @@ class EmulatorValidation
   
   field :design_size, type: Integer
 
-  field :emulator_time, type: Integer
-
   has_one :design, as: :designable
   has_one :run, as: :runnable
 
@@ -20,8 +18,7 @@ class EmulatorValidation
   end
   
   def to_hash
-    { emulatorTime: self.emulator_time,
-      outputResults: self.emulator_validation_values.collect {|value| value.to_hash } }
+    { outputResults: self.emulator_validation_values.collect {|value| value.to_hash } }
   end
   
   def generate
@@ -65,7 +62,6 @@ class EmulatorValidation
     
     # parse result
     result = response['result']
-    self.emulator_time = result['emulatorTime']
     result['outputResults'].each do |set|
       output = outputs.where(:name => set['outputIdentifier']).first
       self.emulator_validation_values.create(output: output, z_scores: set['zScores'], simulator: set['simulator'],

@@ -6,6 +6,7 @@ en:
     index:
       emulator_intro: "An emulator is a statistical representation of a simulator (a computer code based implementation of a model of a given system). Emulators can be used as computationally efficient proxies for the simulator in a range of settings, such as Monte Carlo based uncertainty analysis and sensitivity analysis."
       sensitivity_analysis_intro: "Sensitivity analysis is the study of how different sources of uncertainty in a model input contribute to the overall uncertainty in the output of a model. Sensitivity analysis can help to gain better understanding of a model, enabling a user to decide which inputs to focus acquiring accurate data for."
+      validation_intro: ""
   simulator_specifications:
     strap: "Set ranges or fixed values on the simulator inputs."
     description: "Edit the specification to set ranges or fixed values on the simulator inputs. A complete specification allows an emulator to be trained, or sensitivity analysis performed, over the whole space."
