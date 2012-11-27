@@ -71,8 +71,8 @@ SimpleForm.setup do |config|
 
   config.wrappers :none, :tag => false do |b|
     b.use :placeholder
-    b.use :input, :tag => false do |i|
-      i.use :input
+    b.wrapper :tag => false do |input|
+      input.use :input
     end
   end
 
