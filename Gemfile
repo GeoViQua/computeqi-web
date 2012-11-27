@@ -25,9 +25,15 @@ gem 'devise', '2.0.0'
 gem 'carrierwave-mongoid', :require => 'carrierwave/mongoid'
 gem 'rmagick'
 
+# Test
+group :development, :test do
+  gem 'rspec-rails', '2.12.0'
+end
+
 # Asset related
 gem 'therubyracer'
 gem 'jquery-rails'
+
 group :assets do
   # JavaScript compressor
   gem 'uglifier'
