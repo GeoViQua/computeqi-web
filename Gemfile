@@ -28,6 +28,13 @@ gem 'rmagick'
 # Test
 group :development, :test do
   gem 'rspec-rails', '2.12.0'
+  gem 'spork', '0.9.2'
+end
+
+group :test do
+  gem 'fabricator'
+  gem 'database_cleaner'
+  gem 'mongoid-rspec'
 end
 
 # Asset related

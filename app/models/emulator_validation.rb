@@ -10,6 +10,11 @@ class EmulatorValidation
   has_one :design, as: :designable
   has_one :run, as: :runnable
 
+  field :rmse, type: Float
+  field :standard_scores, type: Array
+
+  field :predicted, type: Object
+
   # validation needs to check that design_size is not greater than emulator.validation_indicies.size
   # 
 
