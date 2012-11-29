@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>emulatorization</title>
+    <style>
+      .message-outer {
+        margin: 200px auto;
+        width: 450px;
+        background-color: white;
+        border-radius: 15px;
+        padding: 20px;
+        box-shadow: 0 1px 5px rgba(0, 0, 0, 0.5);
+      }
+
+      body {
+        background-color: #B0D1E4;
+        font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+      }
+
+      p {
+        text-align: center;
+      }
+
+      p:first-child {
+        margin-top: 0;
+      }
+
+      p:last-child {
+        margin-bottom: 0;
+      }
+    </style>
+  </head>
+
+  <body>
+
+  <div class="message-outer">
+    <div class="message-inner">
+      <p>
+        emulatorization is down for <%= reason ? reason : "maintenance" %><br/>
+        as of <%= Time.now.strftime("%H:%M %Z") %>.
+      </p>
+      <p>
+        It'll be back <%= deadline ? deadline : "shortly" %>.
+      </p>
+    </div>
+  </div>
+
+  </body>
+</html>
