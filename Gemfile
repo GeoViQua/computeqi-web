@@ -32,9 +32,9 @@ group :development, :test do
 end
 
 group :test do
-  gem 'fabricator'
-  gem 'database_cleaner'
+  gem 'factory_girl_rails'
   gem 'mongoid-rspec'
+  gem 'database_cleaner'
 end
 
 # Asset related
