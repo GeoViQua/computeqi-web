@@ -13,7 +13,7 @@ class EmulatorValidation
   field :rmse, type: Float
   field :standard_scores, type: Array
 
-  field :predicted, type: Object
+  field :predicted, type: Array
 
   # validation needs to check that design_size is not greater than emulator.validation_indicies.size
   # 
@@ -66,12 +66,9 @@ class EmulatorValidation
     outputs = project.simulator_specification.outputs
     
     # parse result
-    result = response['result']
-    result['outputResults'].each do |set|
-      output = outputs.where(:name => set['outputIdentifier']).first
-      self.emulator_validation_values.create(output: output, z_scores: set['zScores'], simulator: set['simulator'],
-        emulator_mean: set['emulatorMean'], emulator_variance: set['emulatorVariance'], rmse: set['rmse'])
-    end
+    self.rmse = response['rmse']
+    self.standard_scores = response['standardScores']
+    self.predicted = JSON.parse(response['predicted'].to_json, {:symbolize_names => true})
   end
   
 end

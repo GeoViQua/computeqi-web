@@ -1,5 +1,5 @@
-require 'spec_helper'
-require 'emulatorization'
+require "spec_helper"
+require "emulatorization"
 
 describe EmulatorValidation do
 
@@ -31,9 +31,13 @@ describe EmulatorValidation do
     it { should have_key(:evaluationResult) }
   end
 
-  describe "remote request handling" do
+  describe "after remote request" do
     before do
-      @emulator_validation.handle(Emulatorization::API.send(@emulator_validation.generate))
+      response = Emulatorization::API.send(@emulator_validation.generate)
+      if response["type"] == "Exception"
+        raise response["message"]
+      end
+      @emulator_validation.handle(response)
     end
 
     it "should have rmse" do
@@ -44,8 +48,21 @@ describe EmulatorValidation do
       @emulator_validation.standard_scores.should_not be_nil
     end
 
-    it "should have the correct number of standard scores" do
+    it "should have correct number of standard scores" do
       @emulator_validation.standard_scores.size.should == @emulator_validation.design_size
+    end
+
+    it "should have predicted" do
+      @emulator_validation.predicted.should_not be_nil
+    end
+
+    it "should have correct number of predicted" do
+      @emulator_validation.predicted.size.should == @emulator_validation.design_size
+    end
+
+    it "should have mean and variance values in predicted" do
+      @emulator_validation.predicted[0].should have_key(:mean)
+      @emulator_validation.predicted[0].should have_key(:variance)
     end
   end
 
