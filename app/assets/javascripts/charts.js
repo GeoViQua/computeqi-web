@@ -299,10 +299,12 @@ function createValidationOutputPlot(container, json) {
   var ymin;
   var ymax;
   var data = [];
-  for (var i in json.emulatorMean) {
-    var mean = json.emulatorMean[i];
-    var variance = json.emulatorVariance[i];
-    var sim = json.simulator[i];
+  var observed = json.observed;
+  var predicted = json.predicted;
+  for (var i = 0; i < predicted.length; i++) {
+    var mean = predicted[i].mean;
+    var variance = predicted[i].variance;
+    var sim = json.observed[i];
     var tsds = 2 * Math.sqrt(variance);
     data.push([sim,mean,tsds]);
     if (!xmin || sim < xmin) {
@@ -331,7 +333,6 @@ function createValidationOutputPlot(container, json) {
     yerr: { show: true, asymmetric: false, upperCap: '-', lowerCap: '-' }
   }
 
-  // options
   var options = {
     grid: {
       borderWidth: 0,
@@ -357,17 +358,16 @@ function createValidationOutputPlot(container, json) {
   // create plot
   var element = $('#' + container);
   var plot = $.plot(element, [
-      { lines: { show: true }, data: [[xmin, xmin],[xmax, xmax]]},
+      { points: { show: false }, lines: { show: true }, data: [[xmin, xmin],[xmax, xmax]]},
       { points: points, data: data }
     ], options);
 
   // add hover listener
   element.bind('plothover', function(e, pos, item) {
     if (item) {
-      if (plot.previousPoint != item.dataIndex) {
+      if (plot.previousPoint != item.dataIndex && item.seriesIndex == 1) {
         plot.previousPoint = item.dataIndex;
         $('#flot-tooltip').remove();
-        console.log(item);
         var x = item.datapoint[0].toFixed(DECIMAL_PLACES);
         var y = item.datapoint[1].toFixed(DECIMAL_PLACES);
         var z = item.datapoint[2].toFixed(DECIMAL_PLACES)
@@ -388,8 +388,8 @@ function createValidationOutputPlot(container, json) {
 function createValidationPlot(container, json) {
   // get data
   var scoreData = [];
-  for (var i in json.zScores) {
-    var score = json.zScores[i];
+  for (var i in json.standardScores) {
+    var score = json.standardScores[i];
     scoreData.push([i,score]);
   }
   data = [ { name: 'Standard score', data: scoreData } ];

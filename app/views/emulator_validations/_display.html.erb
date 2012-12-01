@@ -5,7 +5,7 @@ var outputPlot;
 
 $(function() {
   // load in values, should be ajax really
-  values = <%= @emulator_validation.emulator_validation_values.first.to_hash.to_json.html_safe %>;
+  values = <%= @emulator_validation.to_hash.to_json.html_safe %>;
 
   // create score plot
   scorePlot = createValidationPlot('score-plot-container', values);
@@ -20,7 +20,7 @@ $(function() {
 </script>
 
 
-<%= render partial: "shared/toolbar", locals: { text: "Took #{distance_of_time_in_words Time.parse(@emulator_validation.proc_start_time.to_s), Time.parse(@emulator_validation.proc_end_time.to_s), true} to perform validation. RMSE is #{number_with_precision(@emulator_validation.emulator_validation_values.first.rmse, precision: 3)}.", parent: @project, object: @emulator_validation, export_options: ["json"] } %>
+<%= render partial: "shared/toolbar", locals: { text: "Took #{distance_of_time_in_words Time.parse(@emulator_validation.proc_start_time.to_s), Time.parse(@emulator_validation.proc_end_time.to_s), true} to perform validation. RMSE is #{number_with_precision(@emulator_validation.rmse, precision: 3)}.", parent: @project, object: @emulator_validation, export_options: ["json"] } %>
 
 <div class="row">
   <div class="span12">

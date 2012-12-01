@@ -23,7 +23,10 @@ class EmulatorValidation
   end
   
   def to_hash
-    { outputResults: self.emulator_validation_values.collect {|value| value.to_hash } }
+    { rmse: self.rmse,
+      standardScores: self.standard_scores,
+      observed: self.run.run_values.first.points,
+      predicted: self.predicted }
   end
   
   def generate
@@ -68,7 +71,7 @@ class EmulatorValidation
     # parse result
     self.rmse = response['rmse']
     self.standard_scores = response['standardScores']
-    self.predicted = JSON.parse(response['predicted'].to_json, {:symbolize_names => true})
+    self.predicted = response['predicted']
   end
   
 end

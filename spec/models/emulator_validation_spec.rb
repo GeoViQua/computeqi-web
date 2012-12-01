@@ -61,8 +61,8 @@ describe EmulatorValidation do
     end
 
     it "should have mean and variance values in predicted" do
-      @emulator_validation.predicted[0].should have_key(:mean)
-      @emulator_validation.predicted[0].should have_key(:variance)
+      @emulator_validation.predicted[0].should have_key("mean")
+      @emulator_validation.predicted[0].should have_key("variance")
     end
   end
 
