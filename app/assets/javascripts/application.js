@@ -7,6 +7,7 @@
 //= require jquery_ujs
 //= require twitter/bootstrap/button
 //= require twitter/bootstrap/dropdown
+//= require twitter/bootstrap/modal
 //= require twitter/bootstrap/tab
 //= require twitter/bootstrap/tooltip
 //= require spin/spin

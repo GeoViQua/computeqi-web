@@ -74,6 +74,11 @@ a:hover {
   }
 }
 
+.modal.import {
+  width: 915px;
+  margin-left: -460px;
+}
+
 .box {
   padding: 0;
 
@@ -231,5 +236,13 @@ table {
   border: 1px solid #DDD;
   td, th {
     padding: 5px 10px;
+
+    &.selected-id {
+      background-color: red;
+    }
+
+    &.selected-value {
+      background-color: blue;
+    }
   }
 }

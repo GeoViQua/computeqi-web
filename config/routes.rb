@@ -21,7 +21,11 @@ Emulatorization::Application.routes.draw do
     resources :analyses
   end
 
-  resources :validation_projects
+  resources :validation_projects do
+    resources :validations
+  end
+
+  resources :uploads
   
   root :to => "home#index"
   

@@ -1,9 +1,12 @@
 class ValidationProject
   include Mongoid::Document
-  
+
   belongs_to :user
+  has_one :validation, dependent: :destroy
 
-  field :observed_values, type: Array
-  field :simulated_values, type: Array
+  field :name, type: String
 
+  def allow_validation?
+    true
+  end
 end

@@ -84,8 +84,10 @@ module Remote
       # project could also be sensitivity, validation
       if params[:emulator_project_id] != nil
         @project = EmulatorProject.find(params[:emulator_project_id])
-      else
+      elsif params[:sensitivity_project_id] != nil
         @project = SensitivityProject.find(params[:sensitivity_project_id])
+      else
+        @project = ValidationProject.find(params[:validation_project_id])
       end
     end
 

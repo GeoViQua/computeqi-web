@@ -1,0 +1,180 @@
+<%= javascript_include_tag 'plupload/plupload.full' %>
+<%= validation_upload 'upload-container' %>
+
+<script>
+
+$(function() {
+
+  this.addData = function(type, data) {
+    var html = Mustache.to_html($('#data-template').val(), { type: type, data: data });
+    $('#' + type + ' table').append(html);
+  };
+
+  uploader.bind('FileUploaded', function(up, file, response) {
+    // get data from csv
+    var rows = JSON.parse(response.response);
+    var first = rows.splice(0, 1)[0];
+    
+    // create indices for templating
+    var headings = [];
+    for (i = 0; i < first.length; i++) {
+      headings.push({ index: i, name: first[i] });
+    }
+
+    // render selections
+    var options = Mustache.to_html($('#options-template').val(), headings);
+    $('select[name="id-from"]').html(options);
+    $('select[name="id-to"]').html(options);
+    $('select[name="value-from"]').html(options);
+    $('select[name="value-to"]').html(options);
+
+    // render table
+    var table = Mustache.to_html($('#table-template').val(), { headings: headings, rows: rows });
+    $('#import-result').html(table);
+
+    // show dialog
+    $('#import-dialog').modal({ show: true, keyboard: false, backdrop: 'static' });
+  });
+
+  uploader.bind('UploadComplete', function(up, files) {
+
+  });
+
+  $('#import-cancel').click(function() {
+    $('#import-dialog').modal('hide');
+  });
+
+  $('#import-submit').click(function() {
+    // are ids and values selected?
+    $('#import-result table tr:not(:first-child)').each(function() {
+      var idFrom = parseInt($('select[name="id-from"]').val()) + 1;
+      var idTo = parseInt($('select[name="id-to"]').val()) + 1;
+      var id = "";
+      $(this).find('td:nth-child(n+'+idFrom+'):nth-child(-n+'+idTo+')').each(function() {
+        id += $(this).html();
+      });
+      var value = [];
+      var valueFrom = parseInt($('select[name="value-from"]').val()) + 1;
+      var valueTo = parseInt($('select[name="value-to"]').val()) + 1;
+      $(this).find('td:nth-child(n+'+valueFrom+'):nth-child(-n+'+valueTo+')').each(function() {
+        value.push(parseFloat($(this).html()));
+      });
+      that.addData($('select[name="type"]').val(), { id: id, value: value });
+    });
+  });
+
+  this.updateSelectedId = function() {
+    var from = parseInt($('select[name="id-from"]').val()) + 1;
+    var to = parseInt($('select[name="id-to"]').val()) + 1;
+    var table = $('#import-result table');
+    table.find('.selected-id').removeClass('selected-id');
+    table.find('tr > td:nth-child(n+'+from+'):nth-child(-n+'+to+')').addClass('selected-id');
+  };
+
+  this.updateSelectedValue = function() {
+    var from = parseInt($('select[name="value-from"]').val()) + 1;
+    var to = parseInt($('select[name="value-to"]').val()) + 1;
+    var table = $('#import-result table');
+    table.find('.selected-value').removeClass('selected-value');
+    table.find('tr > td:nth-child(n+'+from+'):nth-child(-n+'+to+')').addClass('selected-value');
+  };
+
+  var that = this;
+
+  $('select[name^="id-"]').change(function() {
+    that.updateSelectedId();
+  });
+
+  $('select[name^="value-"]').change(function() {
+    that.updateSelectedValue();
+  });
+
+});
+
+</script>
+
+<div id="upload-container"></div>
+
+<div class="row">
+  <div class="span7">
+    <%= simple_form_for [@project, @validation], html: { class: 'form-horizontal' } do |f| %>
+      <%= f.error_notification %>
+
+      <fieldset id="observed">
+        <legend>Observed</legend>
+        <table>
+          <tr>
+            <th>ID</th>
+            <th>Value</th>
+          </tr>
+        </table>
+      </fieldset>
+
+      <fieldset id="predicted">
+        <legend>Predicted</legend>
+        <table>
+          <tr>
+            <th>ID</th>
+            <th>Value</th>
+          </tr>
+        </table>
+      </fieldset>
+
+
+      <div class="form-actions">
+        <%= f.button :submit %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+
+
+<div id="import-dialog" class="modal hide fade import">
+  <div class="modal-header">
+    <h3>Import</h3>
+  </div>
+  <div class="modal-body">
+    <p>Please select the column(s) to use for IDs and values. If multiple ID columns are selected, the ID will be the concatenation of the values of these columns in each row. If multiple value columns are selected, the value will be an ensemble with these members.</p>
+    <p>Type: <select name="type"><option value="observed">Observed</option><option value="predicted">Predicted</option></select></p>
+    <p>ID from: <select name="id-from"></select> to <select name="id-to"></select></p>
+    <p>Value from: <select name="value-from"></select> to <select name="value-to"></select></p>
+    <div id="import-result"></div>
+  </div>
+  <div class="modal-footer">
+    <a id="import-cancel" href="#" class="btn">Cancel</a>
+    <a id="import-submit" href="#" class="btn">Import</a>
+  </div>
+</div>
+
+<textarea id="options-template" class="template hide">
+  {{#.}}
+  <option value="{{index}}">{{name}}</option>
+  {{/.}}
+</textarea>
+
+<textarea id="table-template" class="template hide">
+  <table>
+    <tr>
+      {{#headings}}
+      <th>{{name}}</th>
+      {{/headings}}
+    </tr>
+    {{#rows}}
+    <tr>
+      {{#.}}
+      <td>{{.}}</td>
+      {{/.}}
+    </tr>
+    {{/rows}}
+  </table>
+</textarea>
+
+<textarea id="data-template" class="template hide">
+  {{#data}}
+  <tr>
+    <td><input type="text" name="validation[{{type}}][ids][]" value="{{id}}"/></td>
+    <td><input type="text" name="validation[{{type}}][values][]" value="{{value}}"/></td>
+  </tr>
+  {{/data}}
+</textarea>

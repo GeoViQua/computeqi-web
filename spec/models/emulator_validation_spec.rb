@@ -35,7 +35,7 @@ describe EmulatorValidation do
     before do
       response = Emulatorization::API.send(@emulator_validation.generate)
       if response["type"] == "Exception"
-        raise response["message"]
+        raise response["message"] || response["source"]
       end
       @emulator_validation.handle(response)
     end
