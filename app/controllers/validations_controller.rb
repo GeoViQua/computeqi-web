@@ -13,10 +13,7 @@ class ValidationsController < Remote::RemotableController
       observed << value.to_f
       predicted << predicted_hash[id].split(',').map {|value| value.to_f }
     end
-
-    logger.info observed
-    logger.info predicted
-
+    
     params[:validation][:observed] = observed
     params[:validation][:predicted] = predicted
     super
