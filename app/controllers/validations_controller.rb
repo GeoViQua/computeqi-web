@@ -1,4 +1,7 @@
 class ValidationsController < Remote::RemotableController
+
+  alias :super_create :create
+
   def create
     observed_raw = params[:validation][:observed]
     predicted_raw = params[:validation][:predicted]
@@ -13,9 +16,10 @@ class ValidationsController < Remote::RemotableController
       observed << value.to_f
       predicted << predicted_hash[id].split(',').map {|value| value.to_f }
     end
-    
+
     params[:validation][:observed] = observed
     params[:validation][:predicted] = predicted
-    super
+    
+    super_create
   end
 end
