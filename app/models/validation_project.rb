@@ -9,4 +9,8 @@ class ValidationProject
   def allow_validation?
     true
   end
+
+  def complete?
+    !self.validation.nil? and self.validation.success?
+  end
 end
