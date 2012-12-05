@@ -12,9 +12,15 @@ class Validation
   field :standard_scores, type: Array
   
   def generate
+    if self.predicted.first.class == Array
+      predicted_obj = self.predicted.map {|value| { members: value} }
+    else
+      predicted_obj = self.predicted
+    end
+
     { type: 'ValidationRequest',
       observed: self.observed,
-      predicted: self.predicted }
+      predicted: predicted_obj }
   end
 
   def handle(response)

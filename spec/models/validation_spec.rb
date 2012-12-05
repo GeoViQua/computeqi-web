@@ -51,12 +51,12 @@ describe Validation do
         @request_hash = @validation.generate
       end
 
-      it "should have hash for :predicted value" do
-        @request_hash[:predicted].class.should == Hash
+      it "should have hashes in :predicted array" do
+        @request_hash[:predicted].first.class.should == Hash
       end
 
-      it "should have :members key in :predicted hash" do
-        @request_hash[:predicted].should have_key(:members)
+      it "should have :members in :predicted array hashes" do
+        @request_hash[:predicted].first.should have_key(:members)
       end
     end
   end
