@@ -8,7 +8,7 @@ class ValidationProjectsController < ApplicationController
     @project = ValidationProject.find(params[:id])
     @validation = @project.validation
     if @validation
-      redirect_to @validation
+      redirect_to validation_project_validation_path(@project, @validation)
     else
       redirect_to new_validation_project_validation_path(@project)
     end
