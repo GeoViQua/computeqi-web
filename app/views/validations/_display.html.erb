@@ -1,3 +1,10 @@
+<%= javascript_include_tag "export" %>
+<%= javascript_include_tag "highcharts/highcharts" %>
+<%= javascript_include_tag "flot/jquery.flot" %>
+<%= javascript_include_tag "flot/jquery.flot.errorbars" %>
+<%= javascript_include_tag "flot/jquery.flot.axislabels" %>
+<%= javascript_include_tag "charts" %>
+
 <script>
 var values;
 var scorePlot;
@@ -5,7 +12,7 @@ var outputPlot;
 
 $(function() {
   // load in values, should be ajax really
-  values = <%= @emulator_validation.to_hash.to_json.html_safe %>;
+  values = <%= @validation.to_hash.to_json.html_safe %>;
 
   // create score plot
   scorePlot = createValidationPlot('score-plot-container', values);
@@ -13,14 +20,15 @@ $(function() {
   // flot has some plotting issues if not visible
   $('a[data-toggle="tab"]').on('shown', function(e) {
     if ($(e.target).attr('href') == '#output-plot' && outputPlot == null) {
-      outputPlot = createValidationOutputPlot('output-plot-container', values, { xlabel: 'Simulator output', ylabel: 'Emulator output' });
+      outputPlot = createValidationOutputPlot('output-plot-container', values, { xlabel: 'Observed', ylabel: 'Predicted' });
+      outputPlot.draw();
     }
   });
 });
 </script>
 
 
-<%= render partial: "shared/toolbar", locals: { text: "Took #{distance_of_time_in_words Time.parse(@emulator_validation.proc_start_time.to_s), Time.parse(@emulator_validation.proc_end_time.to_s), true} to perform validation. RMSE is #{number_with_precision(@emulator_validation.rmse, precision: 3)}.", parent: @project, object: @emulator_validation, export_options: ["json"] } %>
+<%= render partial: "shared/toolbar", locals: { text: "Performed validation on #{pluralize(@validation.predicted.size, 'prediction')}. RMSE is #{number_with_precision(@validation.rmse, precision: 3)}.", parent: @project, object: @validation, export_options: ["json"] } %>
 
 <div class="row">
   <div class="span12">

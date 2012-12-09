@@ -10,6 +10,13 @@ class Validation
 
   field :rmse, type: Float
   field :standard_scores, type: Array
+
+  def to_hash
+    { rmse: self.rmse,
+      standardScores: self.standard_scores,
+      observed: self.observed,
+      predicted: self.predicted }
+  end
   
   def generate
     if self.predicted.first.class == Array

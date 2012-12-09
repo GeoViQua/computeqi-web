@@ -292,7 +292,7 @@ function createCombinedSensitivityPlot(container, json) {
   return plot;
 }
 
-function createValidationOutputPlot(container, json) {
+function createValidationOutputPlot(container, json, options) {
   // get data
   var xmin;
   var xmax;
@@ -302,8 +302,30 @@ function createValidationOutputPlot(container, json) {
   var observed = json.observed;
   var predicted = json.predicted;
   for (var i = 0; i < predicted.length; i++) {
-    var mean = predicted[i].mean;
-    var variance = predicted[i].variance;
+    var pred = predicted[i];
+    var mean;
+    var variance;
+
+    if (typeof(pred.mean) !== 'undefined') {
+      // get from object
+      mean = pred.mean;
+      variance = pred.variance;
+    } else {
+      // calculate mean from members
+      var msum = 0.0;
+      for (var j = 0; j < pred.length; j++) {
+        msum += pred[j];
+      }
+      mean = msum / pred.length;
+
+      // calculate variance from members
+      var vsum = 0.0;
+      for (var j = 0; j < pred.length; j++) {
+        vsum += Math.pow(pred[j] - mean, 2);
+      }
+      variance = vsum / (pred.length - 1);
+    }
+
     var sim = json.observed[i];
     var tsds = 2 * Math.sqrt(variance);
     data.push([sim,mean,tsds]);
@@ -347,11 +369,11 @@ function createValidationOutputPlot(container, json) {
       max: max
     },
     xaxes: [{
-      axisLabel: 'Simulator output',
+      axisLabel: options.xlabel,
     }],
     yaxes: [{
       position: 'left',
-      axisLabel: 'Emulator output',
+      axisLabel: options.ylabel,
     }]
   };
   
