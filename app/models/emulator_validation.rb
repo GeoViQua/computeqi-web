@@ -3,7 +3,6 @@ class EmulatorValidation
   include Remote::Remotable
   
   belongs_to :emulator_project
-  has_many :emulator_validation_values
   
   field :design_size, type: Integer
 

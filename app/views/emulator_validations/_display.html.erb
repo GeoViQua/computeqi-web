@@ -20,7 +20,7 @@ $(function() {
 </script>
 
 
-<%= render partial: "shared/toolbar", locals: { text: "Took #{distance_of_time_in_words Time.parse(@emulator_validation.proc_start_time.to_s), Time.parse(@emulator_validation.proc_end_time.to_s), true} to perform validation. RMSE is #{number_with_precision(@emulator_validation.rmse, precision: 3)}.", parent: @project, object: @emulator_validation, export_options: ["json"] } %>
+<%= render partial: "shared/toolbar", locals: { text: "Performed validation on #{pluralize(@emulator_validation.predicted.size, 'emulator prediction')}. RMSE is #{number_with_precision(@emulator_validation.rmse, precision: 3)}.", parent: @project, object: @emulator_validation, export_options: ["json"] } %>
 
 <div class="row">
   <div class="span12">
