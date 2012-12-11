@@ -238,11 +238,40 @@ table {
     padding: 5px 10px;
 
     &.selected-id {
-      background-color: red;
+      color: red;
     }
 
-    &.selected-value {
-      background-color: blue;
+    &.selected-var {
+      color: blue;
     }
   }
+}
+
+#import-result {
+  border: 1px solid @tableBorder;
+  padding: 10px 12px;
+  overflow: scroll;
+  height: 160px;
+
+  table {
+    border: none;
+
+    th {
+      border-bottom: 1px solid @tableBorder;
+    }
+
+    tr:nth-child(2) {
+      padding-top: 15px;
+    }
+  }
+}
+
+.form-left {
+  width: 50%;
+  float: left;
+}
+
+.form-right {
+  width: 50%;
+  float: right;
 }

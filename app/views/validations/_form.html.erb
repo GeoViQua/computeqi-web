@@ -1,14 +1,9 @@
 <%= javascript_include_tag 'plupload/plupload.full' %>
-<%= validation_upload 'upload-container' %>
+<%= validation_import 'import-container' %>
 
 <script>
 
 $(function() {
-
-  this.addData = function(type, data) {
-    var html = Mustache.to_html($('#data-template').val(), { type: type, data: data });
-    $('#' + type + ' table').append(html);
-  };
 
   uploader.bind('FileUploaded', function(up, file, response) {
     // get data from csv
@@ -23,17 +18,14 @@ $(function() {
 
     // render selections
     var options = Mustache.to_html($('#options-template').val(), headings);
-    $('select[name="id-from"]').html(options);
-    $('select[name="id-to"]').html(options);
-    $('select[name="value-from"]').html(options);
-    $('select[name="value-to"]').html(options);
+    $('select[id^="id-"], select[id^="var-"]').html(options);
 
     // render table
     var table = Mustache.to_html($('#table-template').val(), { headings: headings, rows: rows });
     $('#import-result').html(table);
 
     // show dialog
-    $('#import-dialog').modal({ show: true, keyboard: false, backdrop: 'static' });
+    $('#import-dialog').modal({ show: true, keyboard: true, backdrop: 'static' });
   });
 
   uploader.bind('UploadComplete', function(up, files) {
@@ -45,81 +37,234 @@ $(function() {
   });
 
   $('#import-submit').click(function() {
-    // are ids and values selected?
+    var type = $('select[name="type"]').val();
+    var vartype = $('#var-toggle .btn.active').data('value');
+
+    var count = 0;
+
+    // need checks before this
+    // duplicate ids?
+
     $('#import-result table tr:not(:first-child)').each(function() {
-      var idFrom = parseInt($('select[name="id-from"]').val()) + 1;
-      var idTo = parseInt($('select[name="id-to"]').val()) + 1;
-      var id = "";
-      $(this).find('td:nth-child(n+'+idFrom+'):nth-child(-n+'+idTo+')').each(function() {
+      // get id
+      var id = '';
+      $(this).find('td.selected-id').each(function() {
         id += $(this).html();
       });
-      var value = [];
-      var valueFrom = parseInt($('select[name="value-from"]').val()) + 1;
-      var valueTo = parseInt($('select[name="value-to"]').val()) + 1;
-      $(this).find('td:nth-child(n+'+valueFrom+'):nth-child(-n+'+valueTo+')').each(function() {
-        value.push(parseFloat($(this).html()));
-      });
-      that.addData($('select[name="type"]').val(), { id: id, value: value });
+
+      // get value
+      var value;
+      if (vartype === 'scalar') {
+        // scalar
+        var child = parseInt($('#var-scalar').val()) + 1;
+        value = parseFloat($(this).find('td:nth-child(' + child + ')').html());
+      } else if (vartype === 'distribution') {
+        // distribution
+        var meanChild = parseInt($('#var-mean').val()) + 1;
+        var varianceChild = parseInt($('#var-variance').val()) + 1;
+        var mean = parseFloat($(this).find('td:nth-child(' + meanChild + ')').html());
+        var variance = parseFloat($(this).find('td:nth-child(' + varianceChild + ')').html());
+        value = { mean: mean, variance: variance };
+      } else {
+        // ensembles
+        value = [];
+        var firstChild = parseInt($('#var-ens-first').val()) + 1;
+        var lastChild = parseInt($('#var-ens-last').val()) + 1;
+        $(this).find('td:nth-child(n+' + firstChild + '):nth-child(-n+' + lastChild + ')').each(function() {
+          value.push(parseFloat($(this).html()));
+        });
+      }
+
+      // add
+      that.addData(type, { id: id, value: value });
+      count++;
     });
+
+    // all done
+    $count = $('#' + type + '-count')
+    $count.html(parseInt($count.html()) + count);
+    $('#import-dialog').modal({ show: false });
   });
 
-  this.updateSelectedId = function() {
-    var from = parseInt($('select[name="id-from"]').val()) + 1;
-    var to = parseInt($('select[name="id-to"]').val()) + 1;
-    var table = $('#import-result table');
-    table.find('.selected-id').removeClass('selected-id');
-    table.find('tr > td:nth-child(n+'+from+'):nth-child(-n+'+to+')').addClass('selected-id');
+  this.addData = function(type, data) {
+    var $container = $('#' + type + '-container');
+
+    var id = data.id;
+    var value = data.value;
+    var base = 'validation[' + type + '][' + id + ']';
+
+    var $input = $('<input/>').attr('type', 'hidden');
+    $input.attr('name', base);
+    $input.val(JSON.stringify(value));
+
+    $container.append($input);
   };
 
-  this.updateSelectedValue = function() {
-    var from = parseInt($('select[name="value-from"]').val()) + 1;
-    var to = parseInt($('select[name="value-to"]').val()) + 1;
+  this.updateSelectedId = function() {
+    var type = $('#id-toggle .btn.active').data('value');
+
+    // get range for selection
+    var from;
+    var to;
+    if (type === 'single') {
+      from = parseInt($('#id-single').val()) + 1;
+      to = from;
+    } else {
+      from = parseInt($('#id-first').val()) + 1;
+      to = parseInt($('#id-last').val()) + 1;
+    }
+
+    // remove old selection from table
     var table = $('#import-result table');
-    table.find('.selected-value').removeClass('selected-value');
-    table.find('tr > td:nth-child(n+'+from+'):nth-child(-n+'+to+')').addClass('selected-value');
+    table.find('.selected-id').removeClass('selected-id');
+
+    // check if valid
+    var text = '';
+    if (!isNaN(from) && !isNaN(to)) {
+      // check if to after from
+      if (from > to) {
+        text = 'Last column cannot precede first.';
+      } else {
+        // update table
+        table.find('tr > td:nth-child(n+'+from+'):nth-child(-n+'+to+')').addClass('selected-id');
+
+        if (type === 'multiple') {
+          $(table).find('tr:nth-child(2) .selected-id').each(function() {
+            text += $(this).html();
+          });
+          text = 'Sample <code>' + text + '</code>';
+        }
+      }
+    } else {
+      text = 'Need more information.';
+    }
+
+    $('#id-help').html(text);
+  };
+
+  this.updateSelectedVariable = function() {
+    var type = $('#var-toggle .btn.active').data('value');
+
+    // remove old selection
+    var table = $('#import-result table');
+    table.find('.selected-var').removeClass('selected-var');
+
+    // check type and update
+    var text = '';
+    if (type === 'scalar' || type === 'ensemble') {
+      // get range
+      var from;
+      var to;
+      if (type === 'scalar') {
+        from = parseInt($('#var-scalar').val()) + 1;
+        to = from;
+      } else {
+        from = parseInt($('#var-ens-first').val()) + 1;
+        to = parseInt($('#var-ens-last').val()) + 1;
+      }
+
+      if (!isNaN(from) && !isNaN(to)) {
+        if (from > to) {
+          text = 'Last column cannot precede first.';
+        } else {
+          // update
+          table.find('tr > td:nth-child(n+'+from+'):nth-child(-n+'+to+')').addClass('selected-var');
+        }
+      } else {
+        text = 'Need more information.';
+      }
+    } else {
+      // mean and variance
+      var mean = parseInt($('#var-mean').val()) + 1;
+      var variance = parseInt($('#var-variance').val()) + 1;
+
+      // update
+      if (!isNaN(mean)) {
+        table.find('tr > td:nth-child('+mean+')').addClass('selected-var');
+      }
+      if (!isNaN(variance)) {
+        table.find('tr > td:nth-child('+variance+')').addClass('selected-var');
+      }
+    }
+
+    $('#var-help').html(text);
   };
 
   var that = this;
 
-  $('select[name^="id-"]').change(function() {
+  $('select[id^="id-"]').change(function() {
     that.updateSelectedId();
   });
 
-  $('select[name^="value-"]').change(function() {
-    that.updateSelectedValue();
+  $('select[id^="var-"]').change(function() {
+    that.updateSelectedVariable();
+  });
+
+  $('#id-toggle .btn').on('click', function() {
+    var value = $(this).data('value');
+    if (value === 'single') {
+      $('#multiple-params').slideUp('fast', function() {
+        $('#single-params').slideDown('fast');
+      });
+    } else {
+      $('#single-params').slideUp('fast', function() {
+        $('#multiple-params').slideDown('fast');
+      });
+    }
+    that.updateSelectedId();
+  });
+
+  $('#var-toggle .btn').on('click', function() {
+    var value = $(this).data('value');
+    $('#ensemble-params').slideUp('fast');
+    $('#distribution-params').slideUp('fast');
+    $('#scalar-params').slideUp('fast');
+    $('#' + value + '-params').slideDown('fast');
+    that.updateSelectedVariable();
   });
 
 });
 
 </script>
 
-<div id="upload-container"></div>
 
 <div class="row">
   <div class="span7">
     <%= simple_form_for [@project, @validation], html: { class: 'form-horizontal' } do |f| %>
       <%= f.error_notification %>
 
-      <fieldset id="observed">
-        <legend>Observed</legend>
-        <table>
-          <tr>
-            <th>ID</th>
-            <th>Value</th>
-          </tr>
-        </table>
+      <fieldset>
+        <div class="control-group">
+          <label class="control-label">Import</label>
+          <div class="controls form-toggle">
+            <div id="import-container"></div>
+          </div>
+        </div>
       </fieldset>
 
-      <fieldset id="predicted">
-        <legend>Predicted</legend>
-        <table>
-          <tr>
-            <th>ID</th>
-            <th>Value</th>
-          </tr>
-        </table>
+      <fieldset>
+        <div class="control-group">
+          <label class="control-label">Observed</label>
+          <div class="controls form-toggle">
+            <p class="nothing-block">
+              <span id="observed-count">0</span> values
+            </p>
+            <div id="observed-container"></div>
+          </div>
+        </div>
       </fieldset>
 
+      <fieldset>
+        <div class="control-group">
+          <label class="control-label">Predicted</label>
+          <div class="controls form-toggle">
+            <p class="nothing-block">
+              <span id="predicted-count">0</span> values
+            </p>
+            <div id="predicted-container"></div>
+          </div>
+        </div>
+      </fieldset>
 
       <div class="form-actions">
         <%= f.button :submit %>
@@ -132,22 +277,123 @@ $(function() {
 
 <div id="import-dialog" class="modal hide fade import">
   <div class="modal-header">
-    <h3>Import</h3>
+    <h3>Import from CSV</h3>
   </div>
   <div class="modal-body">
-    <p>Please select the column(s) to use for IDs and values. If multiple ID columns are selected, the ID will be the concatenation of the values of these columns in each row. If multiple value columns are selected, the value will be an ensemble with these members.</p>
-    <p>Type: <select name="type"><option value="observed">Observed</option><option value="predicted">Predicted</option></select></p>
-    <p>ID from: <select name="id-from"></select> to <select name="id-to"></select></p>
-    <p>Value from: <select name="value-from"></select> to <select name="value-to"></select></p>
+    <form class="form-horizontal">
+      <fieldset>
+        <div class="control-group">
+          <label class="control-label">Data</label>
+          <div class="controls form-toggle">
+            <div class="btn-group" data-toggle="buttons-radio">
+              <select name="type">
+                <option value="observed">Observed</option>
+                <option value="predicted">Predicted</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+
+      <div class="form-left">
+        <fieldset>
+          <div class="control-group">
+            <label class="control-label">Identifier type</label>
+            <div class="controls form-toggle">
+              <div id="id-toggle" class="btn-group" data-toggle="buttons-radio">
+                <button type="button" class="btn active" data-value="single">Single column</button>
+                <button type="button" class="btn" data-value="multiple">Multiple columns</button>
+              </div>
+            </div>
+          </div>
+          <div id="single-params">
+            <div class="control-group">
+              <label class="control-label">Identifier column</label>
+              <div class="controls">
+                <select id="id-single"></select>
+              </div>
+            </div>
+          </div>
+          <div id="multiple-params" class="hide">
+            <div class="control-group">
+              <label class="control-label">First identifier column</label>
+              <div class="controls">
+                <select id="id-first"></select>
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label">Last identifier column</label>
+              <div class="controls">
+                <select id="id-last"></select>
+              </div>
+            </div>
+          </div>
+        </fieldset>
+      </div>
+
+      <div class="form-right">
+        <fieldset>
+          <div class="control-group">
+            <label class="control-label">Variable type</label>
+            <div class="controls form-toggle">
+              <div id="var-toggle" class="btn-group" data-toggle="buttons-radio">
+                <button type="button" class="btn active" data-value="scalar">Scalar</button>
+                <button type="button" class="btn" data-value="distribution">Distribution</button>
+                <button type="button" class="btn" data-value="ensemble">Ensemble</button>
+              </div>
+            </div>
+          </div>
+          <div id="scalar-params">
+            <div class="control-group">
+              <label class="control-label">Value column</label>
+              <div class="controls">
+                <select id="var-scalar"></select>
+              </div>
+            </div>
+          </div>
+          <div id="distribution-params" class="hide">
+            <div class="control-group">
+              <label class="control-label">Mean column</label>
+              <div class="controls">
+                <select id="var-mean"></select>
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label">Variance column</label>
+              <div class="controls">
+                <select id="var-variance"></select>
+              </div>
+            </div>
+          </div>
+          <div id="ensemble-params" class="hide">
+            <div class="control-group">
+              <label class="control-label">First ensemble column</label>
+              <div class="controls">
+                <select id="var-ens-first"></select>
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label">Last ensemble column</label>
+              <div class="controls">
+                <select id="var-ens-last"></select>
+              </div>
+            </div>
+          </div>
+        </fieldset>
+      </div>
+      <div class="clearfix"></div>
+    </form>
+
     <div id="import-result"></div>
   </div>
   <div class="modal-footer">
     <a id="import-cancel" href="#" class="btn">Cancel</a>
-    <a id="import-submit" href="#" class="btn">Import</a>
+    <a id="import-submit" href="#" class="btn btn-primary">Import</a>
   </div>
 </div>
 
 <textarea id="options-template" class="template hide">
+  <option>Select from list</option>
   {{#.}}
   <option value="{{index}}">{{name}}</option>
   {{/.}}
@@ -168,13 +414,4 @@ $(function() {
     </tr>
     {{/rows}}
   </table>
-</textarea>
-
-<textarea id="data-template" class="template hide">
-  {{#data}}
-  <tr>
-    <td><input type="text" name="validation[{{type}}][ids][]" value="{{id}}"/></td>
-    <td><input type="text" name="validation[{{type}}][values][]" value="{{value}}"/></td>
-  </tr>
-  {{/data}}
 </textarea>
