@@ -28,3 +28,5 @@ en:
   analyses:
     strap: "Quantify the contributions of different uncertainty sources."
     description: "Perform sensitivity analysis to quantify the contributions of different uncertainty sources to the overall output uncertainty of your simulator or emulator."
+  validations:
+    strap: "Assess the accuracy of your predictions."
