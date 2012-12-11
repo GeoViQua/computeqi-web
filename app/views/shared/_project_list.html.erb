@@ -1,13 +1,13 @@
 <div class="row<%= " space-bottom" if projects.size > 0 %>">
   <div class="span8">
     <div class="toolbar-info">
-      
+      &nbsp;
     </div>
   </div>
   <div class="span4">
-    <div class="btn-toolbar pull-left">
+    <div class="btn-toolbar pull-right">
       <div class="btn-group">
-        <%= link_to "Create #{type} project", send("new_#{type}_project_path"), class: "btn" %>
+        <%= link_to "Create project".html_safe, send("new_#{type}_project_path"), class: "btn" %>
       </div>
     </div>
   </div>
