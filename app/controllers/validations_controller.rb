@@ -20,6 +20,12 @@ class ValidationsController < Remote::RemotableController
     super_create
   end
 
+  def refresh
+    @validation = Validation.find(params[:id])
+    Delayed::Job.enqueue RemoteJob.new(@validation)
+    redirect_to validation_project_validation_path(@project, @validation)
+  end
+
   private
 
   def parse_value(value)

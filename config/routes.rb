@@ -22,7 +22,9 @@ Emulatorization::Application.routes.draw do
   end
 
   resources :validation_projects do
-    resources :validations
+    resources :validations do
+      get 'refresh', :on => :member
+    end
   end
 
   resources :uploads
