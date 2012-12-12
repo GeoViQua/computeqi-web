@@ -78,7 +78,7 @@ describe Validation do
     end
 
     it "should have standard score data" do
-      @validation.standard_scores.should_not be_nil
+      @validation.standard_score_data.should_not be_nil
     end
 
     it "should have mean residual data" do
