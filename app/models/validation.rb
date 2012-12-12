@@ -9,19 +9,20 @@ class Validation
   field :predicted, type: Object
 
   field :rmse, type: Float
-  field :standard_scores, type: Array
-  field :mean_residual_data, type: Object
-  field :median_residual_data, type: Object
-  field :reliability_data, type: Object
+
+  field :standard_score_data, type: Hash
+  field :mean_residual_data, type: Hash
+  field :median_residual_data, type: Hash
+  field :reliability_data, type: Hash
 
   def to_hash
     { observed: self.observed,
       predicted: self.predicted,
       rmse: self.rmse,
-      standardScores: self.standard_scores,
-      meanResidualHistogram: self.mean_residual_data,
-      medianResidualHistogram: self.median_residual_data,
-      reliabilityDiagram: self.reliability_data }
+      standardScoreData: self.standard_score_data,
+      meanResidualData: self.mean_residual_data,
+      medianResidualData: self.median_residual_data,
+      reliabilityData: self.reliability_data }
   end
   
   def generate
@@ -38,9 +39,9 @@ class Validation
 
   def handle(response)
     self.rmse = response['rmse']
-    self.standard_scores = response['standardScores']
-    self.mean_residual_data = response['meanResidualHistogram']
-    self.median_residual_data = response['medianResidualHistogram']
-    self.reliability_data = response['reliabilityDiagram']
+    self.standard_scores = response['standardScoreData']
+    self.mean_residual_data = response['meanResidualData']
+    self.median_residual_data = response['medianResidualData']
+    self.reliability_data = response['reliabilityData']
   end
 end

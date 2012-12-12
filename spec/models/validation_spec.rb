@@ -13,7 +13,10 @@ describe Validation do
   it { should respond_to(:observed) }
   it { should respond_to(:predicted) }
   it { should respond_to(:rmse) }
-  it { should respond_to(:standard_scores) }
+  it { should respond_to(:standard_score_data) }
+  it { should respond_to(:mean_residual_data) }
+  it { should respond_to(:median_residual_data) }
+  it { should respond_to(:reliability_data) }
 
   describe "remote request hash" do
     before do
@@ -74,12 +77,8 @@ describe Validation do
       @validation.rmse.should_not be_nil
     end
 
-    it "should have standard scores" do
+    it "should have standard score data" do
       @validation.standard_scores.should_not be_nil
-    end
-
-    it "should have correct number of standard scores" do
-      @validation.standard_scores.size.should == @validation.observed.size
     end
 
     it "should have mean residual data" do

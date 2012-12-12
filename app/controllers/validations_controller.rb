@@ -20,6 +20,17 @@ class ValidationsController < Remote::RemotableController
     super_create
   end
 
+  def show_respond_to(format)
+    format.json {
+      if params[:data]
+        hash = @validation.send("#{params[:data]}_data")
+        render json: hash.to_hash
+      else
+        render json: @validation.to_hash
+      end
+    }
+  end
+
   def refresh
     @validation = Validation.find(params[:id])
     Delayed::Job.enqueue RemoteJob.new(@validation)

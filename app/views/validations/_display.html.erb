@@ -11,6 +11,12 @@ var scorePlot;
 var outputPlot;
 
 $(function() {
+  // plot switcher!
+  // loads values using ajax
+  // renders plot (if there isn't one already)
+
+
+
   // load in values, should be ajax really
   values = <%= @validation.to_hash.to_json.html_safe %>;
 
