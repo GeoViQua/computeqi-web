@@ -39,7 +39,7 @@ class Validation
 
   def handle(response)
     self.rmse = response['rmse']
-    self.standard_scores = response['standardScoreData']
+    self.standard_score_data = response['standardScoreData']
     self.mean_residual_data = response['meanResidualData']
     self.median_residual_data = response['medianResidualData']
     self.reliability_data = response['reliabilityData']
