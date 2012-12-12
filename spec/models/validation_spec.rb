@@ -81,5 +81,17 @@ describe Validation do
     it "should have correct number of standard scores" do
       @validation.standard_scores.size.should == @validation.observed.size
     end
+
+    it "should have mean residual data" do
+      @validation.mean_residual_data.should_not be_nil
+    end
+
+    it "should have median residual data" do
+      @validation.median_residual_data.should_not be_nil
+    end
+
+    it "should have reliability data" do
+      @validation.reliability_data.should_not be_nil
+    end
   end
 end
