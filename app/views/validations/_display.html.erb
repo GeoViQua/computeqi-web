@@ -7,28 +7,27 @@
 <script>
 
 $(function() {
-  // plot switcher!
-  // loads values using ajax
-  // renders plot (if there isn't one already)
+  // better way to do this?
   var url = '<%= escape_javascript(validation_project_validation_path(@project, @validation)) %>.json';
-  $.get(url, { data: 'standard_score' }, function(data) {
-    $e.plotStandardScore($('#score-plot-container'), data);
-  }, 'json');
 
+  // selector is for tab pane containing div with plot class
+  function updatePlot(selector) {
+    var $container = $(selector).find('.plot');
+    var type = $container.data('type');
+    $container.spin();
+    $.get(url, { data: type }, function(data) {
+      $e.plot($container, type, data);
+    }, 'json');
+  }
 
-  // load in values, should be ajax really
-  // values = <%= @validation.to_hash.to_json.html_safe %>;
-
-  // create score plot
-  // scorePlot = createValidationPlot('score-plot-container', values);
+  // initial selection
+  // need a better selector
+  updatePlot($('li.active a').attr('href'));
 
   // flot has some plotting issues if not visible
-  // $('a[data-toggle="tab"]').on('shown', function(e) {
-    // if ($(e.target).attr('href') == '#output-plot' && outputPlot == null) {
-      // outputPlot = createValidationOutputPlot('output-plot-container', values, { xlabel: 'Observed', ylabel: 'Predicted' });
-      // outputPlot.draw();
-    // }
-  // });
+  $('a[data-toggle="tab"]').on('shown', function(e) {
+    updatePlot($(e.target).attr('href'));
+  });
 });
 </script>
 
@@ -40,14 +39,22 @@ $(function() {
     <div class="tabbable">
       <ul class="nav nav-tabs">
         <li class="active"><a href="#score-plot" data-toggle="tab">Standard score</a></li>
-        <li><a href="#output-plot" data-toggle="tab">Output comparison</a></li>
+        <li><a href="#mean-residual-plot" data-toggle="tab">Mean residual</a></li>
+        <li><a href="#median-residual-plot" data-toggle="tab">Median residual</a></li>
+        <li><a href="#reliability-plot" data-toggle="tab">Reliability</a></li>
       </ul>
       <div class="tab-content">
         <div class="tab-pane active" id="score-plot">
-          <div id="score-plot-container" class="plot"></div>
+          <div class="plot" data-type="standard_score"></div>
         </div>
-        <div class="tab-pane" id="output-plot">
-          <div id="output-plot-container" class="plot square"></div>
+        <div class="tab-pane" id="mean-residual-plot">
+          <div class="plot" data-type="mean_residual"></div>
+        </div>
+        <div class="tab-pane" id="median-residual-plot">
+          <div class="plot" data-type="median_residual"></div>
+        </div>
+        <div class="tab-pane" id="reliability-plot">
+          <div class="plot" data-type="reliability"></div>
         </div>
       </div>
     </div>

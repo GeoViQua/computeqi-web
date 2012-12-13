@@ -1,4 +1,14 @@
-$e.plot = function($container, data, options, formatter) {
+$e.plot = function($container, type, data) {
+  switch (type) {
+    case 'standard_score':
+      $e.plotStandardScore($container, data);
+      break;
+    default:
+      $container.html('Unsupported plot type ' + type + '.');
+  }
+}
+
+$e.basePlot = function($container, data, options, formatter) {
   var merged = $.extend({}, {
     grid: {
       borderWidth: 0,
@@ -98,5 +108,5 @@ $e.plotStandardScore = function($container, data) {
     $div.html(datapoint[1].toFixed(2));
   };
 
-  $e.plot($container, pdata, options, formatter);
+  $e.basePlot($container, pdata, options, formatter);
 };
