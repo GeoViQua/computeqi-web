@@ -1,35 +1,34 @@
 <%= javascript_include_tag "export" %>
-<%= javascript_include_tag "highcharts/highcharts" %>
 <%= javascript_include_tag "flot/jquery.flot" %>
 <%= javascript_include_tag "flot/jquery.flot.errorbars" %>
 <%= javascript_include_tag "flot/jquery.flot.axislabels" %>
-<%= javascript_include_tag "charts" %>
+<%= javascript_include_tag "plots" %>
 
 <script>
-var values;
-var scorePlot;
-var outputPlot;
 
 $(function() {
   // plot switcher!
   // loads values using ajax
   // renders plot (if there isn't one already)
-
+  var url = '<%= escape_javascript(validation_project_validation_path(@project, @validation)) %>.json';
+  $.get(url, { data: 'standard_score' }, function(data) {
+    $e.plotStandardScore($('#score-plot-container'), data);
+  }, 'json');
 
 
   // load in values, should be ajax really
-  values = <%= @validation.to_hash.to_json.html_safe %>;
+  // values = <%= @validation.to_hash.to_json.html_safe %>;
 
   // create score plot
-  scorePlot = createValidationPlot('score-plot-container', values);
+  // scorePlot = createValidationPlot('score-plot-container', values);
 
   // flot has some plotting issues if not visible
-  $('a[data-toggle="tab"]').on('shown', function(e) {
-    if ($(e.target).attr('href') == '#output-plot' && outputPlot == null) {
-      outputPlot = createValidationOutputPlot('output-plot-container', values, { xlabel: 'Observed', ylabel: 'Predicted' });
-      outputPlot.draw();
-    }
-  });
+  // $('a[data-toggle="tab"]').on('shown', function(e) {
+    // if ($(e.target).attr('href') == '#output-plot' && outputPlot == null) {
+      // outputPlot = createValidationOutputPlot('output-plot-container', values, { xlabel: 'Observed', ylabel: 'Predicted' });
+      // outputPlot.draw();
+    // }
+  // });
 });
 </script>
 
