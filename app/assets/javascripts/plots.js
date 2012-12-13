@@ -95,7 +95,7 @@ $e.plotStandardScore = function($container, data) {
   };
 
   var formatter = function($div, datapoint) {
-    $div.html('hah hah ah ah aha' + datapoint[1].toFixed(2));
+    $div.html(datapoint[1].toFixed(2));
   };
 
   $e.plot($container, pdata, options, formatter);
