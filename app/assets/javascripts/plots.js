@@ -10,9 +10,6 @@ $e.plot = function($container, data, options, formatter) {
 
   $container.bind('plothover', function(event, position, item) {
     if (item) {
-      console.log(item);
-      console.log(event);
-      console.log(position);
       if (plot.previousPoint != item.dataIndex) {
         plot.previousPoint = item.dataIndex;
 
