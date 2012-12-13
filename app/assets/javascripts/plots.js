@@ -51,9 +51,9 @@ $e.plot = function($container, data, options, formatter) {
       }
     } else {
       plot.previousPoint = null;
-      // $('#plot-tooltip').fadeOut('fast', function() {
-        // $(this).remove();
-      // });
+      $('#plot-tooltip').fadeOut('fast', function() {
+        $(this).remove();
+      });
     }
   });
 };
