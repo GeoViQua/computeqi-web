@@ -51,7 +51,7 @@ $e.calculateMinMax = function(data) {
     if (i == 0 || data.y[i] < minY) {
       minY = data.y[i];
     }
-    if (i == 0 || data.y[i] > maxX) {
+    if (i == 0 || data.y[i] > maxY) {
       maxY = data.y[i];
     }
   }
@@ -226,6 +226,7 @@ $e.plotResidualQQ = function($container, data, source) {
       points: { show: true, radius: 5 },
       color: e_colour_scheme[0] }
   ];
+  console.log(minMax);
 
   // create options
   var options = {
