@@ -51,7 +51,7 @@ module Emulatorization
 
         # check OK
         if res.code == '200'
-          return JSON.parse(res.body, { allow_nan: true })
+          return JSON.parse(res.body)
         else
           return self.exception_object("#{res.code} returned by API.")
         end
