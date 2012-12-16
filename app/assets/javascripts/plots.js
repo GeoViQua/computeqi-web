@@ -56,6 +56,25 @@ $e.calculateMinMax = function(data) {
     }
   }
   return { minX: minX, maxX: maxX, minY: minY, maxY: maxY };
+};
+
+$e.createBackgroundLine = function(data) {
+  var l = {
+    label: 'r',
+    data: data,
+    lines: { show: true },
+    color: e_colour_scheme[1],
+    hoverable: false };
+  return l;
+};
+
+$e.createPoints = function(data) {
+  var p = {
+    label: 'k+',
+    data: data,
+    points: { show: true, radius: 5 },
+    color: e_colour_scheme[0] };
+  return p;
 }
 
 $e.basePlot = function($container, data, options, formatter) {
@@ -125,26 +144,13 @@ $e.basePlot = function($container, data, options, formatter) {
 $e.plotStandardScore = function($container, data) {
   // create data
   var pdata = [
-    { label: 'r',
-      data: [[0,0],[data.x.length - 1,0]],
-      lines: { show: true },
-      color: e_colour_scheme[1],
-      hoverable: false },
-    { label: 'k+',
-      data: $e.baseParse(data),
-      points: {
-        show: true,
-        radius: 5
-      },
-      color: e_colour_scheme[0] }
+    $e.createBackgroundLine([[0,0],[data.x.length - 1,0]]),
+    $e.createPoints($e.baseParse(data))
   ];
 
   // create options
   var options = {
-    yaxis: {
-      min: -2,
-      max: 2
-    },
+    yaxis: { min: -2, max: 2 },
     xaxes: [{
       axisLabel: 'Index'
     }],
@@ -188,15 +194,8 @@ $e.plotResidualHistogram = function($container, data, source) {
 $e.plotReliabilityDiagram = function($container, data) {
   // create data
   var pdata = [
-    { label: 'r',
-      data: [[0,0],[1,1]],
-      lines: { show: true },
-      color: e_colour_scheme[1],
-      hoverable: false },
-    { label: 'k+',
-      data: $e.baseParse(data),
-      points: { show: true, radius: 5 },
-      color: e_colour_scheme[0] }
+    $e.createBackgroundLine([[0,0],[1,1]]),
+    $e.createPoints($e.baseParse(data))
   ];
       
   // create options
@@ -226,15 +225,8 @@ $e.plotResidualQQ = function($container, data, source) {
   // create data
   var minMax = $e.calculateMinMax(data);
   var pdata = [
-    { label: 'r',
-      data: [[minMax.minX,minMax.minY],[minMax.maxX,minMax.maxY]],
-      lines: { show: true },
-      color: e_colour_scheme[1],
-      hoverable: false },
-    { label: 'k+',
-      data: $e.baseParse(data),
-      points: { show: true, radius: 5 },
-      color: e_colour_scheme[0] }
+    $e.createBackgroundLine([[minMax.minX,minMax.minY],[minMax.maxX,minMax.maxY]]),
+    $e.createPoints($e.baseParse(data))
   ];
 
   // create options
