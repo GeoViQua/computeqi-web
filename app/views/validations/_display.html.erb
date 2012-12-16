@@ -12,7 +12,7 @@ $(function() {
   // selector is for tab pane containing div with plot class
   function updatePlots(selector) {
     $(selector).find('.plot').each(function() {
-      $container = $(this);
+      var $container = $(this);
 
       // check if there's already a plot there
       if ($container.children().length == 0) {
@@ -48,20 +48,31 @@ $(function() {
         <li><a href="#median-residual-plot" data-toggle="tab">Median residual</a></li>
         <li><a href="#reliability-plot" data-toggle="tab">Reliability</a></li>
       </ul>
-      <div class="tab-content">
-        <div class="tab-pane active" id="score-plot">
-          <div class="plot" data-type="standard_score_plot"></div>
-        </div>
-        <div class="tab-pane" id="mean-residual-plot">
-          <div class="plot" data-type="mean_residual_histogram"></div>
-        </div>
-        <div class="tab-pane" id="median-residual-plot">
-          <div class="plot" data-type="median_residual_histogram"></div>
-        </div>
-        <div class="tab-pane" id="reliability-plot">
-          <div class="plot square" data-type="reliability_diagram"></div>
-        </div>
-      </div>
     </div>
+  </div>
+</div>
+
+<div class="tab-content">
+  <div class="tab-pane active" id="score-plot">
+    <div class="plot" data-type="standard_score_plot"></div>
+  </div>
+  <div class="tab-pane row" id="mean-residual-plot">
+    <div class="span6">
+      <div class="plot square" data-type="mean_residual_histogram"></div>
+    </div>
+    <div class="span6">
+      <div class="plot square" data-type="mean_residual_qq_plot"></div>
+    </div>
+  </div>
+  <div class="tab-pane row" id="median-residual-plot">
+    <div class="span6">
+      <div class="plot square" data-type="median_residual_histogram"></div>
+    </div>
+    <div class="span6">
+      <div class="plot square" data-type="median_residual_qq_plot"></div>
+    </div>
+  </div>
+  <div class="tab-pane" id="reliability-plot">
+    <div class="plot square" data-type="reliability_diagram"></div>
   </div>
 </div>
