@@ -11,22 +11,24 @@ $(function() {
   var url = '<%= escape_javascript(validation_project_validation_path(@project, @validation)) %>.json';
 
   // selector is for tab pane containing div with plot class
-  function updatePlot(selector) {
-    var $container = $(selector).find('.plot');
-    var type = $container.data('type');
-    $container.spin();
-    $.get(url, { data: type }, function(data) {
-      $e.plot($container, type, data);
-    }, 'json');
+  function updatePlots(selector) {
+    $(selector).find('.plot').each(function() {
+      $container = $(this);
+      var type = $container.data('type');
+      $container.spin();
+      $.get(url, { data: type }, function(data) {
+        $e.plot($container, type, data);
+      }, 'json');
+    });
   }
 
   // initial selection
   // need a better selector
-  updatePlot($('li.active a').attr('href'));
+  updatePlots($('li.active a').attr('href'));
 
   // flot has some plotting issues if not visible
   $('a[data-toggle="tab"]').on('shown', function(e) {
-    updatePlot($(e.target).attr('href'));
+    updatePlots($(e.target).attr('href'));
   });
 });
 </script>
