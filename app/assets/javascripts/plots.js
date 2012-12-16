@@ -83,7 +83,8 @@ $e.basePlot = function($container, data, options, formatter) {
         // default formatter if required
         var format = formatter;
         if (typeof(format) === 'undefined') {
-          format = function($div, datapoint) {
+          format = function($div, item) {
+            var datapoint = item.datapoint;
             $div.html('x: ' + datapoint[0].toFixed(2) + ', ' + 'y: ' + datapoint[1].toFixed(2));
           }
         }
@@ -92,7 +93,7 @@ $e.basePlot = function($container, data, options, formatter) {
         $tooltip = $('<div id="plot-tooltip" class="plot-tooltip"></div>').appendTo('body');
 
         // format it
-        format($tooltip, item.datapoint);
+        format($tooltip, item);
 
         // calculate position
         var left = item.pageX + 12;
@@ -146,8 +147,8 @@ $e.plotStandardScore = function($container, data) {
     }]
   };
 
-  var formatter = function($div, datapoint) {
-    $div.html(datapoint[1].toFixed(2));
+  var formatter = function($div, item) {
+    $div.html(item.datapoint[1].toFixed(2));
   };
 
   $e.basePlot($container, pdata, options, formatter);
@@ -160,7 +161,6 @@ $e.plotResidualHistogram = function($container, data, source) {
       data: $e.baseParse(data),
       bars: { show: true, align: 'center', barWidth: 0.03 } }
   ];
-  console.log(pdata);
 
   // create options
   var options = {
