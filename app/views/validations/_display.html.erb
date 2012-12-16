@@ -14,11 +14,15 @@ $(function() {
   function updatePlots(selector) {
     $(selector).find('.plot').each(function() {
       $container = $(this);
-      var type = $container.data('type');
-      $container.spin();
-      $.get(url, { data: type }, function(data) {
-        $e.plot($container, type, data);
-      }, 'json');
+
+      // check if there's already a plot there
+      if ($container.children().length == 0) {
+        var type = $container.data('type');
+        $container.spin();
+        $.get(url, { data: type }, function(data) {
+          $e.plot($container, type, data);
+        }, 'json');
+      }
     });
   }
 
