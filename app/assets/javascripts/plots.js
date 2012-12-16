@@ -1,3 +1,5 @@
+var e_colour_scheme = ['#edc240', '#afd8f8', '#cb4b4b', '#4da74d', '#9440ed'];
+
 $e.plot = function($container, type, data) {
   switch (type) {
     case 'standard_score_plot':
@@ -58,6 +60,7 @@ $e.calculateMinMax = function(data) {
 
 $e.basePlot = function($container, data, options, formatter) {
   var merged = $.extend({}, {
+    colors: e_colour_scheme,
     grid: {
       borderWidth: 0,
       hoverable: true
@@ -178,12 +181,12 @@ $e.plotReliabilityDiagram = function($container, data) {
     { label: 'r',
       data: [[0,0],[1,1]],
       lines: { show: true },
-      color: '#afd8f8',
+      color: e_colour_scheme[1],
       hoverable: false },
     { label: 'k+',
       data: $e.baseParse(data),
       points: { show: true, radius: 5 },
-      color: '#edc240' }
+      color: e_colour_scheme[0] }
   ];
       
   // create options
@@ -216,12 +219,12 @@ $e.plotResidualQQ = function($container, data, source) {
     { label: 'r',
       data: [[minMax.minX,minMax.minY],[minMax.maxX,minMax.maxY]],
       lines: { show: true },
-      color: '#afd8f8',
+      color: e_colour_scheme[1],
       hoverable: false },
     { label: 'k+',
       data: $e.baseParse(data),
       points: { show: true, radius: 5 },
-      color: '#edc240' }
+      color: e_colour_scheme[0] }
   ];
 
   // create options
