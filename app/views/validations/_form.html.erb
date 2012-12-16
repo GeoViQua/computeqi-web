@@ -136,11 +136,20 @@ $(function() {
     $('#var-help').html(text);
   };
 
+  this.updateSelectedIdType = function(type) {
+    $('#auto-params').slideUp('fast');
+    $('#single-params').slideUp('fast');
+    $('#multiple-params').slideUp('fast');
+    $('#' + type + '-params').slideDown('fast');
+    that.updateSelectedId();
+  };
+
   this.updateSelectedVariableType = function(type) {
     $('#ensemble-params').slideUp('fast');
     $('#distribution-params').slideUp('fast');
     $('#scalar-params').slideUp('fast');
     $('#' + type + '-params').slideDown('fast');
+    that.updateSelectedVariable();
   };
 
   var that = this;
@@ -174,16 +183,7 @@ $(function() {
 
   $('#id-toggle .btn').on('click', function() {
     var value = $(this).data('value');
-    if (value === 'single') {
-      $('#multiple-params').slideUp('fast', function() {
-        $('#single-params').slideDown('fast');
-      });
-    } else {
-      $('#single-params').slideUp('fast', function() {
-        $('#multiple-params').slideDown('fast');
-      });
-    }
-    that.updateSelectedId();
+    that.updateSelectedIdType(value);
   });
 
   $('#var-toggle .btn').on('click', function() {
@@ -197,6 +197,7 @@ $(function() {
 
   $('#import-submit').click(function() {
     var type = $('select[name="type"]').val();
+    var idtype = $('#id-toggle .btn.active').data('value');
     var vartype = $('#var-toggle .btn.active').data('value');
 
     var count = 0;
@@ -206,10 +207,15 @@ $(function() {
 
     $('#import-result table tr:not(:first-child)').each(function() {
       // get id
-      var id = '';
-      $(this).find('td.selected-id').each(function() {
-        id += $(this).html();
-      });
+      var id;
+      if (idtype === 'auto') {
+        id = count.toString();
+      } else {
+        id = '';
+        $(this).find('td.selected-id').each(function() {
+          id += $(this).html();
+        });
+      }
 
       // get value
       var value;
@@ -323,12 +329,21 @@ $(function() {
             <label class="control-label">Identifier type</label>
             <div class="controls form-toggle">
               <div id="id-toggle" class="btn-group" data-toggle="buttons-radio">
-                <button type="button" class="btn active" data-value="single">Single column</button>
+                <button type="button" class="btn active" data-value="auto">Auto</button>
+                <button type="button" class="btn" data-value="single">Single column</button>
                 <button type="button" class="btn" data-value="multiple">Multiple columns</button>
               </div>
             </div>
           </div>
-          <div id="single-params">
+          <div id="auto-params">
+            <div class="control-group">
+              <label class="control-label"></label>
+              <div class="controls">
+                <p class="nothing-block">Identifier will be automatically generated sequentially for each value.</p>
+              </div>
+            </div>
+          </div>
+          <div id="single-params" class="hide">
             <div class="control-group">
               <label class="control-label">Identifier column</label>
               <div class="controls">
