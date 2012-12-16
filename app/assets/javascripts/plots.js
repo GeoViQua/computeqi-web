@@ -151,7 +151,8 @@ $e.plotReliability = function($container, data) {
       points: { show: true, radius: 5 } },
     { label: 'Identity',
       data: [[0,0],[1,1]],
-      lines: { show: true } }
+      lines: { show: true },
+      hoverable: false }
   ];
 
   // create options
