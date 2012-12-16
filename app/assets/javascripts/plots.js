@@ -1,16 +1,16 @@
 $e.plot = function($container, type, data) {
   switch (type) {
-    case 'standard_score':
+    case 'standard_score_plot':
       $e.plotStandardScore($container, data);
       break;
-    case 'mean_residual':
-      $e.plotResidual($container, data, 'mean');
+    case 'mean_residual_histogram':
+      $e.plotResidualHistogram($container, data, 'mean');
       break;
-    case 'median_residual':
-      $e.plotResidual($container, data, 'median');
+    case 'median_residual_histogram':
+      $e.plotResidualHistogram($container, data, 'median');
       break;
-    case 'reliability':
-      $e.plotReliability($container, data);
+    case 'reliability_diagram':
+      $e.plotReliabilityDiagram($container, data);
       break;
     default:
       $container.html('Unsupported plot type ' + type + '.');
@@ -122,7 +122,7 @@ $e.plotStandardScore = function($container, data) {
   $e.basePlot($container, pdata, options, formatter);
 };
 
-$e.plotResidual = function($container, data, source) {
+$e.plotResidualHistogram = function($container, data, source) {
   // create data
   var pdata = [
     { label: 'Frequency',
@@ -143,7 +143,7 @@ $e.plotResidual = function($container, data, source) {
   $e.basePlot($container, pdata, options);
 };
 
-$e.plotReliability = function($container, data) {
+$e.plotReliabilityDiagram = function($container, data) {
   // create data
   var pdata = [
     { label: 'Observed frequency',

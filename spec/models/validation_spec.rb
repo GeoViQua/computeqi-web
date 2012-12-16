@@ -13,10 +13,12 @@ describe Validation do
   it { should respond_to(:observed) }
   it { should respond_to(:predicted) }
   it { should respond_to(:rmse) }
-  it { should respond_to(:standard_score_data) }
-  it { should respond_to(:mean_residual_data) }
-  it { should respond_to(:median_residual_data) }
-  it { should respond_to(:reliability_data) }
+  it { should respond_to(:standard_score_plot_data) }
+  it { should respond_to(:mean_residual_histogram_data) }
+  it { should respond_to(:mean_residual_qq_plot_data) }
+  it { should respond_to(:median_residual_histogram_data) }
+  it { should respond_to(:median_residual_qq_plot_data) }
+  it { should respond_to(:reliability_diagram_data) }
 
   describe "remote request hash" do
     before do
@@ -77,20 +79,28 @@ describe Validation do
       @validation.rmse.should_not be_nil
     end
 
-    it "should have standard score data" do
-      @validation.standard_score_data.should_not be_nil
+    it "should have standard score plot data" do
+      @validation.standard_score_plot_data.should_not be_nil
     end
 
-    it "should have mean residual data" do
-      @validation.mean_residual_data.should_not be_nil
+    it "should have mean residual histogram data" do
+      @validation.mean_residual_histogram_data.should_not be_nil
     end
 
-    it "should have median residual data" do
-      @validation.median_residual_data.should_not be_nil
+    it "should have mean residual qq plot data" do
+      @validation.mean_residual_qq_plot_data.should_not be_nil
     end
 
-    it "should have reliability data" do
-      @validation.reliability_data.should_not be_nil
+    it "should have median residual histogram data" do
+      @validation.median_residual_histogram_data.should_not be_nil
+    end
+
+    it "should have median residual qq_plot data" do
+      @validation.median_residual_qq_plot_data.should_not be_nil
+    end
+
+    it "should have reliability diagram data" do
+      @validation.reliability_diagram_data.should_not be_nil
     end
   end
 end
