@@ -3,9 +3,26 @@ $e.plot = function($container, type, data) {
     case 'standard_score':
       $e.plotStandardScore($container, data);
       break;
+    case 'mean_residual':
+      $e.plotResidual($container, data, 'mean');
+      break;
+    case 'median_residual':
+      $e.plotResidual($container, data, 'median');
+      break;
     default:
       $container.html('Unsupported plot type ' + type + '.');
   }
+}
+
+$e.baseParse = function(data) {
+  // parse data
+  var x = data.x;
+  var y = data.y;
+  var array = [];
+  for (var i = 0; i < x.length; i++) {
+    array.push([x[i], y[i]]);
+  }
+  return array;
 }
 
 $e.basePlot = function($container, data, options, formatter) {
@@ -13,6 +30,9 @@ $e.basePlot = function($container, data, options, formatter) {
     grid: {
       borderWidth: 0,
       hoverable: true
+    },
+    legend: {
+      show: false
     }
   }, options);
 
@@ -69,22 +89,13 @@ $e.basePlot = function($container, data, options, formatter) {
 };
 
 $e.plotStandardScore = function($container, data) {
-  // parse data
-  var x = data.x;
-  var y = data.y;
-  var array = [];
-  for (var i = 0; i < x.length; i++) {
-    array.push([x[i], y[i]]);
-  }
+  // create data
   var pdata = [
-    { label: 'Standard score', data: array }
+    { label: 'Standard score', data: $e.baseParse(data) }
   ];
 
-  // options
+  // create options
   var options = {
-    legend: {
-      show: false
-    },
     series: {
       points: {
         show: true,
@@ -110,3 +121,28 @@ $e.plotStandardScore = function($container, data) {
 
   $e.basePlot($container, pdata, options, formatter);
 };
+
+$e.plotResidual = function($container, data, source) {
+  // create data
+  var pdata = [
+    { label: 'Frequency', data: $e.baseParse(data) }
+  ];
+
+  // create options
+  var options = {
+    series: {
+      stack: 0,
+      lines: { show: false, steps: false },
+      bars: { show: true, align: 'center' }
+    },
+    xaxes: [{
+      axisLabel: 'Residual from the ' + source
+    }],
+    yaxes: [{
+      position: 'left',
+      axisLabel: 'Frequency',
+    }]
+  };
+
+  $e.basePlot($container, pdata, options);
+}
