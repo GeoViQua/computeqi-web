@@ -125,12 +125,18 @@ $e.basePlot = function($container, data, options, formatter) {
 $e.plotStandardScore = function($container, data) {
   // create data
   var pdata = [
+    { label: 'r',
+      data: [[0,0],[data.x.length - 1,0]],
+      lines: { show: true },
+      color: e_colour_scheme[1],
+      hoverable: false },
     { label: 'k+',
       data: $e.baseParse(data),
       points: {
         show: true,
         radius: 5
-      } }
+      },
+      color: e_colour_scheme[0] }
   ];
 
   // create options
