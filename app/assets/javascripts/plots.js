@@ -168,11 +168,12 @@ $e.plotReliability = function($container, data) {
   var plot = $e.basePlot($container, pdata, options);
 
   // add data labels
+  var coffset = plot.getPlaceholder().offset();
   $.each(pdata[0].data, function(i, xy) {
     var offset = plot.pointOffset({ x: xy[0], y: xy[1] });
     var $label = $('<div class="plot-label"></div>');
     $label.html(data.n[i]); // lookup from original data
-    $label.css({ left: offset.left + 10, top: offset.top });
-    $label.appendTo(plot.getPlaceholder());
+    $label.css({ left: coffset.left + offset.left + 10, top: coffset.top + offset.top });
+    $label.appendTo('body');
   });
 };
