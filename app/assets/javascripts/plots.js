@@ -9,6 +9,9 @@ $e.plot = function($container, type, data) {
     case 'median_residual':
       $e.plotResidual($container, data, 'median');
       break;
+    case 'reliability':
+      $e.plotReliability($container, data);
+      break;
     default:
       $container.html('Unsupported plot type ' + type + '.');
   }
@@ -61,16 +64,13 @@ $e.basePlot = function($container, data, options, formatter) {
         format($tooltip, item.datapoint);
 
         // calculate position
-        var graphic = { height: 2 };
-        // not a fan of the arbitrary numbers
-        var offset = 5;
-        var top = position.pageY + offset;
-        var left = position.pageX;
-        if (left + $tooltip.width() > $(window).width()) {
-          left = position.pageX - offset - $tooltip.width();
-        } else {
-          left = left + offset;
-        }
+        var left = item.pageX + 12;
+        var top = item.pageY;
+        // if (left + $tooltip.width() > $(window).width()) {
+        //   left = position.pageX - offset - $tooltip.width();
+        // } else {
+        //   left = left + offset;
+        // }
 
         // set position
         $tooltip.css({ left: left, top: top });
@@ -86,22 +86,23 @@ $e.basePlot = function($container, data, options, formatter) {
       });
     }
   });
+
+  return plot;
 };
 
 $e.plotStandardScore = function($container, data) {
   // create data
   var pdata = [
-    { label: 'Standard score', data: $e.baseParse(data) }
+    { label: 'Standard score',
+      data: $e.baseParse(data),
+      points: {
+        show: true,
+        radius: 5
+      } }
   ];
 
   // create options
   var options = {
-    series: {
-      points: {
-        show: true,
-        radius: 5
-      }
-    },
     yaxis: {
       min: -2,
       max: 2
@@ -110,7 +111,6 @@ $e.plotStandardScore = function($container, data) {
       axisLabel: 'Index'
     }],
     yaxes: [{
-      position: 'left',
       axisLabel: 'Standard score',
     }]
   };
@@ -125,24 +125,54 @@ $e.plotStandardScore = function($container, data) {
 $e.plotResidual = function($container, data, source) {
   // create data
   var pdata = [
-    { label: 'Frequency', data: $e.baseParse(data) }
+    { label: 'Frequency',
+      data: $e.baseParse(data),
+      bars: { show: true, align: 'center' } }
   ];
 
   // create options
   var options = {
-    series: {
-      stack: 0,
-      lines: { show: false, steps: false },
-      bars: { show: true, align: 'center' }
-    },
     xaxes: [{
       axisLabel: 'Residual from the ' + source
     }],
     yaxes: [{
-      position: 'left',
       axisLabel: 'Frequency',
     }]
   };
 
   $e.basePlot($container, pdata, options);
-}
+};
+
+$e.plotReliability = function($container, data) {
+  // create data
+  var pdata = [
+    { label: 'Observed frequency',
+      data: $e.baseParse(data),
+      points: { show: true, radius: 5 } },
+    { label: 'Identity',
+      data: [[0,0],[1,1]],
+      lines: { show: true } }
+  ];
+
+  // create options
+  var options = {
+    yaxis: { min: 0, max: 1 },
+    xaxes: [{
+      axisLabel: 'Forecast probability'
+    }],
+    yaxes: [{
+      axisLabel: 'Observed frequency',
+    }]
+  };
+
+  var plot = $e.basePlot($container, pdata, options);
+
+  // add data labels
+  $.each(pdata[0].data, function(i, xy) {
+    var offset = plot.pointOffset({ x: xy[0], y: xy[1] });
+    var $label = $('<div class="plot-label"></div>');
+    $label.html(data.n[i]); // lookup from original data
+    $label.css({ left: offset.left + 10, top: offset.top });
+    $label.appendTo(plot.getPlaceholder());
+  });
+};
