@@ -156,11 +156,15 @@ $e.plotStandardScore = function($container, data) {
 
 $e.plotResidualHistogram = function($container, data, source) {
   // create data
+  var minMax = $e.calculateMinMax(data);
+  var barWidth = ((minMax.maxX - minMax.minX) * 0.6) / data.x.length
   var pdata = [
     { label: 'k+',
       data: $e.baseParse(data),
-      bars: { show: true, align: 'center', barWidth: 0.03 } }
+      bars: { show: true, align: 'center', barWidth: barWidth } }
   ];
+
+  // x = 70 / 30
 
   // create options
   var options = {
@@ -226,7 +230,6 @@ $e.plotResidualQQ = function($container, data, source) {
       points: { show: true, radius: 5 },
       color: e_colour_scheme[0] }
   ];
-  console.log(minMax);
 
   // create options
   var options = {
