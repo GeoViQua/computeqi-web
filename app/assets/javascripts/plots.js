@@ -2,6 +2,12 @@ var e_colour_scheme = ['#edc240', '#afd8f8', '#cb4b4b', '#4da74d', '#9440ed'];
 
 $e.plot = function($container, type, data) {
   switch (type) {
+    case 'vs_predicted_mean_plot':
+      $e.plotVsPredicted($container, data, 'mean');
+      break;
+    case 'vs_predicted_median_plot':
+      $e.plotVsPredicted($container, data, 'median');
+      break;
     case 'standard_score_plot':
       $e.plotStandardScore($container, data);
       break;
@@ -181,6 +187,23 @@ $e.plotHistogram = function($container, data, options) {
     yaxes: [{
       axisLabel: merged.yAxisLabel
     }]
+  };
+
+  $e.basePlot($container, pdata, options);
+};
+
+$e.plotVsPredicted = function($container, data, source) {
+  // create data
+  var minMax = $e.calculateMinMax(data);
+  var pdata = [
+    $e.createBackgroundLine([[minMax.min,minMax.min],[minMax.max,minMax.max]]),
+    $e.createPoints($e.baseParse(data))
+  ];
+
+  // create options
+  var options = {
+    xaxes: [{ axisLabel: 'Observed' }],
+    yaxes: [{ axisLabel: 'Predicted ' + source }]
   };
 
   $e.basePlot($container, pdata, options);
