@@ -17,6 +17,12 @@ $e.plot = function($container, type, data) {
     case 'median_residual_qq_plot':
       $e.plotResidualQQ($container, data, 'median');
       break;
+    case 'rank_histogram':
+      $e.plotHistogram($container, data, {
+        xAxisLabel: 'Realisation number',
+        yAxisLabel: 'Frequency of observation in that realisation'
+      });
+      break;
     case 'reliability_diagram':
       $e.plotReliabilityDiagram($container, data);
       break;
@@ -147,6 +153,36 @@ $e.basePlot = function($container, data, options, formatter) {
   return plot;
 };
 
+$e.plotHistogram = function($container, data, options) {
+  var merged = $.extend({}, {
+    xAxisLabel: 'X',
+    yAxisLabel: 'Y'
+  }, options);
+
+  // create data
+  var minMax = $e.calculateMinMax(data);
+  var barWidth = ((minMax.maxX - minMax.minX) * 0.6) / data.x.length
+  var pdata = [
+    { label: 'k+',
+      data: $e.baseParse(data),
+      bars: { show: true, align: 'center', barWidth: barWidth } }
+  ];
+
+  // x = 70 / 30
+
+  // create options
+  var options = {
+    xaxes: [{
+      axisLabel: merged.xAxisLabel
+    }],
+    yaxes: [{
+      axisLabel: merged.yAxisLabel
+    }]
+  };
+
+  $e.basePlot($container, pdata, options);
+};
+
 $e.plotStandardScore = function($container, data) {
   // create data
   var pdata = [
@@ -174,28 +210,10 @@ $e.plotStandardScore = function($container, data) {
 };
 
 $e.plotResidualHistogram = function($container, data, source) {
-  // create data
-  var minMax = $e.calculateMinMax(data);
-  var barWidth = ((minMax.maxX - minMax.minX) * 0.6) / data.x.length
-  var pdata = [
-    { label: 'k+',
-      data: $e.baseParse(data),
-      bars: { show: true, align: 'center', barWidth: barWidth } }
-  ];
-
-  // x = 70 / 30
-
-  // create options
-  var options = {
-    xaxes: [{
-      axisLabel: 'Residual from the ' + source
-    }],
-    yaxes: [{
-      axisLabel: 'Frequency',
-    }]
-  };
-
-  $e.basePlot($container, pdata, options);
+  $e.plotHistogram($container, data, {
+    xAxisLabel: 'Residual from the ' + source,
+    yAxisLabel: 'Frequency'
+  });
 };
 
 $e.plotReliabilityDiagram = function($container, data) {

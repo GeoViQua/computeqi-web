@@ -43,20 +43,31 @@ $(function() {
   <div class="span12">
     <div class="tabbable">
       <ul class="nav nav-tabs">
-        <li class="active"><a href="#score-plot" data-toggle="tab">Standard score</a></li>
-        <li><a href="#mean-residual-plot" data-toggle="tab">Mean residual</a></li>
-        <li><a href="#median-residual-plot" data-toggle="tab">Median residual</a></li>
-        <li><a href="#reliability-plot" data-toggle="tab">Reliability</a></li>
+        <li><a href="#vs-tab" data-toggle="tab">Observed vs. predicted</a></li>
+        <li class="active"><a href="#standard-score-tab" data-toggle="tab">Standard score</a></li>
+        <li><a href="#mean-residual-tab" data-toggle="tab">Mean residual</a></li>
+        <li><a href="#median-residual-tab" data-toggle="tab">Median residual</a></li>
+        <li><a href="#rank-tab" data-toggle="tab">Rank</a></li>
+        <li><a href="#reliability-tab" data-toggle="tab">Reliability</a></li>
+        <li><a href="#coverage-tab" data-toggle="tab">Coverage</a></li>
       </ul>
     </div>
   </div>
 </div>
 
 <div class="tab-content">
-  <div class="tab-pane active" id="score-plot">
+  <div class="tab-pane" id="vs-tab">
+    <div class="span6">
+      <div class="plot square" data-type="vs_predicted_mean_plot"></div>
+    </div>
+    <div class="span6">
+      <div class="plot square" data-type="vs_predicted_median_plot"></div>
+    </div>
+  </div>
+  <div class="tab-pane active" id="standard-score-tab">
     <div class="plot" data-type="standard_score_plot"></div>
   </div>
-  <div class="tab-pane row" id="mean-residual-plot">
+  <div class="tab-pane row" id="mean-residual-tab">
     <div class="span6">
       <div class="plot square" data-type="mean_residual_histogram"></div>
     </div>
@@ -64,7 +75,7 @@ $(function() {
       <div class="plot square" data-type="mean_residual_qq_plot"></div>
     </div>
   </div>
-  <div class="tab-pane row" id="median-residual-plot">
+  <div class="tab-pane row" id="median-residual-tab">
     <div class="span6">
       <div class="plot square" data-type="median_residual_histogram"></div>
     </div>
@@ -72,7 +83,13 @@ $(function() {
       <div class="plot square" data-type="median_residual_qq_plot"></div>
     </div>
   </div>
-  <div class="tab-pane" id="reliability-plot">
+  <div class="tab-pane" id="rank-tab">
+    <div class="plot" data-type="rank_histogram"></div>
+  </div>
+  <div class="tab-pane" id="reliability-tab">
     <div class="plot square" data-type="reliability_diagram"></div>
+  </div>
+  <div class="tab-pane" id="coverage-tab">
+    <div class="plot square" data-type="coverage_plot"></div>
   </div>
 </div>
