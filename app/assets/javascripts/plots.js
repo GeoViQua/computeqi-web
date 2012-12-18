@@ -150,13 +150,14 @@ $e.basePlot = function($container, data, options, formatter) {
 $e.plotStandardScore = function($container, data) {
   // create data
   var pdata = [
-    $e.createBackgroundLine([[0,0],[data.x.length - 1,0]]),
+    $e.createBackgroundLine([[0,2],[data.x.length - 1,2]]),
+    $e.createBackgroundLine([[0,-2],[data.x.length - 1,-2]]),
     $e.createPoints($e.baseParse(data))
   ];
 
   // create options
   var options = {
-    yaxis: { min: -2, max: 2 },
+    yaxis: { min: -4, max: 4 },
     xaxes: [{
       axisLabel: 'Index'
     }],
