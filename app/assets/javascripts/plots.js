@@ -26,6 +26,9 @@ $e.plot = function($container, type, data) {
     case 'reliability_diagram':
       $e.plotReliabilityDiagram($container, data);
       break;
+    case 'coverage_plot':
+      $e.plotCoverage($container, data);
+      break;
     default:
       $container.html('Unsupported plot type ' + type + '.');
   }
@@ -264,6 +267,24 @@ $e.plotResidualQQ = function($container, data, source) {
     yaxes: [{
       axisLabel: 'Predicted ' + source + ' residual quantiles',
     }]
+  };
+
+  $e.basePlot($container, pdata, options);
+};
+
+$e.plotCoverage = function($container, data) {
+  // create data
+  var pdata = [
+    $e.createBackgroundLine([[20,20],[98,98]]),
+    $e.createPoints($e.baseParse(data))
+  ];
+
+  // create options
+  var options = {
+    xaxis: { min: 20, max: 100 },
+    yaxis: { min: 0, max: 100 },
+    xaxes: [{ axisLabel: 'Theoretical coverage' }],
+    yaxes: [{ axisLabel: 'Observed frequency in coverage interval' }]
   };
 
   $e.basePlot($container, pdata, options);
