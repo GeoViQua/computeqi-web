@@ -55,7 +55,13 @@ $e.calculateMinMax = function(data) {
       maxY = data.y[i];
     }
   }
-  return { minX: minX, maxX: maxX, minY: minY, maxY: maxY };
+  return {
+    min: (minX < minY ? minX : minY),
+    max: (maxX > maxY ? maxX : maxY),
+    minX: minX,
+    maxX: maxX,
+    minY: minY,
+    maxY: maxY };
 };
 
 $e.createBackgroundLine = function(data) {
@@ -225,14 +231,14 @@ $e.plotResidualQQ = function($container, data, source) {
   // create data
   var minMax = $e.calculateMinMax(data);
   var pdata = [
-    $e.createBackgroundLine([[minMax.minX,minMax.minY],[minMax.maxX,minMax.maxY]]),
+    $e.createBackgroundLine([[minMax.min,minMax.min],[minMax.max,minMax.max]]),
     $e.createPoints($e.baseParse(data))
   ];
 
   // create options
   var options = {
-    xaxis: { min: minMax.xMin, max: minMax.xMax },
-    yaxis: { min: minMax.yMin, max: minMax.yMax },
+    xaxis: { min: minMax.min, max: minMax.max },
+    yaxis: { min: minMax.min, max: minMax.max },
     xaxes: [{
       axisLabel: 'Observed residual quantiles'
     }],
