@@ -221,7 +221,7 @@ $e.plotStandardScore = function($container, data) {
   var options = {
     yaxis: { min: -4, max: 4 },
     xaxes: [{
-      axisLabel: 'Index'
+      axisLabel: 'Index of observation in data set'
     }],
     yaxes: [{
       axisLabel: 'Standard score',
