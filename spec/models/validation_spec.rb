@@ -12,7 +12,17 @@ describe Validation do
   
   it { should respond_to(:observed) }
   it { should respond_to(:predicted) }
-  it { should respond_to(:rmse) }
+
+  it { should respond_to(:mean_bias) }
+  it { should respond_to(:mean_mae) }
+  it { should respond_to(:mean_rmse) }
+  it { should respond_to(:mean_correlation) }
+  it { should respond_to(:median_bias) }
+  it { should respond_to(:median_mae) }
+  it { should respond_to(:median_rmse) }
+  it { should respond_to(:median_correlation) }
+  it { should respond_to(:brier_score) }
+
   it { should respond_to(:vs_predicted_mean_plot_data) }
   it { should respond_to(:vs_predicted_median_plot_data) }
   it { should respond_to(:standard_score_plot_data) }
@@ -79,8 +89,40 @@ describe Validation do
       @validation.handle(response)
     end
 
-    it "should have rmse" do
-      @validation.rmse.should_not be_nil
+    it "should have mean bias" do
+      @validation.mean_bias.should_not be_nil
+    end
+
+    it "should have mean mae" do
+      @validation.mean_mae.should_not be_nil
+    end
+
+    it "should have mean rmse" do
+      @validation.mean_rmse.should_not be_nil
+    end
+
+    it "should have mean correlation" do
+      @validation.mean_correlation.should_not be_nil
+    end
+
+    it "should have median bias" do
+      @validation.median_bias.should_not be_nil
+    end
+
+    it "should have median mae" do
+      @validation.median_mae.should_not be_nil
+    end
+
+    it "should have median rmse" do
+      @validation.median_rmse.should_not be_nil
+    end
+
+    it "should have median correlation" do
+      @validation.median_correlation.should_not be_nil
+    end
+
+    it "should have brier score" do
+      @validation.median_correlation.should_not be_nil
     end
 
     it "should have vs predicted mean plot data" do

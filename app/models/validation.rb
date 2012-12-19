@@ -8,7 +8,15 @@ class Validation
   field :observed, type: Array
   field :predicted, type: Object
 
-  field :rmse, type: Float
+  field :mean_bias, type: Float
+  field :mean_mae, type: Float
+  field :mean_rmse, type: Float
+  field :mean_correlation, type: Float
+  field :median_bias, type: Float
+  field :median_mae, type: Float
+  field :median_rmse, type: Float
+  field :median_correlation, type: Float
+  field :brier_score, type: Float
 
   field :vs_predicted_mean_plot_data, type: Hash
   field :vs_predicted_median_plot_data, type: Hash
@@ -24,7 +32,15 @@ class Validation
   def to_hash
     { observed: self.observed,
       predicted: self.predicted,
-      rmse: self.rmse,
+      meanBias: self.mean_bias,
+      meanMAE: self.mean_mae,
+      meanRMSE: self.mean_rmse,
+      meanCorrelation: self.mean_correlation,
+      medianBias: self.median_bias,
+      medianMAE: self.median_mae,
+      medianRMSE: self.median_rmse,
+      medianCorrelation: self.median_correlation,
+      brierScore: self.brier_score,
       vsPredictedMeanPlotData: self.vs_predicted_mean_plot_data,
       vsPredictedMedianPlotData: self.vs_predicted_median_plot_data,
       standardScorePlotData: self.standard_score_plot_data,
@@ -50,7 +66,16 @@ class Validation
   end
 
   def handle(response)
-    self.rmse = response['rmse']
+    self.mean_bias = response['meanBias']
+    self.mean_mae = response['meanMAE']
+    self.mean_rmse = response['meanRMSE']
+    self.mean_correlation = response['meanCorrelation']
+    self.median_bias = response['medianBias']
+    self.median_mae = response['medianMAE']
+    self.median_rmse = response['medianRMSE']
+    self.median_correlation = response['medianCorrelation']
+    self.brier_score = response['brierScore']
+    
     self.vs_predicted_mean_plot_data = response['vsPredictedMeanPlotData']
     self.vs_predicted_median_plot_data = response['vsPredictedMedianPlotData']
     self.standard_score_plot_data = response['standardScorePlotData']

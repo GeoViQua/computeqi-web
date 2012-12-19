@@ -96,12 +96,23 @@ $(function() {
   <div class="tab-pane" id="metrics-tab">
     <table border="1">
       <tr>
-        <th>Metric</th>
-        <th>Value</th>
+        <th colspan="2">Mean</th>
+      </tr>
+      <tr>
+        <td>Bias</td>
+        <td><%= number_with_precision(@validation.mean_bias, precision: 3) %></td>
+      </tr>
+      <tr>
+        <td>Mean absolute error</td>
+        <td><%= number_with_precision(@validation.mean_mae, precision: 3) %></td>
       </tr>
       <tr>
         <td>Root-mean-square error</td>
-        <td><%= number_with_precision(@validation.rmse, precision: 3) %></td>
+        <td><%= number_with_precision(@validation.mean_rmse, precision: 3) %></td>
+      </tr>
+      <tr>
+        <td>Correlation</td>
+        <td><%= number_with_precision(@validation.mean_correlation, precision: 3) %></td>
       </tr>
     </table>
   </div>
