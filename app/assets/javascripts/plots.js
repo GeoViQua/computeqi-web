@@ -131,7 +131,7 @@ $e.basePlot = function($container, data, options, title, formatter) {
 
         // default formatter if required
         var format = formatter;
-        if (typeof(format) === 'undefined' && format != null) {
+        if (typeof(format) === 'undefined' || format == null) {
           format = function($div, item) {
             var datapoint = item.datapoint;
             $div.html('x: ' + datapoint[0].toFixed(2) + ', ' + 'y: ' + datapoint[1].toFixed(2));
