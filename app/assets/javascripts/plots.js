@@ -44,13 +44,13 @@ $e.baseParse = function(data) {
   // parse data
   var x = data.x;
   var y = data.y;
-  var yRange = data.yRange;
+  var yError = data.yRange;
   var array = [];
   for (var i = 0; i < x.length; i++) {
-    if (typeof(yRange) === 'undefined') {
+    if (typeof(yError) === 'undefined') {
       array.push([x[i], y[i]]);
     } else {
-      array.push([x[i], y[i], y[i] - yRange[i][0], yRange[i][1] - y[i]]);
+      array.push([x[i], y[i], y[i] - yError[i][0], yError[i][1] - y[i]]);
     }
   }
   return array;
