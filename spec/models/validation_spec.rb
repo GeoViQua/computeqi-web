@@ -22,6 +22,14 @@ describe Validation do
   it { should respond_to(:median_rmse) }
   it { should respond_to(:median_correlation) }
   it { should respond_to(:brier_score) }
+  it { should respond_to(:crps) }
+  it { should respond_to(:crps_reliability) }
+  it { should respond_to(:crps_resolution) }
+  it { should respond_to(:crps_uncertainty) }
+  it { should respond_to(:ign_score) }
+  it { should respond_to(:ign_reliability) }
+  it { should respond_to(:ign_resolution) }
+  it { should respond_to(:ign_uncertainty) }
 
   it { should respond_to(:vs_predicted_mean_plot_data) }
   it { should respond_to(:vs_predicted_median_plot_data) }
@@ -123,6 +131,38 @@ describe Validation do
 
     it "should have brier score" do
       @validation.median_correlation.should_not be_nil
+    end
+
+    it "should have crps" do
+      @validation.crps.should_not be_nil
+    end
+
+    it "should have crps reliability" do
+      @validation.crps_reliability.should_not be_nil
+    end
+
+    it "should have crps resolution" do
+      @validation.crps_resolution.should_not be_nil
+    end
+
+    it "should have crps uncertainty" do
+      @validation.crps_uncertainty.should_not be_nil
+    end
+
+    it "should have ign score" do
+      @validation.ign_score.should_not be_nil
+    end
+
+    it "should have ign reliability" do
+      @validation.ign_reliability.should_not be_nil
+    end
+
+    it "should have ign resolution" do
+      @validation.ign_resolution.should_not be_nil
+    end
+
+    it "should have ign uncertainty" do
+      @validation.ign_uncertainty.should_not be_nil
     end
 
     it "should have vs predicted mean plot data" do

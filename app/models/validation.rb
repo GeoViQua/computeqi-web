@@ -17,6 +17,14 @@ class Validation
   field :median_rmse, type: Float
   field :median_correlation, type: Float
   field :brier_score, type: Float
+  field :crps, type: Float
+  field :crps_reliability, type: Float
+  field :crps_resolution, type: Float
+  field :crps_uncertainty, type: Float
+  field :ign_score, type: Float
+  field :ign_reliability, type: Float
+  field :ign_resolution, type: Float
+  field :ign_uncertainty, type: Float
 
   field :vs_predicted_mean_plot_data, type: Hash
   field :vs_predicted_median_plot_data, type: Hash
@@ -41,6 +49,14 @@ class Validation
       medianRMSE: self.median_rmse,
       medianCorrelation: self.median_correlation,
       brierScore: self.brier_score,
+      crps: self.crps,
+      crpsReliability: self.crps_reliability,
+      crpsResolution: self.crps_resolution,
+      crpsUncertainty: self.crps_uncertainty,
+      ignScore: self.ign_score,
+      ignReliability: self.ign_reliability,
+      ignResolution: self.ign_resolution,
+      ignUncertainty: self.ign_uncertainty,
       vsPredictedMeanPlotData: self.vs_predicted_mean_plot_data,
       vsPredictedMedianPlotData: self.vs_predicted_median_plot_data,
       standardScorePlotData: self.standard_score_plot_data,
@@ -75,7 +91,14 @@ class Validation
     self.median_rmse = response['medianRMSE']
     self.median_correlation = response['medianCorrelation']
     self.brier_score = response['brierScore']
-    
+    self.crps = response['crps']
+    self.crps_reliability = response['crpsReliability']
+    self.crps_resolution = response['crpsResolution']
+    self.crps_uncertainty = response['crpsUncertainty']
+    self.ign_score = response['ignScore']
+    self.ign_reliability = response['ignReliability']
+    self.ign_resolution = response['ignResolution']
+    self.ign_uncertainty = response['ignUncertainty']
     self.vs_predicted_mean_plot_data = response['vsPredictedMeanPlotData']
     self.vs_predicted_median_plot_data = response['vsPredictedMedianPlotData']
     self.standard_score_plot_data = response['standardScorePlotData']
