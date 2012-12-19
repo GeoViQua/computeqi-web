@@ -98,7 +98,7 @@ $e.createPoints = function(data) {
   return p;
 }
 
-$e.basePlot = function($container, data, options, formatter) {
+$e.basePlot = function($container, data, options, title, formatter) {
   var merged = $.extend({}, {
     colors: e_colour_scheme,
     grid: {
@@ -110,9 +110,18 @@ $e.basePlot = function($container, data, options, formatter) {
     }
   }, options);
 
-  var plot = $.plot($container, data, merged);
+  var $plotarea;
+  if (typeof(title) !== 'undefined' && title != null) {
+    var height = $container.height();
+    $container.empty();
+    $heading = $('<div>' + title + '</div>').addClass('plot-title').appendTo($container);
+    $plotarea = $('<div></div>').css('height', height - $heading.height()).appendTo($container);
+  } else {
+    $plotarea = $container;
+  }
+  var plot = $.plot($plotarea, data, merged);
 
-  $container.bind('plothover', function(event, position, item) {
+  $plotarea.bind('plothover', function(event, position, item) {
     if (item) {
       if (plot.previousPoint != item.dataIndex) {
         plot.previousPoint = item.dataIndex;
@@ -122,7 +131,7 @@ $e.basePlot = function($container, data, options, formatter) {
 
         // default formatter if required
         var format = formatter;
-        if (typeof(format) === 'undefined') {
+        if (typeof(format) === 'undefined' && format != null) {
           format = function($div, item) {
             var datapoint = item.datapoint;
             $div.html('x: ' + datapoint[0].toFixed(2) + ', ' + 'y: ' + datapoint[1].toFixed(2));
@@ -232,7 +241,7 @@ $e.plotStandardScore = function($container, data) {
     $div.html(item.datapoint[1].toFixed(2));
   };
 
-  $e.basePlot($container, pdata, options, formatter);
+  $e.basePlot($container, pdata, options, null, formatter);
 };
 
 $e.plotResidualHistogram = function($container, data, source) {
