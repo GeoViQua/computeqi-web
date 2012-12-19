@@ -93,7 +93,7 @@ $e.createPoints = function(data) {
   var p = {
     label: 'k+',
     data: data,
-    points: { show: true, radius: 5 },
+    points: { show: true, radius: 4 },
     color: e_colour_scheme[0] };
   return p;
 }
