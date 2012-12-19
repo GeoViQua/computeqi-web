@@ -18,6 +18,12 @@ namespace :e do
     end
   end
 
+  task :refresh_validations => :environment do
+    Validation.all.each do |validation|
+      Delayed::Job.enqueue RemoteJob.new(validation)
+    end
+  end
+
   def update_descriptions(desc_coll, coll)
     desc_coll.each do |desc|
       io = coll.where(name: desc["identifier"]).first
