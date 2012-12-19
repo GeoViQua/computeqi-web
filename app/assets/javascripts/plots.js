@@ -3,36 +3,46 @@ var e_colour_scheme = ['#edc240', '#afd8f8', '#cb4b4b', '#4da74d', '#9440ed'];
 $e.plot = function($container, type, data) {
   switch (type) {
     case 'vs_predicted_mean_plot':
+      data.title = 'Observed versus predicted mean, with error bars ±1 standard deviation';
       $e.plotVsPredicted($container, data, 'mean');
       break;
     case 'vs_predicted_median_plot':
+      data.title = 'Observed versus predicted median, with 25-75% confidence intervals';
       $e.plotVsPredicted($container, data, 'median');
       break;
     case 'standard_score_plot':
+      data.title = 'Standard score plot, 95% should fall within the two red lines';
       $e.plotStandardScore($container, data);
       break;
     case 'mean_residual_histogram':
+      data.title = 'Histogram of residuals from the mean';
       $e.plotResidualHistogram($container, data, 'mean');
       break;
     case 'mean_residual_qq_plot':
+      data.title = 'Mean residual qq-plot';
       $e.plotResidualQQ($container, data, 'mean');
       break;
     case 'median_residual_histogram':
+      data.title = 'Histogram of residuals from the median';
       $e.plotResidualHistogram($container, data, 'median');
       break;
     case 'median_residual_qq_plot':
+      data.title = 'Median residual qq-plot';
       $e.plotResidualQQ($container, data, 'median');
       break;
     case 'rank_histogram':
+      data.title = 'Rank histogram plot, ideally should be flat, but sensitive to low numbers of observations';
       $e.plotHistogram($container, data, {
         xAxisLabel: 'Realisation number',
         yAxisLabel: 'Frequency of observation in that realisation'
       });
       break;
     case 'reliability_diagram':
+      data.title = 'Reliability diagram, computed based on splitting the range of observations into 10 classes';
       $e.plotReliabilityDiagram($container, data);
       break;
     case 'coverage_plot':
+      data.title = 'Coverage interval vs frequency that observation is in coverage interval, 20-98% coverage';
       $e.plotCoverage($container, data);
       break;
     default:
@@ -211,7 +221,7 @@ $e.plotHistogram = function($container, data, options) {
     }]
   };
 
-  $e.basePlot($container, pdata, options);
+  $e.basePlot($container, pdata, options, data.title);
 };
 
 $e.plotVsPredicted = function($container, data, source) {
@@ -232,7 +242,7 @@ $e.plotVsPredicted = function($container, data, source) {
   // 'mean' is +/- 1 standard deviation
   // 'median' is 25% CI, 75% CI
 
-  $e.basePlot($container, pdata, options);
+  $e.basePlot($container, pdata, options, data.title);
 };
 
 $e.plotStandardScore = function($container, data) {
@@ -254,11 +264,7 @@ $e.plotStandardScore = function($container, data) {
     }]
   };
 
-  var formatter = function($div, item) {
-    $div.html(item.datapoint[1].toFixed(2));
-  };
-
-  $e.basePlot($container, pdata, options, null, formatter);
+  $e.basePlot($container, pdata, options, data.title);
 };
 
 $e.plotResidualHistogram = function($container, data, source) {
@@ -286,7 +292,7 @@ $e.plotReliabilityDiagram = function($container, data) {
     }]
   };
 
-  var plot = $e.basePlot($container, pdata, options);
+  var plot = $e.basePlot($container, pdata, options, data.title);
 
   // add data labels
   $.each(pdata[1].data, function(i, xy) {
@@ -318,7 +324,7 @@ $e.plotResidualQQ = function($container, data, source) {
     }]
   };
 
-  $e.basePlot($container, pdata, options);
+  $e.basePlot($container, pdata, options, data.title);
 };
 
 $e.plotCoverage = function($container, data) {
@@ -336,5 +342,5 @@ $e.plotCoverage = function($container, data) {
     yaxes: [{ axisLabel: 'Observed frequency in coverage interval' }]
   };
 
-  $e.basePlot($container, pdata, options);
+  $e.basePlot($container, pdata, options, data.title);
 };
