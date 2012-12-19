@@ -276,7 +276,7 @@ $e.plotReliabilityDiagram = function($container, data) {
     var offset = plot.pointOffset({ x: xy[0], y: xy[1] });
     var $label = $('<div class="plot-label"></div>');
     $label.html(data.n[i]); // lookup from original data
-    $label.css({ left: offset.left + 10, top: offset.top });
+    $label.css({ left: offset.left + 8, top: offset.top });
     $label.appendTo(plot.getPlaceholder());
   });
 };
