@@ -136,10 +136,11 @@ $e.basePlot = function($container, data, options, title, formatter) {
 
   var $plotarea;
   if (typeof(title) !== 'undefined' && title != null) {
-    var height = $container.height();
+    var originalHeight = $container.height();
     $container.empty();
     $heading = $('<div>' + title + '</div>').addClass('plot-title').appendTo($container);
-    $plotarea = $('<div></div>').css('height', height - $heading.height()).appendTo($container);
+    var headingHeight = $heading.height() + parseInt($heading.css('margin-bottom'));
+    $plotarea = $('<div></div>').css('height', originalHeight - headingHeight).appendTo($container);
   } else {
     $plotarea = $container;
   }
