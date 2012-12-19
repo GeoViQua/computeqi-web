@@ -20,6 +20,11 @@ class ValidationsController < Remote::RemotableController
     super_create
   end
 
+  def edit
+    # to get try again link working
+    refresh
+  end
+
   def show_respond_to(format)
     format.json {
       if params[:data]
