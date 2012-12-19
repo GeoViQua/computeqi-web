@@ -37,7 +37,7 @@ $(function() {
 </script>
 
 
-<%= render partial: "shared/toolbar", locals: { text: "Performed validation on #{pluralize(@validation.predicted.size, 'prediction')}. RMSE is #{number_with_precision(@validation.rmse, precision: 3)}.", parent: @project, object: @validation, export_options: ["json"] } %>
+<%= render partial: "shared/toolbar", locals: { text: "Performed validation on #{pluralize(@validation.predicted.size, 'prediction')}.", parent: @project, object: @validation, export_options: ["json"] } %>
 
 <div class="row">
   <div class="span12">
@@ -50,6 +50,7 @@ $(function() {
         <li><a href="#rank-tab" data-toggle="tab">Rank</a></li>
         <li><a href="#reliability-tab" data-toggle="tab">Reliability</a></li>
         <li><a href="#coverage-tab" data-toggle="tab">Coverage</a></li>
+        <li><a href="#metrics-tab" data-toggle="tab">Metrics</a></li>
       </ul>
     </div>
   </div>
@@ -91,5 +92,17 @@ $(function() {
   </div>
   <div class="tab-pane" id="coverage-tab">
     <div class="plot square" data-type="coverage_plot"></div>
+  </div>
+  <div class="tab-pane" id="metrics-tab">
+    <table border="1">
+      <tr>
+        <th>Metric</th>
+        <th>Value</th>
+      </tr>
+      <tr>
+        <td>Root-mean-square error</td>
+        <td><%= number_with_precision(@validation.rmse, precision: 3) %></td>
+      </tr>
+    </table>
   </div>
 </div>
