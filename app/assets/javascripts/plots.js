@@ -200,8 +200,6 @@ $e.plotHistogram = function($container, data, options) {
       bars: { show: true, align: 'center', barWidth: barWidth } }
   ];
 
-  // x = 70 / 30
-
   // create options
   var options = {
 
