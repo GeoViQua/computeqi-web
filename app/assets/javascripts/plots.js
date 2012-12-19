@@ -170,13 +170,12 @@ $e.basePlot = function($container, data, options, title, formatter) {
         format($tooltip, item);
 
         // calculate position
-        var left = item.pageX + 12;
+        var offset = 12;
+        var left = item.pageX + offset;
         var top = item.pageY;
-        // if (left + $tooltip.width() > $(window).width()) {
-        //   left = position.pageX - offset - $tooltip.width();
-        // } else {
-        //   left = left + offset;
-        // }
+        if (left + $tooltip.width() > $(window).width()) {
+          left = item.pageX - $tooltip.width() - (offset * 3);
+        }
 
         // set position
         $tooltip.css({ left: left, top: top });
