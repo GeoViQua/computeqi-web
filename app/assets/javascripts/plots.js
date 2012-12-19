@@ -44,9 +44,14 @@ $e.baseParse = function(data) {
   // parse data
   var x = data.x;
   var y = data.y;
+  var yRange = data.yRange;
   var array = [];
   for (var i = 0; i < x.length; i++) {
-    array.push([x[i], y[i]]);
+    if (typeof(yRange) === 'undefined') {
+      array.push([x[i], y[i]]);
+    } else {
+      array.push([x[i], y[i], y[i] - yRange[i][0], yRange[i][1] - y[i]]);
+    }
   }
   return array;
 };
@@ -95,6 +100,15 @@ $e.createPoints = function(data) {
     data: data,
     points: { show: true, radius: 4 },
     color: e_colour_scheme[0] };
+  return p;
+};
+
+$e.createPointsWithError = function(data) {
+  var p = $e.createPoints(data);
+  p.points = $.extend({}, p.points, {
+    errorbars: 'y',
+    yerr: { show: true, asymmetric: true, upperCap: '-', lowerCap: '-' }
+  });
   return p;
 }
 
@@ -190,6 +204,7 @@ $e.plotHistogram = function($container, data, options) {
 
   // create options
   var options = {
+
     xaxes: [{
       axisLabel: merged.xAxisLabel
     }],
@@ -206,7 +221,7 @@ $e.plotVsPredicted = function($container, data, source) {
   var minMax = $e.calculateMinMax(data);
   var pdata = [
     $e.createBackgroundLine([[minMax.min,minMax.min],[minMax.max,minMax.max]]),
-    $e.createPoints($e.baseParse(data))
+    $e.createPointsWithError($e.baseParse(data))
   ];
 
   // create options
@@ -214,6 +229,10 @@ $e.plotVsPredicted = function($container, data, source) {
     xaxes: [{ axisLabel: 'Observed' }],
     yaxes: [{ axisLabel: 'Predicted ' + source }]
   };
+
+  // custom formatter
+  // 'mean' is +/- 1 standard deviation
+  // 'median' is 25% CI, 75% CI
 
   $e.basePlot($container, pdata, options);
 };
