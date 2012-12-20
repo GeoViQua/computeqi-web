@@ -1,0 +1,11 @@
+<table border="1" class="metrics">
+  <tr>
+    <th colspan="2"><%= group %></th>
+  </tr>
+  <% rows.each do |row| %>
+  <tr>
+    <td><%= row[:metric] %></td>
+    <td><%= number_with_precision(row[:value], :precision => 3) %></td>
+  </tr>
+  <% end %>
+</table>

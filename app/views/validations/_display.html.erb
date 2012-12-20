@@ -96,109 +96,63 @@ $(function() {
   <div class="tab-pane" id="metrics-tab">
     <div class="row">
       <div class="span6">
-        <table border="1" class="metrics">
-          <tr>
-            <th colspan="2">Mean</th>
-          </tr>
-          <tr>
-            <td>Bias</td>
-            <td><%= number_with_precision(@validation.mean_bias, precision: 3) %></td>
-          </tr>
-          <tr>
-            <td>Mean absolute error</td>
-            <td><%= number_with_precision(@validation.mean_mae, precision: 3) %></td>
-          </tr>
-          <tr>
-            <td>Root-mean-square error</td>
-            <td><%= number_with_precision(@validation.mean_rmse, precision: 3) %></td>
-          </tr>
-          <tr>
-            <td>Correlation</td>
-            <td><%= number_with_precision(@validation.mean_correlation, precision: 3) %></td>
-          </tr>
-        </table>
+        <%=
+        render('metrics_table', {
+          :group => 'Mean',
+          :rows => [
+            { :metric => 'Bias', :value => @validation.mean_bias },
+            { :metric => 'Mean absolute error', :value => @validation.mean_mae },
+            { :metric => 'Root-mean-square error', :value => @validation.mean_rmse },
+            { :metric => 'Correlation', :value => @validation.mean_correlation }
+          ]})
+        %>
       </div>
       <div class="span6">
-        <table border="1" class="metrics">
-          <tr>
-            <th colspan="2">Median</th>
-          </tr>
-          <tr>
-            <td>Bias</td>
-            <td><%= number_with_precision(@validation.median_bias, precision: 3) %></td>
-          </tr>
-          <tr>
-            <td>Mean absolute error</td>
-            <td><%= number_with_precision(@validation.median_mae, precision: 3) %></td>
-          </tr>
-          <tr>
-            <td>Root-mean-square error</td>
-            <td><%= number_with_precision(@validation.median_rmse, precision: 3) %></td>
-          </tr>
-          <tr>
-            <td>Correlation</td>
-            <td><%= number_with_precision(@validation.median_correlation, precision: 3) %></td>
-          </tr>
-        </table>
+        <%=
+        render('metrics_table', {
+          :group => 'Median',
+          :rows => [
+            { :metric => 'Bias', :value => @validation.median_bias },
+            { :metric => 'Mean absolute error', :value => @validation.median_mae },
+            { :metric => 'Root-mean-square error', :value => @validation.median_rmse },
+            { :metric => 'Correlation', :value => @validation.median_correlation }
+          ]})
+        %>
       </div>
     </div>
-    <div class="row">
+    <div class="row space-top">
       <div class="span4">
-        <table border="1" class="metrics">
-          <tr>
-            <th colspan="2">Continuous Ranked Probability Score</th>
-          </tr>
-          <tr>
-            <td>Score</td>
-            <td><%= number_with_precision(@validation.crps, precision: 3) %></td>
-          </tr>
-          <tr>
-            <td>Reliability</td>
-            <td><%= number_with_precision(@validation.crps_reliability, precision: 3) %></td>
-          </tr>
-          <tr>
-            <td>Resolution</td>
-            <td><%= number_with_precision(@validation.crps_resolution, precision: 3) %></td>
-          </tr>
-          <tr>
-            <td>Uncertainty</td>
-            <td><%= number_with_precision(@validation.crps_uncertainty, precision: 3) %></td>
-          </tr>
-        </table>
+        <%=
+        render('metrics_table', {
+          :group => 'Continuous Ranked Probability Score',
+          :rows => [
+            { :metric => 'Score', :value => @validation.crps },
+            { :metric => 'Reliability', :value => @validation.crps_reliability },
+            { :metric => 'Resolution', :value => @validation.crps_resolution },
+            { :metric => 'Uncertainty', :value => @validation.crps_uncertainty }
+          ]})
+        %>
       </div>
       <div class="span4">
-        <table border="1" class="metrics">
-          <tr>
-            <th colspan="2">Ignorance Score</th>
-          </tr>
-          <tr>
-            <td>Score</td>
-            <td><%= number_with_precision(@validation.ign_score, precision: 3) %></td>
-          </tr>
-          <tr>
-            <td>Reliability</td>
-            <td><%= number_with_precision(@validation.ign_reliability, precision: 3) %></td>
-          </tr>
-          <tr>
-            <td>Resolution</td>
-            <td><%= number_with_precision(@validation.ign_resolution, precision: 3) %></td>
-          </tr>
-          <tr>
-            <td>Uncertainty</td>
-            <td><%= number_with_precision(@validation.ign_uncertainty, precision: 3) %></td>
-          </tr>
-        </table>
+        <%=
+        render('metrics_table', {
+          :group => 'Ignorance Score',
+          :rows => [
+            { :metric => 'Score', :value => @validation.ign_score },
+            { :metric => 'Reliability', :value => @validation.ign_reliability },
+            { :metric => 'Resolution', :value => @validation.ign_resolution },
+            { :metric => 'Uncertainty', :value => @validation.ign_uncertainty }
+          ]})
+        %>
       </div>
       <div class="span4">
-        <table border="1" class="metrics">
-          <tr>
-            <th colspan="2">Brier Score</th>
-          </tr>
-          <tr>
-            <td>Score</td>
-            <td><%= number_with_precision(@validation.brier_score, precision: 3) %></td>
-          </tr>
-        </table>
+        <%=
+        render('metrics_table', {
+          :group => 'Brier Score',
+          :rows => [
+            { :metric => 'Score', :value => @validation.brier_score }
+          ]})
+        %>
       </div>
     </div>
   </div>
