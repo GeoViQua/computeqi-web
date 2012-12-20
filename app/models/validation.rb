@@ -66,7 +66,7 @@ class Validation
       medianResidualQQPlotData: self.median_residual_qq_plot_data,
       rankHistogramData: self.rank_histogram_data,
       reliabilityDiagramData: self.reliability_diagram_data,
-      coveragePlotData: self.coveragePlotData }
+      coveragePlotData: self.coverage_plot_data }
   end
   
   def generate
