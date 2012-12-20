@@ -19,7 +19,7 @@ $e.plot = function($container, type, data) {
       $e.plotResidualHistogram($container, data, 'mean');
       break;
     case 'mean_residual_qq_plot':
-      data.title = 'Mean residual qq-plot';
+      data.title = 'Mean residual QQ plot';
       $e.plotResidualQQ($container, data, 'mean');
       break;
     case 'median_residual_histogram':
@@ -27,7 +27,7 @@ $e.plot = function($container, type, data) {
       $e.plotResidualHistogram($container, data, 'median');
       break;
     case 'median_residual_qq_plot':
-      data.title = 'Median residual qq-plot';
+      data.title = 'Median residual QQ plot';
       $e.plotResidualQQ($container, data, 'median');
       break;
     case 'rank_histogram':
