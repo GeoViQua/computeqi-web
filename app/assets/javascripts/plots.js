@@ -94,7 +94,7 @@ $e.calculateMinMax = function(data) {
     maxY: maxY };
 };
 
-$e.createBackgroundLine = function(data) {
+$e.createLine = function(data) {
   var l = {
     label: 'r',
     data: data,
@@ -228,7 +228,7 @@ $e.plotVsPredicted = function($container, data, source) {
   // create data
   var minMax = $e.calculateMinMax(data);
   var pdata = [
-    $e.createBackgroundLine([[minMax.min,minMax.min],[minMax.max,minMax.max]]),
+    $e.createLine([[minMax.min,minMax.min],[minMax.max,minMax.max]]),
     $e.createPointsWithError($e.baseParse(data))
   ];
 
@@ -248,8 +248,8 @@ $e.plotVsPredicted = function($container, data, source) {
 $e.plotStandardScore = function($container, data) {
   // create data
   var pdata = [
-    $e.createBackgroundLine([[0,2],[data.x.length - 1,2]]),
-    $e.createBackgroundLine([[0,-2],[data.x.length - 1,-2]]),
+    $e.createLine([[0,2],[data.x.length - 1,2]]),
+    $e.createLine([[0,-2],[data.x.length - 1,-2]]),
     $e.createPoints($e.baseParse(data))
   ];
 
@@ -277,7 +277,7 @@ $e.plotResidualHistogram = function($container, data, source) {
 $e.plotReliabilityDiagram = function($container, data) {
   // create data
   var pdata = [
-    $e.createBackgroundLine([[0,0],[1,1]]),
+    $e.createLine([[0,0],[1,1]]),
     $e.createPoints($e.baseParse(data))
   ];
       
@@ -308,7 +308,7 @@ $e.plotResidualQQ = function($container, data, source) {
   // create data
   var minMax = $e.calculateMinMax(data);
   var pdata = [
-    $e.createBackgroundLine([[minMax.min,minMax.min],[minMax.max,minMax.max]]),
+    $e.createLine([[minMax.min,minMax.min],[minMax.max,minMax.max]]),
     $e.createPoints($e.baseParse(data))
   ];
 
@@ -330,7 +330,7 @@ $e.plotResidualQQ = function($container, data, source) {
 $e.plotCoverage = function($container, data) {
   // create data
   var pdata = [
-    $e.createBackgroundLine([[20,20],[98,98]]),
+    $e.createLine([[20,20],[98,98]]),
     $e.createPoints($e.baseParse(data))
   ];
 
