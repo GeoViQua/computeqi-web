@@ -11,7 +11,7 @@ $e.plot = function($container, type, data) {
       $e.plotVsPredicted($container, data, 'median');
       break;
     case 'standard_score_plot':
-      data.title = 'Standard score plot, 95% should fall within the two red lines';
+      data.title = 'Standard score plot, 95% should fall within the two blue lines';
       $e.plotStandardScore($container, data);
       break;
     case 'mean_residual_histogram':
