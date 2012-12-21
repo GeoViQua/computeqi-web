@@ -13,7 +13,9 @@ Emulatorization::Application.routes.draw do
     resources :designs
     resources :runs
     resources :emulators
-    resources :emulator_validations
+    resources :validations do
+      get 'refresh', :on => :member
+    end
   end
 
   resources :sensitivity_projects do

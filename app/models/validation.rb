@@ -2,9 +2,16 @@ class Validation
   include Mongoid::Document
   include Remote::Remotable
 
-  belongs_to :validation_project
+  belongs_to :validatable, polymorphic: true
 
   field :name, type: String
+
+  # only used for emulator
+  field :design_size, type: Integer
+  has_one :design, as: :designable
+  has_one :run, as: :runnable
+
+  # only used for non-emulator
   field :observed, type: Array
   field :predicted, type: Object
 
@@ -37,10 +44,15 @@ class Validation
   field :reliability_diagram_data, type: Hash
   field :coverage_plot_data, type: Hash
 
+  def calculate_defaults
+    project = self.validatable
+    if project.class == EmulatorProject
+      self.design_size = project.emulator.validation_indices.size
+    end
+  end
+
   def to_hash
-    { observed: self.observed,
-      predicted: self.predicted,
-      meanBias: self.mean_bias,
+    { meanBias: self.mean_bias,
       meanMAE: self.mean_mae,
       meanRMSE: self.mean_rmse,
       meanCorrelation: self.mean_correlation,
@@ -70,15 +82,59 @@ class Validation
   end
   
   def generate
-    if self.predicted.first.class == Array
-      predicted_obj = self.predicted.map {|value| { members: value} }
-    else
-      predicted_obj = self.predicted
-    end
+    # get project
+    project = self.validatable
 
-    { type: 'ValidationRequest',
-      observed: self.observed,
-      predicted: predicted_obj }
+    if project.class == EmulatorProject
+      # get spec and emulator
+      spec = project.simulator_specification
+      emulator = project.emulator
+    
+      # get emulator hash
+      emulator_hash = emulator.to_hash
+
+      # existing
+      full_design = project.design
+      full_run = project.run
+
+      # get indices to use for validation
+      # this should potentially be a random sample
+      indices = project.emulator.validation_indices[0...self.design_size]
+
+      # build design and runs
+      self.design = self.create_design(simulator_specification: spec, size: self.design_size)
+      full_design.design_values.each do |dv|
+        self.design.design_values.create(input: dv.input, points: indices.collect {|i| dv.points[i] })
+      end
+
+      self.run = self.create_run(simulator_specification: spec, design: self.design, size: self.design_size)
+      selected_run = full_run.run_values.where(output_id: emulator.output.id).first
+      self.run.run_values.create(output: emulator.output, points: indices.collect {|i| selected_run.points[i] })
+
+      { type: 'ValidationRequest',
+        emulator: emulator_hash,
+        design: self.design.to_hash,
+        evaluationResult: self.run.to_hash }
+    else
+      # non-emulator
+      if self.predicted.first.class == Array
+        predicted_obj = self.predicted.map {|value| { members: value} }
+      else
+        predicted_obj = self.predicted
+      end
+
+      { type: 'ValidationRequest',
+        observed: self.observed,
+        predicted: predicted_obj }
+    end
+  end
+
+  def predicted_size
+    if self.validatable.class == EmulatorProject
+      self.design.size
+    else
+      self.predicted.size
+    end
   end
 
   def handle(response)

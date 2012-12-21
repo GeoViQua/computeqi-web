@@ -1,1 +1,5 @@
-<%= render 'form' %>
+<% if @project.class == EmulatorProject %>
+  <%= render 'form_emulator' %>
+<% else %>
+  <%= render 'form' %>
+<% end %>

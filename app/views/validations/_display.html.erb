@@ -7,7 +7,13 @@
 <script>
 $(function() {
   // better way to do this?
-  var url = '<%= escape_javascript(validation_project_validation_path(@project, @validation)) %>.json';
+  var url = '<%=
+  if @project.class == EmulatorProject
+    escape_javascript(emulator_project_validation_path(@project, @validation))
+  else
+    escape_javascript(validation_project_validation_path(@project, @validation))
+  end
+  %>.json';
 
   // selector is for tab pane containing div with plot class
   function updatePlots(selector) {
@@ -37,7 +43,7 @@ $(function() {
 </script>
 
 
-<%= render partial: "shared/toolbar", locals: { text: "Performed validation on #{pluralize(@validation.predicted.size, 'prediction')}.", parent: @project, object: @validation, export_options: ["json"] } %>
+<%= render partial: "shared/toolbar", locals: { text: "Performed validation on #{pluralize(@validation.predicted_size, 'prediction')}.", parent: @project, object: @validation, export_options: ["json"] } %>
 
 <div class="row">
   <div class="span12">

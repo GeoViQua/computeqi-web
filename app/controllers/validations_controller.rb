@@ -3,20 +3,21 @@ class ValidationsController < Remote::RemotableController
   alias :super_create :create
 
   def create
-    observed_hash = params[:validation][:observed]
-    predicted_hash = params[:validation][:predicted]
+    if @project.class == ValidationProject
+      observed_hash = params[:validation][:observed]
+      predicted_hash = params[:validation][:predicted]
 
-    observed = Array.new
-    predicted = Array.new
+      observed = Array.new
+      predicted = Array.new
 
-    observed_hash.each do |id, value|
-      observed << parse_value(value)
-      predicted << parse_value(predicted_hash[id])
+      observed_hash.each do |id, value|
+        observed << parse_value(value)
+        predicted << parse_value(predicted_hash[id])
+      end
+
+      params[:validation][:observed] = observed
+      params[:validation][:predicted] = predicted
     end
-
-    params[:validation][:observed] = observed
-    params[:validation][:predicted] = predicted
-    
     super_create
   end
 

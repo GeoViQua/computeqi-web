@@ -1,5 +1,5 @@
 class ProjectObserver < Mongoid::Observer
-  observe :input, :design, :run, :emulator, :emulator_validation
+  observe :input, :design, :run, :emulator, :validation
 
   def after_destroy(object)
     # get project and type
@@ -36,7 +36,7 @@ class ProjectObserver < Mongoid::Observer
         run.destroy if !run.nil?
         emulator = project.emulator rescue nil
         emulator.destroy if !emulator.nil?
-        validation = project.emulator_validation rescue nil
+        validation = project.validation rescue nil
         validation.destroy if !validation.nil?
       end
     else
