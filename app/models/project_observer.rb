@@ -74,7 +74,7 @@ class ProjectObserver < Mongoid::Observer
       end
 
       if [ Design, Run, Emulator ].include? type
-        validation = project.emulator_validation
+        validation = project.validation
         validation.destroy if !validation.nil?
       end
     end
