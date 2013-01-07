@@ -15,6 +15,8 @@ class Validation
   field :observed, type: Array
   field :predicted, type: Object
 
+  field :missing_value_code, type: Float, default: -9900.0
+
   field :mean_bias, type: Float
   field :mean_mae, type: Float
   field :mean_rmse, type: Float
