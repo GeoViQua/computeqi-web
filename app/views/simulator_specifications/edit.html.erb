@@ -9,6 +9,20 @@
   <%# f.input :process_name, hint: @spec.process_description %>
 
   <div class="row space-top">
+    <div class="span12">
+      <fieldset>
+        <legend>Import values</legend>
+        <div class="control-group">
+          <label class="control-label">Import values</label>
+          <div class="controls form-toggle">
+            <div id="import-container"></div>
+          </div>
+        </div>
+      </fieldset>
+    </div>
+  </div>
+
+  <div class="row">
     <% index = 0 %>
     <%= f.simple_fields_for :inputs do |b| %>
       <% if index % 2 == 0 %>
