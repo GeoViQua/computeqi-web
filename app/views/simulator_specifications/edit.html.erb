@@ -78,14 +78,9 @@
         </div>
         <div class="samples<%= (b.object.samples? ? "" : " hide") %>">
           <div class="control-group">
-            <label class="control-label">Sample values</label>
-            <div class="controls">
-              <input name="simulator_specification[inputs_attributes][<%= index %>][sample_values]" size="50" type="text" value="<%= b.object.sample_values != nil ? b.object.sample_values.join(',') : '' %>" />
-            </div>
-          </div>
-          <div class="control-group">
             <label class="control-label">Samples</label>
             <div class="controls">
+              <input name="simulator_specification[inputs_attributes][<%= index %>][sample_values]" size="50" type="hidden" value="<%= b.object.sample_values != nil ? b.object.sample_values.join(',') : '' %>" />
               <p class="nothing-block">
                 <span class="import-count"><%= b.object.sample_values != nil ? b.object.sample_values.size : 0 %></span> imported
               </p>
