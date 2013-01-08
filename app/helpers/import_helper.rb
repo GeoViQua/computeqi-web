@@ -1,6 +1,6 @@
-module ValidationHelper
+module ImportHelper
 
-  def validation_import(container_name)
+  def import_button(container_name)
     # Putting the uploadify trigger script in the helper gives us
     # full access to the view and native rails objects without having
     # to set javascript variables.

@@ -18,5 +18,9 @@ class SimulatorSpecification
   def complete?
     !self.inputs.select {|input| input.set? }.empty?
   end
+
+  def has_input_samples?
+    Input.where(:simulator_specification_id => self.id).and(:sample_values.ne => nil).exists?
+  end
   
 end

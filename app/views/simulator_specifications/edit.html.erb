@@ -13,7 +13,7 @@
       <fieldset>
         <legend>Import values</legend>
         <div class="control-group">
-          <label class="control-label">Import values</label>
+          <label class="control-label">Import sample values</label>
           <div class="controls form-toggle">
             <div id="import-container"></div>
           </div>
@@ -25,52 +25,66 @@
   <div class="row">
     <% index = 0 %>
     <%= f.simple_fields_for :inputs do |b| %>
-      <% if index % 2 == 0 %>
-        </div>
-        <div class="row" style="margin-top: 20px;">
-      <% end %>
-      <div class="span6">
-        <fieldset>
-          <legend><%= b.object.name %></legend>
-          <% if b.object.description %>
-            <p style="padding: 10px 0;"><%= b.object.description %></p>
-          <% end %>
-          <div class="control-group string optional">
-            <label class="string optional control-label">Type</label>
-            <div class="controls">
-              <div class="btn-group" data-toggle="buttons-radio">
-                <button class="btn<%= " active" if b.object.fixed? %>">Fixed</button>
-                <button class="btn<%= " active" if b.object.variable? %>">Variable</button>
-              </div>
-            </div>
-          </div>
-          <div class="control-group string optional<%= " hide" if b.object.variable? %>">
-            <label class="string optional control-label">Fixed value</label>
-            <div class="controls">
-              <div<%= b.object.uom ? " class=\"input-append\"".html_safe : nil %>>
-                <input class="string optional span2" name="simulator_specification[inputs_attributes][<%= index %>][fixed_value]" type="text" value="<%= b.object.fixed_value %>" /><%= b.object.uom ? "<span class=\"add-on\">#{b.object.uom}</span>".html_safe : nil %>
-              </div>
-            </div>
-          </div>
-          <div class="control-group string optional<%= " hide" if b.object.fixed? %>">
-            <label class="string optional control-label">Minimum value</label>
-            <div class="controls">
-              <div<%= b.object.uom ? " class=\"input-append\"".html_safe : nil %>>
-                <input class="string optional span2" name="simulator_specification[inputs_attributes][<%= index %>][minimum_value]" type="text" value="<%= b.object.minimum_value %>" /><%= b.object.uom ? "<span class=\"add-on\">#{b.object.uom}</span>".html_safe : nil %>
-              </div>
-            </div>
-          </div>
-          <div class="control-group string optional<%= " hide" if b.object.fixed? %>">
-            <label class="string optional control-label">Maximum value</label>
-            <div class="controls">
-              <div<%= b.object.uom ? " class=\"input-append\"".html_safe : nil %>>
-                <input class="string optional span2" name="simulator_specification[inputs_attributes][<%= index %>][maximum_value]" type="text" value="<%= b.object.maximum_value %>" /><%= b.object.uom ? "<span class=\"add-on\">#{b.object.uom}</span>".html_safe : nil %>
-              </div>
-            </div>
-          </div>
-        </fieldset>
+    <% if index % 2 == 0 %>
       </div>
-      <% index += 1 %>
+      <div class="row" style="margin-top: 20px;">
+    <% end %>
+    <div class="span6" data-name="<%= b.object.name %>">
+      <fieldset>
+        <legend><%= b.object.name %></legend>
+        <% if b.object.description %>
+          <p style="padding: 10px 0;"><%= b.object.description %></p>
+        <% end %>
+        <div class="control-group">
+          <label class="control-label">Type</label>
+          <div class="controls form-toggle">
+            <input type="hidden" name="simulator_specification[inputs_attributes][<%= index %>][value_type]" value="<%= b.object.value_type %>" />
+            <div class="btn-group" data-toggle="buttons-radio">
+              <% ["fixed", "variable", "samples"].each do |option| %>
+                <button type="button" class="btn<%= " active" if option == b.object.value_type %>" data-value="<%= option %>"><%= option.humanize %></button>
+              <% end %>
+            </div>
+          </div>
+        </div>
+        <div class="fixed<%= (b.object.fixed? ? "" : " hide") %>">
+          <div class="control-group">
+            <label class="control-label">Fixed value</label>
+            <div class="controls">
+              <div<%= b.object.uom ? " class=\"input-append\"".html_safe : nil %>>
+                <input class="span2" name="simulator_specification[inputs_attributes][<%= index %>][fixed_value]" type="text" value="<%= b.object.fixed_value %>" /><%= b.object.uom ? "<span class=\"add-on\">#{b.object.uom}</span>".html_safe : nil %>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="variable<%= (b.object.variable? ? "" : " hide") %>">
+          <div class="control-group">
+            <label class="control-label">Minimum value</label>
+            <div class="controls">
+              <div<%= b.object.uom ? " class=\"input-append\"".html_safe : nil %>>
+                <input class="span2" name="simulator_specification[inputs_attributes][<%= index %>][minimum_value]" type="text" value="<%= b.object.minimum_value %>" /><%= b.object.uom ? "<span class=\"add-on\">#{b.object.uom}</span>".html_safe : nil %>
+              </div>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label">Maximum value</label>
+            <div class="controls">
+              <div<%= b.object.uom ? " class=\"input-append\"".html_safe : nil %>>
+                <input class="span2" name="simulator_specification[inputs_attributes][<%= index %>][maximum_value]" type="text" value="<%= b.object.maximum_value %>" /><%= b.object.uom ? "<span class=\"add-on\">#{b.object.uom}</span>".html_safe : nil %>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="samples<%= (b.object.samples? ? "" : " hide") %>">
+          <div class="control-group">
+            <label class="control-label">Samples</label>
+            <div class="controls">
+              Samples
+            </div>
+          </div>
+        </div>
+      </fieldset>
+    </div>
+    <% index += 1 %>
     <% end %>
   </div>
 

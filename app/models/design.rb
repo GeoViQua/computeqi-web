@@ -38,7 +38,7 @@ class Design
     {
       type: 'DesignRequest',
       size: size,
-      inputs: self.simulator_specification.inputs.reject {|input| input.fixed? }.collect {|input| input.to_hash }
+      inputs: self.simulator_specification.inputs.select {|input| input.variable? }.collect {|input| input.to_hash }
     }
   end
   
@@ -51,5 +51,9 @@ class Design
       input = inputs.where(:name => set['inputIdentifier']).first
       self.design_values.create(input: input, points: set['points'])
     end
+
+    # add sampled inputs
+    # TODO!
+    
   end
 end

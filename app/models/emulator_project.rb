@@ -51,7 +51,7 @@ class EmulatorProject
   end
 
   def allow_input_screening?
-    has_simulator_specification?
+    has_simulator_specification? and !self.simulator_specification.has_input_samples?
   end
 
   def allow_design?

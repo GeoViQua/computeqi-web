@@ -1,17 +1,18 @@
 $(function() {
+  function toggleInputs(parent, selected) {
+    var opts = { duration: 'fast' };
+    var classes = [ '.fixed', '.variable', '.samples' ];
+    var selclass = classes.splice(classes.indexOf('.' + selected.toLowerCase()), 1)[0];
+    parent.find(classes.join()).not(':hidden').slideUp('fast', function() {
+      parent.find(selclass).slideDown('fast');
+    });
+  }
+
   $('.btn-group[data-toggle="buttons-radio"] .btn').click(function() {
     var btn = $(this);
     btn.button('toggle');
-    var groups = btn.parent().parent().parent().siblings('.control-group');
-    if (btn.text() == 'Fixed') {
-      groups.slice(1).slideUp('fast', function() {
-        groups.eq(0).slideDown('fast');
-      });
-    } else {
-      groups.eq(0).slideUp('fast', function() {
-        groups.slice(1).slideDown('fast');
-      });
-    }
+    var fieldset = btn.parent().parent().parent().parent();
+    toggleInputs(fieldset, btn.text());
     return false;
   });
 
