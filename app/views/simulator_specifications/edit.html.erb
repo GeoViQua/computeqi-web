@@ -1,4 +1,6 @@
-<%= javascript_include_tag "simulator_specifications" %>
+<%= javascript_include_tag 'plupload/plupload.full' %>
+<%= import_button 'import-container' %>
+<%= javascript_include_tag 'simulator_specifications' %>
 
 <% @spec.errors.full_messages.each do |message| %>
   <%= message %>
@@ -13,7 +15,7 @@
       <fieldset>
         <legend>Import values</legend>
         <div class="control-group">
-          <label class="control-label">Import sample values</label>
+          <label class="control-label"></label>
           <div class="controls form-toggle">
             <div id="import-container"></div>
           </div>
@@ -76,9 +78,17 @@
         </div>
         <div class="samples<%= (b.object.samples? ? "" : " hide") %>">
           <div class="control-group">
+            <label class="control-label">Sample values</label>
+            <div class="controls">
+              <input name="simulator_specification[inputs_attributes][<%= index %>][sample_values]" size="50" type="text" value="<%= b.object.sample_values != nil ? b.object.sample_values.join(',') : '' %>" />
+            </div>
+          </div>
+          <div class="control-group">
             <label class="control-label">Samples</label>
             <div class="controls">
-              Samples
+              <p class="nothing-block">
+                <span class="import-count"><%= b.object.sample_values != nil ? b.object.sample_values.size : 0 %></span> imported
+              </p>
             </div>
           </div>
         </div>
@@ -92,3 +102,47 @@
     <%= f.button :submit %>
   </div>
 <% end %>
+
+<div id="import-dialog" class="modal hide fade import">
+  <div class="modal-header">
+    <h3>Import from CSV</h3>
+  </div>
+  <div class="modal-body">
+    <div id="import-result"></div>
+  </div>
+  <div class="modal-footer">
+    <a id="import-cancel" href="#" class="btn">Cancel</a>
+    <a id="import-submit" href="#" class="btn btn-primary">Import</a>
+  </div>
+</div>
+
+<textarea id="names-template" class="template hide">
+  <option></option>
+  {{#names}}
+  <option value="{{.}}">{{.}}</option>
+  {{/names}}
+</textarea>
+
+<textarea id="table-template" class="template hide">
+  <table>
+    <tr>
+      {{#headings}}
+      <th>{{name}}</th>
+      {{/headings}}
+    </tr>
+    <tr>
+      {{#headings}}
+      <th>
+        <select>
+        </select>
+      </th>
+      {{/headings}}
+    {{#rows}}
+    <tr>
+      {{#.}}
+      <td>{{.}}</td>
+      {{/.}}
+    </tr>
+    {{/rows}}
+  </table>
+</textarea>

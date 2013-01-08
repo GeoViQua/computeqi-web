@@ -54,8 +54,10 @@ class Input
     # calculate min/max from samples?
     hash = if self.variable?
       { identifier: self.name, range: { min: self.minimum_value, max: self.maximum_value } }
-    else
+    elsif self.fixed?
       { identifier: self.name, value: self.fixed_value }
+    else
+      { identifier: self.name }
     end
 
     d = {

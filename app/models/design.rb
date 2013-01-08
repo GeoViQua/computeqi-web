@@ -53,7 +53,11 @@ class Design
     end
 
     # add sampled inputs
-    # TODO!
-    
+    inputs.where(:sample_values.ne => nil).each do |input|
+      # build points, loops back if not enough samples
+      samples = input.sample_values
+      points = self.size.times.collect {|i| samples[i % samples.size] }
+      self.design_values.create(input: input, points: points)
+    end
   end
 end

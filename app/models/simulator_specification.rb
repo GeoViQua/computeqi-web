@@ -20,7 +20,7 @@ class SimulatorSpecification
   end
 
   def has_input_samples?
-    Input.where(:simulator_specification_id => self.id).and(:sample_values.ne => nil).exists?
+    Input.where(:simulator_specification_id => self.id).and(:value_type => 'samples').exists?
   end
   
 end

@@ -8,7 +8,19 @@ class SimulatorSpecificationsController < ApplicationController
 
   def update
     @spec = @project.simulator_specification
+
+    # parse arrays from params
+    params[:simulator_specification][:inputs_attributes].each do |key, attrs|
+      sample_values = attrs[:sample_values]
+      if sample_values.empty?
+        attrs[:sample_values] = nil
+      else
+        attrs[:sample_values] = sample_values.split(',').collect {|value| value.to_f }
+      end
+    end
+
     if @spec.update_attributes(params[:simulator_specification])
+      logger.info @spec.inputs.inspect
       redirect_to @project, notice: "Simulator specification successfully updated."
     else
       render action: "edit"

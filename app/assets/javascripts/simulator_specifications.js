@@ -1,11 +1,20 @@
 $(function() {
   function toggleInputs(parent, selected) {
     var opts = { duration: 'fast' };
+    var lselected = selected.toLowerCase();
     var classes = [ '.fixed', '.variable', '.samples' ];
-    var selclass = classes.splice(classes.indexOf('.' + selected.toLowerCase()), 1)[0];
+    var selclass = classes.splice(classes.indexOf('.' + lselected), 1)[0];
+
+    // update hidden field
+    parent.find('input[name$="[value_type]"]').val(lselected);
+
+    // update visibility
     parent.find(classes.join()).not(':hidden').slideUp('fast', function() {
       parent.find(selclass).slideDown('fast');
     });
+
+    // update toggles
+    parent.find('.btn[data-value="' + lselected + '"]').button('toggle');
   }
 
   $('.btn-group[data-toggle="buttons-radio"] .btn').click(function() {
@@ -16,7 +25,62 @@ $(function() {
     return false;
   });
 
-  $('form').submit(function(e) {
-    $('.control-group:hidden input').val('');
+  uploader.bind('FileUploaded', function(up, file, response) {
+    // get data from csv
+    var rows = JSON.parse(response.response);
+    var first = rows.splice(0, 1)[0];
+
+    // get input names
+    var names = [];
+    $('.span6').each(function(index, item) {
+      names.push($(item).data('name'));
+    });
+    
+    // create indices for templating
+    var headings = [];
+    for (i = 0; i < first.length; i++) {
+      headings.push({ index: i, name: first[i] });
+    }
+
+    // render table
+    var table = Mustache.to_html($('#table-template').val(), { headings: headings, names: names, rows: rows });
+    $('#import-result').html(table);
+    var names = Mustache.to_html($('#names-template').val(), { names: names });
+    $('#import-result select').html(names);
+
+    // show dialog
+    $('#import-dialog').modal({ show: true, keyboard: true, backdrop: 'static' });
+  });
+
+  uploader.bind('UploadComplete', function(up, files) {
+
+  });
+
+  $('#import-cancel').click(function() {
+    $('#import-dialog').modal('hide');
+  });
+
+  $('#import-submit').click(function() {
+    // get each column which has an input selected
+    $('#import-result select option[value!=""]:selected').each(function(i, option) {
+      // get n for nth-child and name
+      var n = $(option).parent().parent().index() + 1;
+      var name = $(option).val();
+
+      // get values, add to array
+      var values = [];
+      $('#import-result td:nth-child(' + n + ')').each(function(i, td) {
+        values.push($(td).text());
+      });
+
+      // set input to csv string and toggle
+      var $span = $('.span6[data-name="' + name + '"]');
+      $span.find('input[name$="[sample_values]"]').val(values.join());
+      $span.find('span.import-count').html(values.length);
+      toggleInputs($span, 'samples');
+    });
+
+    // all done
+    $('#import-dialog').modal('hide');
   });
 });
