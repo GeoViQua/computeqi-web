@@ -53,6 +53,7 @@ class Design
     end
 
     # add sampled inputs
+    # might want to randomise this?
     inputs.where(:sample_values.ne => nil).each do |input|
       # build points, loops back if not enough samples
       samples = input.sample_values
