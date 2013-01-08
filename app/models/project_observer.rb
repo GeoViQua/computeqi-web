@@ -18,7 +18,8 @@ class ProjectObserver < Mongoid::Observer
     # special type for input
     if type == Input
       # if values changed
-      if object.fixed_value_changed? || object.minimum_value_changed? || object.maximum_value_changed?
+      if object.fixed_value_changed? || object.minimum_value_changed? ||
+        object.maximum_value_changed? || object.sample_values_changed? || object.value_type_changed?
         input_screening = project.input_screening rescue nil
         if !input_screening.nil?
           if object.fixed?
