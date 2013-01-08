@@ -10,9 +10,15 @@ class ValidationsController < Remote::RemotableController
       observed = Array.new
       predicted = Array.new
 
+      missing_value = params[:validation][:missing_value_code].to_f
+
       observed_hash.each do |id, value|
-        observed << parse_value(value)
-        predicted << parse_value(predicted_hash[id])
+        parsed_obs = parse_value(value)
+        parsed_pred = parse_value(predicted_hash[id])
+        if parsed_obs != missing_value and parsed_pred != missing_value
+          observed << parsed_obs
+          predicted << parsed_pred
+        end
       end
 
       params[:validation][:observed] = observed
