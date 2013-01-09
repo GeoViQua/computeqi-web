@@ -138,7 +138,6 @@ h3 {
   }
 }
 
-
 /*
 .nav-tabs {
   margin-bottom: 0px;
@@ -254,17 +253,27 @@ table {
   }
 }
 
-#import-result {
+.import-result {
   border: 1px solid @tableBorder;
   padding: 10px 12px;
   overflow: scroll;
   height: 160px;
+  &.taller {
+    height: 360px;
+  }
 
   table {
     border: none;
 
     th {
       border-bottom: 1px solid @tableBorder;
+      &.no-border {
+        border: 0;
+      }
+      select {
+        margin-bottom: 5px;
+        width: auto;
+      }
     }
 
     tr:nth-child(2) {
