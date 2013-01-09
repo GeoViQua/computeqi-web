@@ -43,6 +43,17 @@ namespace :e do
     db['emulator_validation_values'].drop
   end
 
+  task :upgrade_inputs => :environment do
+    Input.all.each do |input|
+      if input.fixed_value.nil?
+        input.value_type = 'variable'
+      else
+        input.value_type = 'fixed'
+      end
+      input.save
+    end
+  end
+
   private
 
   def mongo_get_db
