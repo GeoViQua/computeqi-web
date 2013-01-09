@@ -18,6 +18,7 @@ module ImportHelper
     #   parameters into something Rails will actually use.
 
     session_key_name = Rails.application.config.session_options[:key]
+    url_root_string = ENV['RAILS_RELATIVE_URL_ROOT'] || ''
 
     %Q{
 <script type="text/javascript">
@@ -43,8 +44,8 @@ $(function() {
     container           : '#{container_name}',
     url                 : '#{uploads_path}',
     max_file_size       : '10mb',
-    flash_swf_url       : '/plupload/plupload.flash.swf',
-    silverlight_xap_url : '/plupload/plupload.silverlight.xap',
+    flash_swf_url       : '#{url_root_string}/plupload/plupload.flash.swf',
+    silverlight_xap_url : '#{url_root_string}/plupload/plupload.silverlight.xap',
     headers             : {
       'Accept' : 'text/javascript'
     },
