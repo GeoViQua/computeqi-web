@@ -58,6 +58,7 @@ $(function() {
     <form class="form-inline" method="put" action="{{url}}" data-remote="true">
       <input type="hidden" name="input[minimum_value]" value="" />
       <input type="hidden" name="input[maximum_value]" value="" />
+      <input type="hidden" name="input[value_type]" value="fixed" />
       <input type="text" class="input-small" placeholder="Value" name="input[fixed_value]" value="{{fixedValue}}">
       <button type="submit" class="btn">Fix input</button>
     </form>
