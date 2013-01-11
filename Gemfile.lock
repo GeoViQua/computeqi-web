@@ -197,7 +197,7 @@ DEPENDENCIES
   less-rails-bootstrap (= 2.0.12)
   mongoid (= 2.5.1)
   mongoid-rspec
-  rails (~> 3.2.1)
+  rails (~> 3.2.11)
   rmagick
   rspec-rails (= 2.12.0)
   simple_form
