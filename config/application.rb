@@ -50,5 +50,8 @@ module Emulatorization
 
     # Version of your assets, change this if you want to expire all your assets
     config.assets.version = '1.0'
+
+    # Fix for vulnerability, remove when rails version >= 3.2.11
+    ActionDispatch::ParamsParser::DEFAULT_PARSERS.delete(Mime::XML)
   end
 end
