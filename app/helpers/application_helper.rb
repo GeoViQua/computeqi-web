@@ -86,7 +86,7 @@ module ApplicationHelper
 setTimeout(function() {
   $.get('#{url_for([parent, remotable])}', function(response) {}, 'script');
 }, 2500);
-      }
+      }.html_safe
     else "" end
   end
 end
