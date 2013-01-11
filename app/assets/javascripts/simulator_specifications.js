@@ -38,7 +38,7 @@ $(function() {
     
     // create indices for templating
     var headings = [];
-    for (i = 0; i < first.length; i++) {
+    for (var i = 0; i < first.length; i++) {
       headings.push({ index: i, name: first[i] });
     }
 
@@ -47,6 +47,13 @@ $(function() {
     $('#import-result').html(table);
     var names = Mustache.to_html($('#names-template').val(), { names: names });
     $('#import-result select').html(names);
+
+    // auto select
+    for (var n = 1; n <= headings.length; n++) {
+      var heading = $('#import-result tr:nth-child(1) th:nth-child(' + n + ')').html();
+      var select = $('#import-result tr:nth-child(2) th:nth-child(' + n + ') select');
+      select.val(heading);
+    }
 
     // show dialog
     $('#import-dialog').modal({ show: true, keyboard: true, backdrop: 'static' });
