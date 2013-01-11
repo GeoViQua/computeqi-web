@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.2.1'
+gem 'rails', '~> 3.2.1'
 
 gem 'simple_form'
 
@@ -8,11 +8,11 @@ gem 'simple_form'
 gem 'thin'
 
 # Database
-gem 'mongoid'
+gem 'mongoid', '2.5.1'
 gem 'bson_ext'
 
 # Background tasks
-gem 'delayed_job_mongoid'
+gem 'delayed_job_mongoid', '~> 1.1.0'
 gem 'daemons'
 
 # Deploy
@@ -22,7 +22,7 @@ gem 'capistrano'
 gem 'devise', '2.0.0'
 
 # Uploads
-gem 'carrierwave-mongoid', :require => 'carrierwave/mongoid'
+gem 'carrierwave-mongoid', '~> 0.2.0', :require => 'carrierwave/mongoid'
 gem 'rmagick'
 
 # Test
@@ -46,5 +46,5 @@ group :assets do
   gem 'uglifier'
 
   # Less rails
-  gem 'less-rails-bootstrap'
+  gem 'less-rails-bootstrap', '2.0.12'
 end
