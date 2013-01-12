@@ -17,7 +17,21 @@ $(function() {
     parent.find('.btn[data-value="' + lselected + '"]').button('toggle');
   }
 
-  $('.btn-group[data-toggle="buttons-radio"] .btn').click(function() {
+  $('.data-toggle').on('click', function() {
+    $parent = $(this).parent();
+    $view = $parent.siblings('.data-view');
+    if ($view.is(':hidden')) {
+      var values = $parent.siblings('input').val();
+      $view.html(values.split(',').join(', ')).slideDown('fast');
+    } else {
+      $view.slideUp('fast', function() {
+        $view.html('');
+      });
+    }
+    return false;
+  });
+
+  $('.btn-group[data-toggle="buttons-radio"] .btn').on('click', function() {
     var btn = $(this);
     btn.button('toggle');
     var fieldset = btn.parent().parent().parent().parent();

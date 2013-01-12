@@ -82,8 +82,9 @@
             <div class="controls">
               <input name="simulator_specification[inputs_attributes][<%= index %>][sample_values]" size="50" type="hidden" value="<%= b.object.sample_values != nil ? b.object.sample_values.join(',') : '' %>" />
               <p class="nothing-block">
-                <span class="import-count"><%= b.object.sample_values != nil ? b.object.sample_values.size : 0 %></span> imported
+                <span class="import-count"><%= b.object.sample_values != nil ? b.object.sample_values.size : 0 %></span> imported <a class="data-toggle" href="#" title="Toggle data view"><i class="icon-list-alt"></i></a>
               </p>
+              <div class="data-view hide"></div>
             </div>
           </div>
         </div>

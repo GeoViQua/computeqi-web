@@ -13,7 +13,8 @@ class SimulatorSpecificationsController < ApplicationController
     params[:simulator_specification][:inputs_attributes].each do |key, attrs|
       sample_values = attrs[:sample_values]
       if sample_values.empty?
-        attrs[:sample_values] = nil
+        # don't do anything to the values
+        attrs.delete(:sample_values)
       else
         attrs[:sample_values] = sample_values.split(',').collect {|value| value.to_f }
       end
