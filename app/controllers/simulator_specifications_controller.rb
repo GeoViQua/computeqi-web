@@ -21,7 +21,6 @@ class SimulatorSpecificationsController < ApplicationController
     end
 
     if @spec.update_attributes(params[:simulator_specification])
-      logger.info @spec.inputs.inspect
       redirect_to @project, notice: "Simulator specification successfully updated."
     else
       render action: "edit"
