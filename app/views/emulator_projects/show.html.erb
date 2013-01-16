@@ -1,3 +1,5 @@
+<%= render partial: "shared/project_toolbar", locals: { project: @project, type: "emulator" } %>
+
 <div class="row space-bottom">
   <% ["simulator_specification", "input_screening", "design", "run", "emulator", "validation"].each_with_index do |name, index| %>
     <% if index == 3 %>

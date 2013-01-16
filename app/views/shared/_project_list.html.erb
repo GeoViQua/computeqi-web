@@ -22,9 +22,9 @@
       <%= link_to project.name, project %>
       <span class="pull-right">
         <%= project_status_icon(project) %>
-        <%= link_to project, :confirm => "Are you sure you want to delete this project?", :method => :delete do %>
-          <i class="icon-trash" title="Delete" rel="tooltip"></i>
-        <% end %>
+        <% #link_to project, :confirm => "Are you sure you want to delete this project?", :method => :delete do %>
+          <!-- <i class="icon-trash" title="Delete" rel="tooltip"></i> -->
+        <% #end %>
       </span>
     </h3>
     <%= render partial: "project", locals: { project: project } %>

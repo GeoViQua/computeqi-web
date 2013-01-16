@@ -9,6 +9,19 @@ class SensitivityProjectsController < ApplicationController
     @project = SensitivityProject.find(params[:id])
   end
 
+  def edit
+    @project = SensitivityProject.find(params[:id])
+  end
+
+  def update
+    @project = SensitivityProject.find(params[:id])
+    if @project.update_attributes(params[:sensitivity_project])
+      redirect_to @project, notice: "Project successfully updated."
+    else
+      render action: "edit"
+    end
+  end
+
   def new
     @project = SensitivityProject.new
     @project.build_simulator_specification

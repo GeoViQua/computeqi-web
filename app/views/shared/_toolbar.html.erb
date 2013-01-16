@@ -43,6 +43,7 @@
         </ul>
       </div>
       <% end %>
+      <%= render partial: "extra_buttons", locals: { object: object, parent: parent } rescue nil %>
     </div>
   </div>
 </div>

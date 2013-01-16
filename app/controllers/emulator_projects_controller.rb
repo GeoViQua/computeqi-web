@@ -9,6 +9,19 @@ class EmulatorProjectsController < ApplicationController
     @project = EmulatorProject.find(params[:id])
   end
 
+  def edit
+    @project = EmulatorProject.find(params[:id])
+  end
+
+  def update
+    @project = EmulatorProject.find(params[:id])
+    if @project.update_attributes(params[:emulator_project])
+      redirect_to @project, notice: "Project successfully updated."
+    else
+      render action: "edit"
+    end
+  end
+
   def new
     @project = EmulatorProject.new
     @project.build_simulator_specification

@@ -3,6 +3,20 @@ class ValidationProjectsController < ApplicationController
   def index
     @projects = current_user.validation_projects
   end
+
+  def edit
+    @project = ValidationProject.find(params[:id])
+  end
+
+  def update
+    @project = ValidationProject.find(params[:id])
+    if @project.update_attributes(params[:validation_project])
+      flash[:notice] = "Project successfully updated."
+      show
+    else
+      render action: "edit"
+    end
+  end
   
   def show
     @project = ValidationProject.find(params[:id])
