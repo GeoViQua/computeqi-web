@@ -20,5 +20,6 @@
 /config/deploy.rb
 /config/api.yml
 /config/mongoid.yml
+/config/initializers/session_store.rb
 /db/seeds.rb
 /public/uploads
