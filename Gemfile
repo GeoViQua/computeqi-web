@@ -19,7 +19,7 @@ gem 'daemons'
 gem 'capistrano'
 
 # Authentication
-gem 'devise', '2.0.0'
+gem 'devise', '~> 2.0.0'
 
 # Uploads
 gem 'carrierwave-mongoid', :require => 'carrierwave/mongoid'
