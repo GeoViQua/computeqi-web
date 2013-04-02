@@ -64,7 +64,7 @@ FactoryGirl.define do
 
   factory :validation_project do
     user
-    name 'Ensembles'
+    name 'Samples'
     validation
   end
 
