@@ -2,6 +2,81 @@ require "emulatorization"
 
 namespace :e do
 
+  def send_remotable(remotable)
+    remotable.proc_start_time = DateTime.now
+    remotable.proc_status = "in_progress"
+    remotable.save
+
+    # send
+    response = Emulatorization::API.send(remotable.generate, { read_timeout: 4.hour })
+
+    # check result
+    if response['type'] == 'Exception'
+      # errors!
+      remotable.proc_status = "error"
+      remotable.proc_message = response['message']
+      puts "Couldn't perform remote job: #{remotable.proc_message}"
+    else
+      remotable.handle(response)
+      remotable.proc_status = "success"
+    end
+
+    remotable.proc_end_time = DateTime.now
+    remotable.save
+  end
+
+  task :add_demo_data => :environment do
+    count = 20
+    (1..count).each do |n|
+      puts "Adding demo account #{n} of #{count}"
+      user = User.create(email: "demo#{n}@uncertweb.org", password: "password", first_name: "Demo", last_name: n)
+
+      # create project
+      project = EmulatorProject.create(name: "SimpleSimulator", user: user)
+
+      # create simulator specification
+      spec = project.create_simulator_specification(
+        service_url: "http://uncertws.aston.ac.uk:8080/ps/service",
+        process_name: "SimpleSimulator"
+      )
+
+      [ "Rainfall", "MeanAirTemperature", "MaxAirTemperation", 
+        "MinAirTemperation", "MeanSoilN", "MaxSoilN", "MinSoilN", "MeanSoilC", "MaxSoilC", "MinSoilC", 
+        "MeanSoilTemperature", "MaxSoilTemperation", "MinSoilTemperation", "MeanSoilWettingRate", 
+        "MaxSoilWettingRate", "MinSoilWettingRate", "SoilPorosity", "SurfaceAlbedo", 
+        "WheatSystolicPressure", "Evapotranspiration" ].each {|name| spec.inputs.create(name: name, minimum_value: 0, maximum_value: 1) }
+
+      [ 'WheatGrowthRate', 'FinalYield', 'LargestWheatKernelSize' ].each {|name| spec.outputs.create(name: name) }
+
+      # create screening
+      screening = project.build_input_screening
+      send_remotable(screening)
+
+      # create design
+      design = project.build_design
+      design.simulator_specification = spec
+      design.calculate_defaults
+      send_remotable(design)
+
+      # create run
+      run = project.build_run
+      run.simulator_specification = spec
+      run.design = design
+      send_remotable(run)
+
+      # create emulator
+      emulator = project.build_emulator
+      emulator.output = spec.outputs.where(name: 'FinalYield').first
+      emulator.calculate_defaults
+      send_remotable(emulator)
+
+      # create validation
+      validation = project.build_validation
+      validation.calculate_defaults
+      send_remotable(validation)
+    end
+  end
+
   task :refresh_descriptions => :environment do
     SimulatorSpecification.all.each do |spec|
       desc = Emulatorization::API.send({
