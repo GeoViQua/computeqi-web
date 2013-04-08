@@ -4,7 +4,7 @@ describe EmulatorProjectsController do
 
   before do
     @emulator_project = FactoryGirl.create(:trained_ep)
-    @user = @project.user
+    @user = @emulator_project.user
     sign_in @user
   end
 
