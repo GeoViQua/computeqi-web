@@ -88,14 +88,6 @@ describe EmulatorProjectsController do
         @emulator_project.name.should eq('diff name')
       end
 
-      it "changes @emulator_project's nested attributes" do
-        attrs = FactoryGirl.attributes_for(:trained_ep, name: 'diff name')
-        attrs[:simulator_specification][:process_name] = 'diff process'
-        put :update, id: @emulator_project, emulator_project: attrs
-        @emulator_project.reload
-        @emulator_project.simulator_specification.process_name.should eq('diff process')
-      end
-
       it 'redirects to the updated emulator_project' do
         put :update, id: @emulator_project, emulator_project: FactoryGirl.attributes_for(:trained_ep)
         response.should redirect_to @emulator_project
