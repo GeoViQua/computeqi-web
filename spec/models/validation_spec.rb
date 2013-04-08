@@ -51,23 +51,23 @@ describe Validation do
       @request_hash.should_not be_nil
     end
 
-    it "should have key :type" do
-      @request_hash.should have_key(:type)
+    it "has key :type" do
+      @request_hash.has_key(:type)
     end
 
-    it "should have :type value equal to 'ValidationRequest'" do
+    it "has :type value equal to 'ValidationRequest'" do
       @request_hash[:type].should == "ValidationRequest"
     end
     
-    it "should have key :observed" do
-      @request_hash.should have_key(:observed)
+    it "has key :observed" do
+      @request_hash.has_key(:observed)
     end
 
-    it "should have key :predicted" do
-      @request_hash.should have_key(:predicted)
+    it "has key :predicted" do
+      @request_hash.has_key(:predicted)
     end
 
-    it "should have array for :predicted value" do
+    it "has array for :predicted value" do
       @request_hash[:predicted].class.should == Array
     end
 
@@ -78,12 +78,12 @@ describe Validation do
         @request_hash = @validation.generate
       end
 
-      it "should have hashes in :predicted array" do
+      it "has hashes in :predicted array" do
         @request_hash[:predicted].first.class.should == Hash
       end
 
-      it "should have :members in :predicted array hashes" do
-        @request_hash[:predicted].first.should have_key(:members)
+      it "has :members in :predicted array hashes" do
+        @request_hash[:predicted].first.has_key(:members)
       end
     end
   end
@@ -97,111 +97,111 @@ describe Validation do
       @validation.handle(response)
     end
 
-    it "should have mean bias" do
+    it "has mean bias" do
       @validation.mean_bias.should_not be_nil
     end
 
-    it "should have mean mae" do
+    it "has mean mae" do
       @validation.mean_mae.should_not be_nil
     end
 
-    it "should have mean rmse" do
+    it "has mean rmse" do
       @validation.mean_rmse.should_not be_nil
     end
 
-    it "should have mean correlation" do
+    it "has mean correlation" do
       @validation.mean_correlation.should_not be_nil
     end
 
-    it "should have median bias" do
+    it "has median bias" do
       @validation.median_bias.should_not be_nil
     end
 
-    it "should have median mae" do
+    it "has median mae" do
       @validation.median_mae.should_not be_nil
     end
 
-    it "should have median rmse" do
+    it "has median rmse" do
       @validation.median_rmse.should_not be_nil
     end
 
-    it "should have median correlation" do
+    it "has median correlation" do
       @validation.median_correlation.should_not be_nil
     end
 
-    it "should have brier score" do
+    it "has brier score" do
       @validation.median_correlation.should_not be_nil
     end
 
-    it "should have crps" do
+    it "has crps" do
       @validation.crps.should_not be_nil
     end
 
-    it "should have crps reliability" do
+    it "has crps reliability" do
       @validation.crps_reliability.should_not be_nil
     end
 
-    it "should have crps resolution" do
+    it "has crps resolution" do
       @validation.crps_resolution.should_not be_nil
     end
 
-    it "should have crps uncertainty" do
+    it "has crps uncertainty" do
       @validation.crps_uncertainty.should_not be_nil
     end
 
-    it "should have ign score" do
+    it "has ign score" do
       @validation.ign_score.should_not be_nil
     end
 
-    it "should have ign reliability" do
+    it "has ign reliability" do
       @validation.ign_reliability.should_not be_nil
     end
 
-    it "should have ign resolution" do
+    it "has ign resolution" do
       @validation.ign_resolution.should_not be_nil
     end
 
-    it "should have ign uncertainty" do
+    it "has ign uncertainty" do
       @validation.ign_uncertainty.should_not be_nil
     end
 
-    it "should have vs predicted mean plot data" do
+    it "has vs predicted mean plot data" do
       @validation.vs_predicted_mean_plot_data.should_not be_nil
     end
 
-    it "should have vs predicted median plot data" do
+    it "has vs predicted median plot data" do
       @validation.vs_predicted_median_plot_data.should_not be_nil
     end
 
-    it "should have standard score plot data" do
+    it "has standard score plot data" do
       @validation.standard_score_plot_data.should_not be_nil
     end
 
-    it "should have mean residual histogram data" do
+    it "has mean residual histogram data" do
       @validation.mean_residual_histogram_data.should_not be_nil
     end
 
-    it "should have mean residual qq plot data" do
+    it "has mean residual qq plot data" do
       @validation.mean_residual_qq_plot_data.should_not be_nil
     end
 
-    it "should have median residual histogram data" do
+    it "has median residual histogram data" do
       @validation.median_residual_histogram_data.should_not be_nil
     end
 
-    it "should have median residual qq plot data" do
+    it "has median residual qq plot data" do
       @validation.median_residual_qq_plot_data.should_not be_nil
     end
 
-    it "should have rank histogram plot data" do
+    it "has rank histogram plot data" do
       @validation.rank_histogram_data.should_not be_nil
     end
 
-    it "should have reliability diagram data" do
+    it "has reliability diagram data" do
       @validation.reliability_diagram_data.should_not be_nil
     end
 
-    it "should have coverage plot data" do
+    it "has coverage plot data" do
       @validation.coverage_plot_data.should_not be_nil
     end
   end
