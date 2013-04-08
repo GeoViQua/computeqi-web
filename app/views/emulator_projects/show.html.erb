@@ -1,4 +1,4 @@
-<%= render partial: "shared/project_toolbar", locals: { project: @project, type: "emulator" } %>
+<%= render partial: "shared/project_toolbar", locals: { project: @emulator_project, type: "emulator" } %>
 
 <div class="row space-bottom">
   <% ["simulator_specification", "input_screening", "design", "run", "emulator", "validation"].each_with_index do |name, index| %>
@@ -9,8 +9,8 @@
     <div class="span4">
       <div class="boxed clickable">
         <h3>
-          <% if @project.send("allow_#{name}?") %>
-            <%= link_to send("emulator_project_#{name}s_path", @project) do %>
+          <% if @emulator_project.send("allow_#{name}?") %>
+            <%= link_to send("emulator_project_#{name}s_path", @emulator_project) do %>
               <%= name.humanize %>
             <% end %>
           <% else %>
@@ -18,9 +18,9 @@
           <% end %>
           <span class="pull-right">
             <% if name != "simulator_specification" %>
-              <%= remotable_status_icon @project.send(name) %>
+              <%= remotable_status_icon @emulator_project.send(name) %>
             <% else %>
-              <% if @project.simulator_specification.complete? %>
+              <% if @emulator_project.simulator_specification.complete? %>
                 <i class="icon-ok-sign" class="icon-ok-sign" rel="tooltip" title="Complete"></i>
               <% end %>
             <% end %>
@@ -28,7 +28,7 @@
         </h3>
         <p>
           <%= t "#{name}s.description" %>
-          <%# needs = @project.send("needs_for_#{name}") %>
+          <%# needs = @emulator_project.send("needs_for_#{name}") %>
           <%# if !needs.empty? %>
             <!-- <small><%# needs.to_sentence.capitalize %> required.</small> -->
           <%# end %>

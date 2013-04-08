@@ -1,13 +1,13 @@
 <% content_for :subnav do %>
   <li>
-    <%= link_to @project do %>
+    <%= link_to @emulator_projects do %>
       <i class="icon-home"></i>
-      <strong><%= @project.name %></strong>
+      <strong><%= @emulator_project.name %></strong>
     <% end %>
   </li>
   <% ["simulator_specification", "input_screening", "design", "run", "emulator", "validation"].each do |name| %>
   <li<%= controller.controller_name == "#{name.pluralize}" ? ' class="active"'.html_safe : '' %>>
-    <%= link_to send("emulator_project_#{name.pluralize}_path", @project) do %>
+    <%= link_to send("emulator_project_#{name.pluralize}_path", @emulator_project) do %>
       <%= name.humanize %> 
     <% end %>
   </li>

@@ -6,6 +6,9 @@ class EmulatorProject
 
   # optional
   belongs_to :sensitivity_project
+
+  # fields
+  field :name, type: String
   
   # relationships
   has_one :simulator_specification, as: :specable, autosave: true, dependent: :destroy
@@ -14,12 +17,12 @@ class EmulatorProject
   has_one :run, as: :runnable, dependent: :destroy
   has_one :emulator, dependent: :destroy
   has_one :validation, as: :validatable, dependent: :destroy
-  
-  # fields
-  field :name, type: String
 
   # so we can create a spec when creating a project
   accepts_nested_attributes_for :simulator_specification
+
+  # accessible
+  # attr_accessible :name, :simulator_specification_attributes
 
   # callbacks
   before_save :copy_name

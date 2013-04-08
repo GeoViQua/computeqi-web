@@ -1,52 +1,43 @@
 class EmulatorProjectsController < ApplicationController
   layout :layout_by_action
+  load_and_authorize_resource
 
   def index
-    @projects = current_user.emulator_projects
   end
   
   def show
-    @project = EmulatorProject.find(params[:id])
   end
 
   def edit
-    @project = EmulatorProject.find(params[:id])
   end
 
   def update
-    @project = EmulatorProject.find(params[:id])
-    if @project.update_attributes(params[:emulator_project])
-      redirect_to @project, notice: "Project successfully updated."
+    if @emulator_project.update_attributes(params[:emulator_project])
+      redirect_to @emulator_project, notice: "Project successfully updated."
     else
       render action: "edit"
     end
   end
 
   def new
-    @project = EmulatorProject.new
-    @project.build_simulator_specification
+    @emulator_project.build_simulator_specification
   end
 
   def create
-    @project = EmulatorProject.new(params[:emulator_project])
-    @project.user = current_user
+    @emulator_project = EmulatorProject.new(params[:emulator_project])
+    @emulator_project.user = current_user
     
-    if @project.save
-      redirect_to @project, notice: "Project created successfully."
+    if @emulator_project.save
+      redirect_to @emulator_project, notice: "Project created successfully."
     else
       render action: "new"
     end
   end
 
   def destroy
-    @project = EmulatorProject.find(params[:id])
-    if @project.user == current_user and @project.destroy
-      redirect_to emulator_projects_path, notice: "Project successfully deleted."
-    else
-      redirect_to @project, notice: "Couldn't delete project."
-    end
+    @emulator_project.destroy
+    redirect_to emulator_projects_path, notice: "Project successfully deleted."
   end
-
 
   private
 

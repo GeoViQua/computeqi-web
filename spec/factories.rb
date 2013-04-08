@@ -53,13 +53,21 @@ def get_run
 end
 
 FactoryGirl.define do
+  
   factory :emulator_project do
-    user
-    simulator_specification { get_simulator_specification }
-    design { get_design }
-    run { get_run }
-    emulator
-    emulator_validation
+
+    factory :new_ep do |f|
+      f.simulator_specification { get_simulator_specification }
+    end
+
+    factory :trained_ep do |f|
+      user
+      simulator_specification { get_simulator_specification }
+      design { get_design }
+      run { get_run }
+      emulator
+      validation { Validation.create(design_size: 11) }
+    end
   end
 
   factory :validation_project do
@@ -241,11 +249,18 @@ FactoryGirl.define do
   end
 
   factory :user do
-    first_name 'Tessa'
-    last_name 'Testerson'
-    password 'passplease'
-    email 'tessa@testerson.com'
+    first_name { Faker::Name.first_name }
+    last_name { Faker::Name.last_name }
+    password 'password'
+    email { Faker::Internet.email }
   end
+
+  factory :another_user, class: User do
+    first_name { Faker::Name.first_name }
+    last_name { Faker::Name.last_name }
+    password 'password'
+    email { Faker::Internet.email }
+  end 
 
   factory :emulator do
     output { get_output_result }
@@ -282,9 +297,5 @@ FactoryGirl.define do
       )
       run
     }
-  end
-
-  factory :emulator_validation do
-    design_size 11
   end
 end
