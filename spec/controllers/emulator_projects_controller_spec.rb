@@ -44,7 +44,11 @@ describe EmulatorProjectsController do
   end
 
   describe 'GET #new' do
-    it 'assigns a new emulator project'
+    it 'assigns an emulator project with simulator specification' do
+      get :new
+      assigns(:emulator_project).simulator_specification.should_not be_nil
+    end
+    
     it 'new emulator project has empty simulator specification'
     it 'renders the #new view' do
       get :new
@@ -132,6 +136,7 @@ describe EmulatorProjectsController do
     end
 
     context 'with invalid attributes' do
+      # don't have any validations on the model
       it 'does not save the new emulator project'
       it 're-renders the #new view'
     end

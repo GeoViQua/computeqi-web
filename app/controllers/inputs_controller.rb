@@ -22,6 +22,11 @@ class InputsController < ApplicationController
   private
 
   def find_input
-    @input = Input.where(simulator_specification_id: params[:simulator_specification_id]).and(name: params[:id]).first
+    spec = SimulatorSpecification.find(params[:simulator_specification_id])
+    if can? :manage, spec.specable
+      @input = spec.inputs.where(name: params[:id]).first
+    else
+      render json: nil, status: :unauthorized
+    end 
   end
 end

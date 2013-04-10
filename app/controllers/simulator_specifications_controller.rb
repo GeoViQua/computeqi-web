@@ -1,5 +1,5 @@
 class SimulatorSpecificationsController < ApplicationController
-  before_filter :find_project
+  before_filter :find_project, :is_authorized
   layout :layout_by_project
   
   def edit
@@ -28,18 +28,24 @@ class SimulatorSpecificationsController < ApplicationController
   end
   
   def index
-    @spec = @project.simulator_specification
-    redirect_to(send("edit_#{@project.class.to_s.underscore}_simulator_specification_path", @project, @spec))
+    spec = @project.simulator_specification
+    redirect_to(send("edit_#{@project.class.to_s.underscore}_simulator_specification_path", @project, spec))
   end
 
+  private
+
   def find_project
-    # project could also be sensitivity, validation
+    # project could also be sensitivity
     if params[:emulator_project_id] != nil
       @project = EmulatorProject.find(params[:emulator_project_id])
       @emulator_project = @project
     else
       @project = SensitivityProject.find(params[:sensitivity_project_id])
     end
+  end
+
+  def is_authorized
+    authorize! :manage, @project
   end
 
   def layout_by_project
