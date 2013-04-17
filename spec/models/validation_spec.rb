@@ -1,208 +1,160 @@
 require 'spec_helper'
 require 'emulatorization'
 
+RSpec::Matchers.define :be_valid_plot_data do
+  match do |actual|
+    actual.instance_of?(Hash) && actual.has_key?("x") && actual.has_key?("y")
+  end
+end
+
 describe Validation do
 
-  before do
-    @project = FactoryGirl.create(:validation_project)
-    @validation = @project.validation
-  end
+  let(:project) { FactoryGirl.create(:validation_project) }
+  let(:validation) { project.validation }
 
-  subject { @validation }
-  
-  it { should respond_to(:observed) }
-  it { should respond_to(:predicted) }
+  describe "#generate" do
+    describe "returned hash" do
+      subject(:hash) { validation.generate }
 
-  it { should respond_to(:mean_bias) }
-  it { should respond_to(:mean_mae) }
-  it { should respond_to(:mean_rmse) }
-  it { should respond_to(:mean_correlation) }
-  it { should respond_to(:median_bias) }
-  it { should respond_to(:median_mae) }
-  it { should respond_to(:median_rmse) }
-  it { should respond_to(:median_correlation) }
-  it { should respond_to(:brier_score) }
-  it { should respond_to(:crps) }
-  it { should respond_to(:crps_reliability) }
-  it { should respond_to(:crps_resolution) }
-  it { should respond_to(:crps_uncertainty) }
-  it { should respond_to(:ign_score) }
-  it { should respond_to(:ign_reliability) }
-  it { should respond_to(:ign_resolution) }
-  it { should respond_to(:ign_uncertainty) }
+      it { should_not be_nil }      
+      it { should have_key(:type) }
 
-  it { should respond_to(:vs_predicted_mean_plot_data) }
-  it { should respond_to(:vs_predicted_median_plot_data) }
-  it { should respond_to(:standard_score_plot_data) }
-  it { should respond_to(:mean_residual_histogram_data) }
-  it { should respond_to(:mean_residual_qq_plot_data) }
-  it { should respond_to(:median_residual_histogram_data) }
-  it { should respond_to(:median_residual_qq_plot_data) }
-  it { should respond_to(:rank_histogram_data) }
-  it { should respond_to(:reliability_diagram_data) }
-  it { should respond_to(:coverage_plot_data) }
-
-  describe "remote request hash" do
-    before do
-      @request_hash = @validation.generate
-    end
-
-    it "should not be nil" do
-      @request_hash.should_not be_nil
-    end
-
-    it "has key :type" do
-      @request_hash.has_key(:type)
-    end
-
-    it "has :type value equal to 'ValidationRequest'" do
-      @request_hash[:type].should == "ValidationRequest"
-    end
+      it "has correct :type value" do
+        hash[:type].should == "ValidationRequest"
+      end
     
-    it "has key :observed" do
-      @request_hash.has_key(:observed)
-    end
+      it { should have_key(:observed) }
+      it { should have_key(:predicted) }
 
-    it "has key :predicted" do
-      @request_hash.has_key(:predicted)
-    end
-
-    it "has array for :predicted value" do
-      @request_hash[:predicted].class.should == Array
-    end
-
-    describe "with predicted ensembles" do
-      before do
-        # quick (and confusing) way to add ensembles
-        @validation.predicted = [[1,2,3],[1,2,3]]
-        @request_hash = @validation.generate
+      it "has :predicted value array" do
+        hash[:predicted].should be_instance_of(Array)
       end
 
-      it "has hashes in :predicted array" do
-        @request_hash[:predicted].first.class.should == Hash
-      end
+      context "with predicted ensembles" do
+        before(:each) { validation.predicted = [[1,2,3],[1,2,3]] }
+        subject(:ensemble_hash) { validation.generate }
 
-      it "has :members in :predicted array hashes" do
-        @request_hash[:predicted].first.has_key(:members)
+        it "has hashes in :predicted array" do
+          ensemble_hash[:predicted].first.should be_instance_of(Hash)
+        end
+
+        it "has :members in :predicted array hashes" do
+          ensemble_hash[:predicted].first.should have_key(:members)
+        end
       end
     end
   end
 
-  describe "after remote request" do
-    before do
-      response = Emulatorization::API.send(@validation.generate)
-      if response["type"] == "Exception"
-        raise response["message"] || response["source"]
-      end
-      @validation.handle(response)
+  describe "#handle" do
+    let(:api_response) { JSON.parse(File.read('spec/api_responses/validation.json')) }
+    before(:all) { validation.handle(api_response) }
+
+    it "sets mean bias value" do
+      validation.mean_bias.should == api_response["meanBias"]
     end
 
-    it "has mean bias" do
-      @validation.mean_bias.should_not be_nil
+    it "sets mean mae value" do
+      validation.mean_mae.should == api_response["meanMAE"]
     end
 
-    it "has mean mae" do
-      @validation.mean_mae.should_not be_nil
+    it "sets mean rmse value" do
+      validation.mean_rmse.should == api_response["meanRMSE"]
     end
 
-    it "has mean rmse" do
-      @validation.mean_rmse.should_not be_nil
+    it "sets mean correlation value" do
+      validation.mean_correlation.should == api_response["meanCorrelation"]
     end
 
-    it "has mean correlation" do
-      @validation.mean_correlation.should_not be_nil
+    it "sets median bias value" do
+      validation.median_bias.should == api_response["medianBias"]
     end
 
-    it "has median bias" do
-      @validation.median_bias.should_not be_nil
+    it "sets median mae value" do
+      validation.median_mae.should == api_response["medianMAE"]
     end
 
-    it "has median mae" do
-      @validation.median_mae.should_not be_nil
+    it "sets median rmse value" do
+      validation.median_rmse.should == api_response["medianRMSE"]
     end
 
-    it "has median rmse" do
-      @validation.median_rmse.should_not be_nil
+    it "sets median correlation value" do
+      validation.median_correlation.should == api_response["medianCorrelation"]
     end
 
-    it "has median correlation" do
-      @validation.median_correlation.should_not be_nil
+    it "sets brier score value" do
+      validation.brier_score.should == api_response["brierScore"]
     end
 
-    it "has brier score" do
-      @validation.median_correlation.should_not be_nil
+    it "sets crps value" do
+      validation.crps.should == api_response["crps"]
     end
 
-    it "has crps" do
-      @validation.crps.should_not be_nil
+    it "sets crps reliability value" do
+      validation.crps_reliability.should == api_response["crpsReliability"]
     end
 
-    it "has crps reliability" do
-      @validation.crps_reliability.should_not be_nil
+    it "sets crps resolution value" do
+      validation.crps_resolution.should == api_response["crpsResolution"]
     end
 
-    it "has crps resolution" do
-      @validation.crps_resolution.should_not be_nil
+    it "sets crps uncertainty value" do
+      validation.crps_uncertainty.should == api_response["crpsUncertainty"]
     end
 
-    it "has crps uncertainty" do
-      @validation.crps_uncertainty.should_not be_nil
+    it "sets ign score value" do
+      validation.ign_score.should == api_response["ignScore"]
     end
 
-    it "has ign score" do
-      @validation.ign_score.should_not be_nil
+    it "sets ign reliability value" do
+      validation.ign_reliability.should == api_response["ignReliability"]
     end
 
-    it "has ign reliability" do
-      @validation.ign_reliability.should_not be_nil
+    it "sets ign resolution value" do
+      validation.ign_resolution.should == api_response["ignResolution"]
     end
 
-    it "has ign resolution" do
-      @validation.ign_resolution.should_not be_nil
+    it "sets ign uncertainty value" do
+      validation.ign_uncertainty.should == api_response["ignUncertainty"]
     end
 
-    it "has ign uncertainty" do
-      @validation.ign_uncertainty.should_not be_nil
+    it "sets valid vs predicted mean plot data" do
+      validation.vs_predicted_mean_plot_data.should be_valid_plot_data
     end
 
-    it "has vs predicted mean plot data" do
-      @validation.vs_predicted_mean_plot_data.should_not be_nil
+    it "sets valid vs predicted median plot data" do
+      validation.vs_predicted_median_plot_data.should be_valid_plot_data
     end
 
-    it "has vs predicted median plot data" do
-      @validation.vs_predicted_median_plot_data.should_not be_nil
+    it "sets valid standard score plot data" do
+      validation.standard_score_plot_data.should be_valid_plot_data
     end
 
-    it "has standard score plot data" do
-      @validation.standard_score_plot_data.should_not be_nil
+    it "sets valid mean residual histogram data" do
+      validation.mean_residual_histogram_data.should be_valid_plot_data
     end
 
-    it "has mean residual histogram data" do
-      @validation.mean_residual_histogram_data.should_not be_nil
+    it "sets valid mean residual qq plot data" do
+      validation.mean_residual_qq_plot_data.should be_valid_plot_data
     end
 
-    it "has mean residual qq plot data" do
-      @validation.mean_residual_qq_plot_data.should_not be_nil
+    it "sets valid median residual histogram data" do
+      validation.median_residual_histogram_data.should be_valid_plot_data
     end
 
-    it "has median residual histogram data" do
-      @validation.median_residual_histogram_data.should_not be_nil
+    it "sets valid median residual qq plot data" do
+      validation.median_residual_qq_plot_data.should be_valid_plot_data
     end
 
-    it "has median residual qq plot data" do
-      @validation.median_residual_qq_plot_data.should_not be_nil
+    it "sets valid rank histogram plot data" do
+      validation.rank_histogram_data.should be_valid_plot_data
     end
 
-    it "has rank histogram plot data" do
-      @validation.rank_histogram_data.should_not be_nil
+    it "sets valid reliability diagram data" do
+      validation.reliability_diagram_data.should be_valid_plot_data
     end
 
-    it "has reliability diagram data" do
-      @validation.reliability_diagram_data.should_not be_nil
-    end
-
-    it "has coverage plot data" do
-      @validation.coverage_plot_data.should_not be_nil
+    it "sets valid coverage plot data" do
+      validation.coverage_plot_data.should be_valid_plot_data
     end
   end
 end
