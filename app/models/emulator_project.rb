@@ -22,7 +22,7 @@ class EmulatorProject
   accepts_nested_attributes_for :simulator_specification
 
   # accessible
-  # attr_accessible :name, :simulator_specification_attributes
+  attr_accessible :name, :simulator_specification_attributes
 
   # callbacks
   before_save :copy_name

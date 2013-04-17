@@ -2,29 +2,6 @@ require "emulatorization"
 
 namespace :e do
 
-  def send_remotable(remotable)
-    remotable.proc_start_time = DateTime.now
-    remotable.proc_status = "in_progress"
-    remotable.save
-
-    # send
-    response = Emulatorization::API.send(remotable.generate, { read_timeout: 4.hour })
-
-    # check result
-    if response['type'] == 'Exception'
-      # errors!
-      remotable.proc_status = "error"
-      remotable.proc_message = response['message']
-      puts "Couldn't perform remote job: #{remotable.proc_message}"
-    else
-      remotable.handle(response)
-      remotable.proc_status = "success"
-    end
-
-    remotable.proc_end_time = DateTime.now
-    remotable.save
-  end
-
   task :add_demo_data => :environment do
     count = 20
     (1..count).each do |n|
@@ -93,42 +70,6 @@ namespace :e do
     end
   end
 
-  task :refresh_validations => :environment do
-    Validation.all.each do |validation|
-      Delayed::Job.enqueue RemoteJob.new(validation)
-    end
-  end
-
-  task :convert_validations do
-    db = mongo_get_db
-    validations = db['validations']
-
-    validations.find.each do |row|
-      vpi = row['validation_project_id']
-      if !vpi.nil?
-        row['_type'] = 'Validation'
-        row['validatable_id'] = vpi
-        row['validatable_type'] = 'ValidationProject'
-        row.delete('validation_project_id')
-        validations.update({ '_id' => row['_id'] }, row)
-      end
-    end
-
-    db['emulator_validations'].drop
-    db['emulator_validation_values'].drop
-  end
-
-  task :upgrade_inputs => :environment do
-    Input.all.each do |input|
-      if input.fixed_value.nil?
-        input.value_type = 'variable'
-      else
-        input.value_type = 'fixed'
-      end
-      input.save
-    end
-  end
-
   private
 
   def mongo_get_db
@@ -149,6 +90,29 @@ namespace :e do
       io.uom = desc["description"]["uom"]
       io.save
     end
+  end
+
+  def send_remotable(remotable)
+    remotable.proc_start_time = DateTime.now
+    remotable.proc_status = "in_progress"
+    remotable.save
+
+    # send
+    response = Emulatorization::API.send(remotable.generate, { read_timeout: 4.hour })
+
+    # check result
+    if response['type'] == 'Exception'
+      # errors!
+      remotable.proc_status = "error"
+      remotable.proc_message = response['message']
+      puts "Couldn't perform remote job: #{remotable.proc_message}"
+    else
+      remotable.handle(response)
+      remotable.proc_status = "success"
+    end
+
+    remotable.proc_end_time = DateTime.now
+    remotable.save
   end
 
 end
