@@ -49,8 +49,7 @@ class User
   field :first_name, type: String
   field :last_name, type: String
 
-  attr_accessible :first_name
-  attr_accessible :last_name
+  attr_accessible :email, :password, :first_name, :last_name
 
   def full_name
     "#{self.first_name} #{self.last_name}"

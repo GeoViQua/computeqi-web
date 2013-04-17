@@ -20,6 +20,8 @@ class SensitivityProject
   # callbacks
   before_save :copy_name
 
+  attr_accessible :name, :simulator_specification_attributes
+
   def complete?
     has_analysis?
   end

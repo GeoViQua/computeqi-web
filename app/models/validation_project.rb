@@ -7,6 +7,8 @@ class ValidationProject
 
   field :name, type: String
 
+  attr_accessible :name
+
   def allow_validation?
     true
   end

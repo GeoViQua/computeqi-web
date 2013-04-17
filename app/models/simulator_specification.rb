@@ -14,8 +14,6 @@ class SimulatorSpecification
   has_many :runs
   
   accepts_nested_attributes_for :inputs, :outputs
-
-  attr_accessible :service_url, :process_name, :process_description, :inputs_attributes, :outputs_attributes
   
   def complete?
     !self.inputs.select {|input| input.set? }.empty?
