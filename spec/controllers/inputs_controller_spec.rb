@@ -2,35 +2,31 @@ require 'spec_helper'
 
 describe InputsController do
 
-  # show json, put js
-  # nested simulator_specification_id/id
+  let(:project) { FactoryGirl.create(:trained_ep) }
+  let(:spec) { project.simulator_specification }
+  let(:input) { spec.inputs.first }
 
-  before do
-    @project = FactoryGirl.create(:trained_ep)
-    @spec = @project.simulator_specification
-    @input = @spec.inputs.first
-    sign_in @project.user
-  end
+  before(:each) { sign_in project.user }
 
   describe 'GET #show' do
     context 'as owner' do
       before do
-        get :show, format: :json, emulator_project_id: @project, simulator_specification_id: @spec, id: @input.name
+        get :show, format: :json, emulator_project_id: project, simulator_specification_id: spec, id: input.name
       end
 
       it 'assigns the requested input to @input' do
-        assigns(:input).should eq(@input)
+        assigns(:input).should eq(input)
       end
 
       it 'renders @input as json' do
-        response.body.should eq(@input.to_json)
+        response.body.should eq(input.to_json)
       end
     end
 
     context 'as non-owner' do
       before do
         sign_in FactoryGirl.create(:another_user)
-        get :show, format: :json, emulator_project_id: @project, simulator_specification_id: @spec, id: @input.name
+        get :show, format: :json, emulator_project_id: project, simulator_specification_id: spec, id: input.name
       end
 
       it 'does not assign anything to @input' do
@@ -38,11 +34,11 @@ describe InputsController do
       end
 
       it 'responds with null' do
-        response.body.should eq(nil.to_json)
+        response.body.should == nil.to_json
       end
 
       it 'responds with 401' do
-        response.response_code.should eq(401)
+        response.response_code.should == 401
       end
     end
   end
@@ -53,28 +49,28 @@ describe InputsController do
         before do
           put :update, {
             format: :js,
-            emulator_project_id: @project,
-            simulator_specification_id: @spec,
-            id: @input.name,
+            emulator_project_id: project,
+            simulator_specification_id: spec,
+            id: input.name,
             input: { fixed_value: 0.5 }
           }
         end
 
         it 'assigns the requested input to @input' do
-          assigns(:input).should eq(@input)
+          assigns(:input).should == input
         end
 
         it "changes @input's attributes" do
-          @input.reload
-          @input.fixed_value.should eq(0.5)
+          input.reload
+          input.fixed_value.should == 0.5
         end
 
         it 'assigns true to @updated' do
-          assigns(:updated).should eq(true)
+          assigns(:updated).should == true
         end
 
         it 'assigns empty array to @error_messages' do
-          assigns(:error_messages).should eq([])
+          assigns(:error_messages).should == []
         end
 
         it 'renders the #update view' do
@@ -86,24 +82,24 @@ describe InputsController do
         before do
           put :update, {
             format: :js,
-            emulator_project_id: @project,
-            simulator_specification_id: @spec,
-            id: @input.name,
+            emulator_project_id: project,
+            simulator_specification_id: spec,
+            id: input.name,
             input: { value_type: 'super_invalid_value' }
           }
         end
 
         it 'assigns the requested input to @input' do
-          assigns(:input).should eq(@input)
+          assigns(:input).should == input
         end
 
         it "does not change @input's attributes" do
-          @input.reload
-          @input.fixed_value.should_not eq('super_invalid_value')
+          input.reload
+          input.fixed_value.should_not == 'super_invalid_value'
         end
 
         it 'assigns false to @updated' do
-          assigns(:updated).should eq(false)
+          assigns(:updated).should == false
         end
 
         it 'assigns non-empty array to @error_messages' do
@@ -121,9 +117,9 @@ describe InputsController do
         sign_in FactoryGirl.create(:another_user)
         put :update, {
           format: :js,
-          emulator_project_id: @project,
-          simulator_specification_id: @spec,
-          id: @input.name,
+          emulator_project_id: project,
+          simulator_specification_id: spec,
+          id: input.name,
           input: { fixed_value: 0.5 }
         }
       end
@@ -133,16 +129,16 @@ describe InputsController do
       end
 
       it 'does not change input' do
-        @input.reload
-        @input.fixed_value.should_not eq(0.5)
+        input.reload
+        input.fixed_value.should_not == 0.5
       end
 
       it 'responds with null' do
-        response.body.should eq(nil.to_json)
+        response.body.should == nil.to_json
       end
 
       it 'responds with 401' do
-        response.response_code.should eq(401)
+        response.response_code.should == 401
       end
     end
   end

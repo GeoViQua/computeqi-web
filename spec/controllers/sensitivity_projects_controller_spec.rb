@@ -1,5 +1,5 @@
 require 'spec_helper'
 
-describe EmulatorProjectsController do
+describe SensitivityProjectsController do
 
 end
