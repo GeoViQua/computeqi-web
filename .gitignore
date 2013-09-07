@@ -20,6 +20,5 @@
 /config/deploy.rb
 /config/api.yml
 /config/mongoid.yml
-/config/initializers/secret_token.rb
 /db/seeds.rb
 /public/uploads
