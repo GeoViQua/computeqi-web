@@ -1,6 +1,6 @@
 module Remote
   class RemotableController < ApplicationController
-    before_filter :find_project, :is_authorized, :is_allowed
+    before_filter :find_project, :is_allowed
 
     # this needs code to handle has_many relationships too for emulator?
     # 

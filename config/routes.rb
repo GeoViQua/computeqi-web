@@ -1,6 +1,4 @@
 Emulatorization::Application.routes.draw do
-  
-  devise_for :users
 
   match "api" => "api#index"
   match "service_status" => "service_status#index"
