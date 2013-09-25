@@ -3,28 +3,8 @@ Emulatorization::Application.routes.draw do
   match "api" => "api#index"
   match "service_status" => "service_status#index"
 
-  resources :emulator_projects do
-    resources :simulator_specifications do
-      resources :inputs
-    end
-    resources :input_screenings
-    resources :designs
-    resources :runs
-    resources :emulators
-    resources :validations do
-      get 'refresh', :on => :member
-    end
-  end
-
-  resources :sensitivity_projects do
-    resources :simulator_specifications
-    resources :analyses
-  end
-
-  resources :validation_projects do
-    resources :validations do
-      get 'refresh', :on => :member
-    end
+  resources :validations do
+    get 'refresh', :on => :member
   end
 
   resources :uploads
