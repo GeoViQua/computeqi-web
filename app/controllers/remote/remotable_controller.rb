@@ -1,5 +1,6 @@
 module Remote
   class RemotableController < ApplicationController
+    before_filter :init_project, :only => [:new]
     before_filter :find_project, :is_allowed
 
     # this needs code to handle has_many relationships too for emulator?
@@ -26,8 +27,8 @@ module Remote
       if get_instance_object.save
         # start off task
         Delayed::Job.enqueue RemoteJob.new(get_instance_object)
-
-        redirect_to send("#{project_singular}_#{instance_plural}_path", @project)
+        flash[:warn] = "Validation #{get_instance_object._id.to_s} is now tied to your session and will <b>automatically expire</b> after 24 hours or when you start a new validation."
+        redirect_to send("#{instance_plural}_path")
       else
         render "new"
       end
@@ -41,7 +42,7 @@ module Remote
         # start off task
         Delayed::Job.enqueue RemoteJob.new(get_instance_object)
 
-        redirect_to send("#{project_singular}_#{instance_plural}_path", @project, nil)
+        redirect_to send("#{instance_plural}_path", nil)
       else
         render "edit"
       end
@@ -52,10 +53,10 @@ module Remote
 
       # redirect to new if no object has been created
       if get_instance_object.nil?
-        redirect_to send("new_#{project_singular}_#{instance_singular}_path", @project)
+        redirect_to send("new_#{instance_singular}_path")
       else
         # otherwise go to object
-        redirect_to send("#{project_singular}_#{instance_singular}_path", @project, get_instance_object)
+        redirect_to send("#{instance_singular}_path", get_instance_object)
       end
     end
 
@@ -80,16 +81,21 @@ module Remote
 
     protected
 
-    def find_project
-      # project could also be sensitivity, validation
-      if params[:emulator_project_id] != nil
-        @project = EmulatorProject.find(params[:emulator_project_id])
-        @emulator_project = @project
-      elsif params[:sensitivity_project_id] != nil
-        @project = SensitivityProject.find(params[:sensitivity_project_id])
+    def init_project
+      #reset_session
+      params[:validation_project] = { :name => session[:session_id] }
+      @project = ValidationProject.new(params[:validation_project])
+
+      if @project.save
+        session[:validation_project_id] = @project._id.to_s
+        flash.now[:warn] = "A new session has been created, any validations from a previous session are now inaccessible."
       else
-        @project = ValidationProject.find(params[:validation_project_id])
+        # error message?
       end
+    end
+
+    def find_project
+      @project = ValidationProject.find(session[:validation_project_id])
     end
 
     def is_authorized

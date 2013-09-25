@@ -1,6 +1,8 @@
 # Be sure to restart your server when you modify this file.
 
-Emulatorization::Application.config.session_store :cookie_store, key: '_emulatorization_session'
+Emulatorization::Application.config.session_store :cookie_store,
+    key: '_computeqi_session',
+    expire_after: 24.hours
 
 Rails.application.config.middleware.insert_before(
   ActionDispatch::Session::CookieStore,

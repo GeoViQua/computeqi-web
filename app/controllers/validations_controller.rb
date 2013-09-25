@@ -46,7 +46,7 @@ class ValidationsController < Remote::RemotableController
   def refresh
     @validation = Validation.find(params[:id])
     Delayed::Job.enqueue RemoteJob.new(@validation)
-    redirect_to validation_project_validation_path(@project, @validation)
+    redirect_to validation_path(@validation)
   end
 
   private
