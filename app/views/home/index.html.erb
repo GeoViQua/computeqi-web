@@ -3,28 +3,32 @@
 <% end %>
 
 <div class="hero-unit">
-  <h1>Welcome<%= user_signed_in? ? " back!" : nil %></h1>
-  <p>Emulating the Web, one model at a time.</p>
+  <h1>Welcome</h1>
+  <p><%= t ".tag_line" %></p>
   <p>
     <% unless user_signed_in? %>
-      <%= link_to "Get started »", new_user_session_path, class: "btn btn-primary btn-large" %>
+      <%= link_to "Get started »", new_validation_path, class: "btn btn-primary btn-large" %>
     <% end %>
   </p>
 </div>
 
 <div class="row">
   <div class="span4">
-    <h2>Emulation</h2>
-    <p><%= t ".emulator_intro" %></p>
-  </div>
-
-  <div class="span4">
-    <h2>Sensitivity analysis</h2>
-    <p><%= t ".sensitivity_analysis_intro" %></p>
-  </div>
-
-  <div class="span4">
     <h2>Validation</h2>
     <p><%= t ".validation_intro" %></p>
   </div>
+
+  <div class="span4">
+    <h2>GeoViQua</h2>
+    <p><%= t ".geoviqua_intro" %></p>
+    <%= link_to "Project website »", "http://www.geoviqua.org", target: "_blank", class: "btn btn-primary" %>
+    <%= link_to "Try the tutorial »", "http://tutorial.geoviqua.org", target: "_blank", class: "btn" %>
+  </div>
+
+  <div class="span4">
+    <h2>API</h2>
+    <p><%= t ".api_intro" %></p>
+    <%= link_to "Learn more »", api_path, class: "btn btn-primary" %>
+  </div>
+
 </div>
