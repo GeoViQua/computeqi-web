@@ -1,5 +1,6 @@
 module Remote
   class RemotableController < ApplicationController
+    before_filter :clean_projects, :only => :show
     before_filter :init_project, :only => :new
     before_filter :find_project, :is_allowed, :except => [:new, :show]
 
@@ -80,6 +81,10 @@ module Remote
     end
 
     protected
+
+    def clean_projects
+      project_constantized.where(:created_at.lte => 24.hours.ago).destroy
+    end
 
     def init_project
       case instance_singular.to_s
