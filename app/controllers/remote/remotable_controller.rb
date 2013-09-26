@@ -83,7 +83,7 @@ module Remote
     protected
 
     def clean_projects
-      project_constantized.where(:created_at.lte => 24.hours.ago).destroy
+      project_constantized.where(:created_at.lte => 24.hours.ago).destroy_all
     end
 
     def init_project
