@@ -1,7 +1,7 @@
 module Remote
   class RemotableController < ApplicationController
-    before_filter :init_project, :only => [:new]
-    before_filter :find_project, :is_allowed
+    before_filter :init_project, :only => :new
+    before_filter :find_project, :is_allowed, :except => [:new, :show]
 
     # this needs code to handle has_many relationships too for emulator?
     # 
@@ -27,7 +27,7 @@ module Remote
       if get_instance_object.save
         # start off task
         Delayed::Job.enqueue RemoteJob.new(get_instance_object)
-        flash[:warn] = "Validation #{get_instance_object._id.to_s} is now tied to your session and will <b>automatically expire</b> after 24 hours or when you start a new validation."
+        flash[:warn] = "#{instance_constantized.to_s} #{get_instance_object._id.to_s} is now tied to your session which will <b>automatically expire after 24 hours</b>."
         redirect_to send("#{instance_plural}_path")
       else
         render "new"
@@ -82,20 +82,28 @@ module Remote
     protected
 
     def init_project
-      #reset_session
-      params[:validation_project] = { :name => session[:session_id] }
-      @project = ValidationProject.new(params[:validation_project])
+      case instance_singular.to_s
+      when "validation"
+        params = { :name => session[:session_id] }
+      else
+        params = {}
+      end
+
+      @project = project_constantized.new(params)
 
       if @project.save
-        session[:validation_project_id] = @project._id.to_s
-        flash.now[:warn] = "A new session has been created, any validations from a previous session are now inaccessible."
+        session[project_id_sym] = @project._id.to_s
       else
         # error message?
       end
     end
 
     def find_project
-      @project = ValidationProject.find(session[:validation_project_id])
+      if session[project_id_sym].nil?
+        init_project
+      else
+        @project = project_constantized.find(session[project_id_sym])
+      end
     end
 
     def is_authorized
@@ -134,6 +142,14 @@ module Remote
 
     def project_singular
       @project.class.to_s.underscore.singularize
+    end
+
+    def project_constantized
+      "#{instance_constantized.to_s}Project".classify.constantize
+    end
+
+    def project_id_sym
+      "#{instance_singular}_project_id".to_sym
     end
   end
 end
