@@ -5,11 +5,7 @@
 <div class="hero-unit">
   <h1>Welcome</h1>
   <p><%= t ".tag_line" %></p>
-  <p>
-    <% unless user_signed_in? %>
-      <%= link_to "Get started »", new_validation_path, class: "btn btn-primary btn-large" %>
-    <% end %>
-  </p>
+  <p><%= link_to "Get started »", new_validation_path, class: "btn btn-primary btn-large" %></p>
 </div>
 
 <div class="row">
