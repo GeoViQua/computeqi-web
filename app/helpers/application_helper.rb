@@ -44,31 +44,31 @@ module ApplicationHelper
     end
   end
   
-  def remote_display(remotable, parent)
+  def remote_display(remotable)
     content_tag(:div, id: "display") do
-      remote_html(remotable, parent)
+      remote_html(remotable)
     end +
     content_tag(:script) do
-      remote_script(remotable, parent)
+      remote_script(remotable)
     end.html_safe
   end
   
-  def remote_ujs(remotable, parent)
-    "var html = '#{escape_javascript(remote_html(remotable, parent))}';".html_safe +
+  def remote_ujs(remotable)
+    "var html = '#{escape_javascript(remote_html(remotable))}';".html_safe +
     "var element = $('<div>' + html + '</div>');".html_safe +
     "if (element.html() !== $('#display').html()) { $('#display').fadeOut('fast', function() { $(this).html(html).slideDown(); }); }".html_safe +
-    remote_script(remotable, parent)
+    remote_script(remotable)
   end
   
-  def remote_html(remotable, parent)
+  def remote_html(remotable)
     if remotable.finished?
       if remotable.success?
         render("display")
       else
         message = remotable.proc_message != nil ? remotable.proc_message : "I have nothing more to tell you."
         message << "." unless message =~ /[\.!?]\z/
-        path_str = "edit_#{parent ? parent.class.to_s.underscore + "_" : ""}#{remotable.class.to_s.underscore}_path"
-        status_box(:error, "Error", "#{remotable.proc_message} #{link_to('Try again?', send(path_str, parent, remotable))}".html_safe)
+        path_str = "edit_#{remotable.class.to_s.underscore}_path"
+        status_box(:error, "Error", "#{remotable.proc_message} #{link_to('Try again?', send(path_str, remotable))}".html_safe)
       end
     else
       object_name = remotable.class.to_s.underscore.humanize.downcase
@@ -80,11 +80,11 @@ module ApplicationHelper
     end
   end
   
-  def remote_script(remotable, parent)
+  def remote_script(remotable)
     if !remotable.finished?
       %Q{
 setTimeout(function() {
-  $.get('#{url_for([parent, remotable])}', function(response) {}, 'script');
+  $.get('#{url_for(remotable)}', function(response) {}, 'script');
 }, 2500);
       }.html_safe
     else "" end

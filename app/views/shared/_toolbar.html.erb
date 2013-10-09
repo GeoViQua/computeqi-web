@@ -12,7 +12,7 @@
         <%= link_to "New", send("new_#{parent ? parent.class.to_s.underscore + "_" : ""}#{object.class.to_s.underscore}_path", parent), class: "btn" %>
       </div>
       <% if defined?(export_options) and !export_options.nil? and !export_options.empty? %>
-      <div class="btn-group export" data-resource-path="<%= send("#{parent ? parent.class.to_s.underscore + "_" : ""}#{object.class.to_s.underscore}_path", parent, object) %>" data-filter="output_id">
+      <div class="btn-group export" data-resource-path="<%= send("#{parent ? parent.class.to_s.underscore + "_" : ""}#{object.class.to_s.underscore}_path", object) %>" data-filter="output_id">
         <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
           Export
           <b class="caret"></b>

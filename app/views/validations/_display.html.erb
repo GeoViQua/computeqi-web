@@ -7,13 +7,7 @@
 <script>
 $(function() {
   // better way to do this?
-  var url = '<%=
-  if @project.class == EmulatorProject
-    escape_javascript(emulator_project_validation_path(@project, @validation))
-  else
-    escape_javascript(validation_project_validation_path(@project, @validation))
-  end
-  %>.json';
+  var url = '<%= escape_javascript(validation_path(@validation)) %>.json';
 
   // selector is for tab pane containing div with plot class
   function updatePlots(selector) {
