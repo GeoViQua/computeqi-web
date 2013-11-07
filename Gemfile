@@ -25,6 +25,8 @@ gem 'cancan'
 # Uploads
 gem 'carrierwave-mongoid', :require => 'carrierwave/mongoid'
 gem 'rmagick'
+gem 'rubyzip'
+gem 'ruby-netcdf'
 
 # Test
 group :development, :test do

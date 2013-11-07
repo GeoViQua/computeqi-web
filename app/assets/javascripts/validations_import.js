@@ -1,26 +1,38 @@
 $(function() {
 
   uploader.bind('FileUploaded', function(up, file, response) {
-    // get data from csv
-    var rows = JSON.parse(response.response);
-    var first = rows.splice(0, 1)[0];
     
-    // create indices for templating
-    var headings = [];
-    for (i = 0; i < first.length; i++) {
-      headings.push({ index: i, name: first[i] });
+    var response = JSON.parse(response.response);
+
+    $('.alert').remove();
+
+    if (response.error) {
+      $('#new_validation').prepend('<div class="alert alert-error"><a class="close" data-dismiss="alert">×</a>' + response.error.message + '</div>');
+      file.status = plupload.FAILED;
     }
+    else {
+      // get data from csv
+      var rows = response;
+      console.log(rows);
+      var first = rows.splice(0, 1)[0];
 
-    // render selections
-    var options = Mustache.to_html($('#options-template').val(), headings);
-    $('select[id^="id-"], select[id^="var-"]').html(options);
+      // create indices for templating
+      var headings = [];
+      for (i = 0; i < first.length; i++) {
+        headings.push({ index: i, name: first[i] });
+      }
 
-    // render table
-    var table = Mustache.to_html($('#table-template').val(), { headings: headings, rows: rows });
-    $('#import-result').html(table);
+      // render selections
+      var options = Mustache.to_html($('#options-template').val(), headings);
+      $('select[id^="id-"], select[id^="var-"]').html(options);
 
-    // show dialog
-    $('#import-dialog').modal({ show: true, keyboard: true, backdrop: 'static' });
+      // render table
+      var table = Mustache.to_html($('#table-template').val(), { headings: headings, rows: rows });
+      $('#import-result').html(table);
+
+      // show dialog
+      $('#import-dialog').modal({ show: true, keyboard: true, backdrop: 'static' });
+    }
   });
 
   uploader.bind('UploadComplete', function(up, files) {

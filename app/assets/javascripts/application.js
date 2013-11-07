@@ -10,6 +10,7 @@
 //= require twitter/bootstrap/modal
 //= require twitter/bootstrap/tab
 //= require twitter/bootstrap/tooltip
+//= require twitter/bootstrap/alert
 //= require spin/spin
 //= require spin/jquery.spin
 //= require mustache/mustache

@@ -1,6 +1,8 @@
 <%= javascript_include_tag 'plupload/plupload.full' %>
-<%= import_button 'import-container' %>
+<%= import_button 'csv-import-container' %>
+<%= import_geca_button 'geca-import-container' %>
 <%= javascript_include_tag 'validations_import' %>
+<%= javascript_include_tag 'geca_import' %>
 
 <div class="row">
   <div class="span7">
@@ -10,8 +12,9 @@
       <fieldset>
         <div class="control-group">
           <label class="control-label">Import</label>
-          <div class="controls form-toggle">
-            <div id="import-container"></div>
+          <div class="controls form-toggle btn-toolbar">
+            <div id="csv-import-container" style="display: inline-block;"></div>
+            <div id="geca-import-container" style="display: inline-block;"></div>
           </div>
         </div>
       </fieldset>
