@@ -51,17 +51,18 @@ $(function() {
     return false;
   });
 
-  $('.form-slider input[type="range"]').on('change', function() {
+  $('.form-slider input[type="range"]').on('input change', function() {
     var range = $(this);
-    var input = range.siblings('input[type="text"]');
+    var input = range.siblings().find('input[type="text"]');
 
     // update
     input.val(range.val());
   });
 
-  $('.form-slider input[type="text"]').on('change', function() {
+  $('.form-slider input[type="text"]').on('input change', function() {
     var input = $(this);
-    var range = input.siblings('input[type="range"]');
+    var range = input.parent().siblings('input[type="range"]');
+    console.log(range);
 
     // update
     var val = parseInt(input.val());
