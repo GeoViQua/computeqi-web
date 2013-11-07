@@ -40,6 +40,8 @@
         </div>
       </fieldset>
 
+      <%= render partial: "shared/form_slider", locals: { field: :learning_percentage, parent: f.object_name.to_sym, object: @validation, min: 50, max: 80, step: 1, value: @validation.learning_percentage, units: "%", help: "The remainder will be used for validation." } %>
+
       <%= f.input :missing_value_code %>
 
       <div class="form-actions">

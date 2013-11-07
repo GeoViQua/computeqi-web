@@ -17,6 +17,10 @@ class Validation
 
   field :missing_value_code, type: Float, default: -9900.0
 
+  # compute quality indicators
+  field :learning_percentage, type: Integer, default: 80
+
+
   field :mean_bias, type: Float
   field :mean_mae, type: Float
   field :mean_rmse, type: Float
@@ -125,9 +129,14 @@ class Validation
         predicted_obj = self.predicted
       end
 
-      { type: 'ValidationRequest',
+      {
+        type: 'ValidationRequest',
         observed: self.observed,
-        predicted: predicted_obj }
+        predicted: predicted_obj,
+        computeQualityIndicators: {
+          learningPercentage: self.learning_percentage
+        }
+      }
     end
   end
 
