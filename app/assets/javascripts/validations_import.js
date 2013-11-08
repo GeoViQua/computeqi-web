@@ -1,6 +1,11 @@
 $(function() {
 
-  uploader.bind('FileUploaded', function(up, file, response) {
+  var inputs = {},
+      $import_save = $('#import-save'),
+      $import_submit = $('#import-submit'),
+      $data_dropdown = $('select[name="type"]');
+
+  var fileUploaded = function(up, file, response) {
     
     var response = JSON.parse(response.response);
 
@@ -29,18 +34,28 @@ $(function() {
       var table = Mustache.to_html($('#table-template').val(), { headings: headings, rows: rows });
       $('#import-result').html(table);
 
+      // reset saved inputs
+      inputs = {};
+
+      // disable save & import buttons
+      $import_save.prop('disabled', true);
+      $import_submit.prop('disabled', true);
+
       // show dialog
       $('#import-dialog').modal({ show: true, keyboard: true, backdrop: 'static' });
     }
-  });
+  }
 
-  uploader.bind('UploadComplete', function(up, files) {
+  var uploadComplete = function(up, files) {
 
-  });
+  }
+
+  uploader.bind('FileUploaded', fileUploaded);
+  uploader.bind('UploadComplete', uploadComplete);
+  geca_uploader.bind('FileUploaded', fileUploaded);
+  geca_uploader.bind('UploadComplete', uploadComplete);
 
   this.addData = function(type, data) {
-    var $container = $('#' + type + '-container');
-
     var id = data.id;
     var value = data.value;
     var base = 'validation[' + type + '][' + id + ']';
@@ -49,7 +64,7 @@ $(function() {
     $input.attr('name', base);
     $input.val(JSON.stringify(value));
 
-    $container.append($input);
+    inputs[type]["values"].push($input);
   };
 
   this.updateSelectedId = function() {
@@ -94,12 +109,18 @@ $(function() {
     $('#id-help').html(text);
   };
 
-  this.updateSelectedVariable = function() {
+  this.updateSelectedVariable = function(css_class) {
+    var css_class = typeof css_class !== 'undefined' ? css_class : 'selected-var';
     var type = $('#var-toggle .btn.active').data('value');
 
     // remove old selection
     var table = $('#import-result table');
-    table.find('.selected-var').removeClass('selected-var');
+    if (css_class == 'saved-var') {
+      table.find('td').removeClass('selected-var saved-var');
+    }
+    else {
+      table.find('.'+css_class).removeClass(css_class);
+    }
 
     // check type and update
     var text = '';
@@ -120,7 +141,7 @@ $(function() {
           text = 'Last column cannot precede first.';
         } else {
           // update
-          table.find('tr > td:nth-child(n+'+from+'):nth-child(-n+'+to+')').addClass('selected-var');
+          table.find('tr > td:nth-child(n+'+from+'):nth-child(-n+'+to+')').addClass(css_class);
         }
       } else {
         text = 'Need more information.';
@@ -132,10 +153,10 @@ $(function() {
 
       // update
       if (!isNaN(mean)) {
-        table.find('tr > td:nth-child('+mean+')').addClass('selected-var');
+        table.find('tr > td:nth-child('+mean+')').addClass(css_class);
       }
       if (!isNaN(variance)) {
-        table.find('tr > td:nth-child('+variance+')').addClass('selected-var');
+        table.find('tr > td:nth-child('+variance+')').addClass(css_class);
       }
     }
 
@@ -151,19 +172,21 @@ $(function() {
   };
 
   this.updateSelectedVariableType = function(type) {
-    $('#ensemble-params').slideUp('fast');
-    $('#distribution-params').slideUp('fast');
-    $('#scalar-params').slideUp('fast');
-    $('#' + type + '-params').slideDown('fast');
+    $type = $('#' + type + '-params');
+    if (!$type.is(":visible")) {
+      $('.params[data-type="variable"]').not($type).slideUp('fast');
+      $type.slideDown('fast');
+    }
     that.updateSelectedVariable();
   };
 
   var that = this;
 
-  $('select[name="type"]').on('change', function() {
+  $data_dropdown.on('change', function() {
+    var type = $(this).val();
     var $btn = $('#var-toggle .btn:first-child');
     var $btns = $('#var-toggle .btn:nth-child(n+2):nth-child(-n+3)');
-    if ($(this).val() === 'observed') {
+    /*if ($(this).val() === 'observed') {
       $btns.prop('disabled', true).removeClass('active').addClass('disabled');
       $btn.prop('disabled', false).removeClass('disabled').addClass('active');
       that.updateSelectedVariableType('scalar');
@@ -176,6 +199,15 @@ $(function() {
       }
       $btn.prop('disabled', true).removeClass('active').addClass('disabled');
       $btns.prop('disabled', false).removeClass('disabled');
+    }*/
+    $btns.prop('disabled', true).removeClass('active').addClass('disabled');
+    $btn.prop('disabled', false).removeClass('disabled').addClass('active');
+    that.updateSelectedVariableType('scalar');
+
+    if (inputs.hasOwnProperty(type)) {
+      if (inputs[type]['vartype'] == 'scalar') {
+        $('#var-'+inputs[type]['vartype']).val(inputs[type]["varselected"][0]).trigger('change');
+      }
     }
   });
 
@@ -184,7 +216,23 @@ $(function() {
   });
 
   $('select[id^="var-"]').on('change', function() {
-    that.updateSelectedVariable();
+    var type = $data_dropdown.val(),
+        val = $(this).val();
+
+    $import_save.prop('disabled', isNaN(val));
+
+    var css;
+
+    if (inputs.hasOwnProperty(type)) {
+      if ($.inArray(parseInt(val), inputs[type]["varselected"]) != -1) {
+        css = 'saved-var';
+      }
+    }
+    else {
+      $('#import-result table').find('td').removeClass('saved-var');
+    }
+
+    that.updateSelectedVariable(css);
   });
 
   $('#id-toggle .btn').on('click', function() {
@@ -197,16 +245,15 @@ $(function() {
     that.updateSelectedVariableType(value);
   });
 
-  $('#import-cancel').click(function() {
-    $('#import-dialog').modal('hide');
-  });
+  $('#import-save').on('click', function(event) {
+    event.preventDefault();
 
-  $('#import-submit').click(function() {
-    var type = $('select[name="type"]').val();
+    var type = $data_dropdown.val();
     var idtype = $('#id-toggle .btn.active').data('value');
     var vartype = $('#var-toggle .btn.active').data('value');
 
-    var count = 0;
+    var count = parseInt($('#' + type + '-count').html());
+    inputs[type] = { idtype: idtype, vartype: vartype, values: [] };
 
     // need checks before this
     // duplicate ids?
@@ -227,8 +274,10 @@ $(function() {
       var value;
       if (vartype === 'scalar') {
         // scalar
-        var child = parseInt($('#var-scalar').val()) + 1;
+        var selected = $('#var-scalar').val();
+        var child = parseInt(selected) + 1;
         value = parseFloat($(this).find('td:nth-child(' + child + ')').html());
+        inputs[type]["varselected"] = [parseInt(selected)];
       } else if (vartype === 'distribution') {
         // distribution
         var meanChild = parseInt($('#var-mean').val()) + 1;
@@ -251,9 +300,35 @@ $(function() {
       count++;
     });
 
-    // all done
-    $count = $('#' + type + '-count')
-    $count.html(parseInt($count.html()) + count);
+    // set the selection to saved
+    that.updateSelectedVariable('saved-var');
+
+    // enable import button
+    $import_submit.prop('disabled', false);
+  });
+
+  $('#import-cancel').click(function() {
+    inputs = {};
+    $('#import-dialog').modal('hide');
+  });
+
+  $import_submit.click(function(event) {
+    event.preventDefault();
+
+    for (var type in inputs) {
+      if (inputs.hasOwnProperty(type)) {
+
+        var $container = $('#' + type + '-container');
+
+        for (var index in inputs[type]["values"]) {
+          $container.append(inputs[type]["values"][index]);
+        }
+
+        $count = $('#' + type + '-count');
+        $count.html(parseInt($count.html()) + inputs[type]["values"].length);
+      }
+    }
+
     $('#import-dialog').modal('hide');
   });
 
