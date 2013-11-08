@@ -13,7 +13,6 @@ $(function() {
     else {
       // get data from csv
       var rows = response;
-      console.log(rows);
       var first = rows.splice(0, 1)[0];
 
       // create indices for templating
