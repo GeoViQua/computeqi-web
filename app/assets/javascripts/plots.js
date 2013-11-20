@@ -70,7 +70,9 @@ $e.calculateMinMax = function(data) {
   var minX;
   var maxX;
   var minY;
-  var maxX;
+  var maxY;
+  var minYwithError;
+  var maxYwithError;
   for (var i = 0; i < data.x.length; i++) {
     if (i == 0 || data.x[i] < minX) {
       minX = data.x[i];
@@ -84,6 +86,16 @@ $e.calculateMinMax = function(data) {
     if (i == 0 || data.y[i] > maxY) {
       maxY = data.y[i];
     }
+    if (typeof(data.yRange) !== 'undefined') {
+      var tmpMin = (minY - (data.y[i] - data.yRange[i][0]));
+      var tmpMax = ((data.yRange[i][1] - data.y[i]) + maxY);
+      if (i == 0 || tmpMin < minYwithError) {
+        minYwithError = tmpMin;
+      }
+      if (i == 0 || tmpMax > maxYwithError) {
+        maxYwithError = tmpMax;
+      }
+    }
   }
   return {
     min: (minX < minY ? minX : minY),
@@ -91,7 +103,9 @@ $e.calculateMinMax = function(data) {
     minX: minX,
     maxX: maxX,
     minY: minY,
-    maxY: maxY };
+    maxY: maxY,
+    minYwithError: minYwithError,
+    maxYwithError: maxYwithError };
 };
 
 $e.createLine = function(data) {
@@ -232,8 +246,26 @@ $e.plotVsPredicted = function($container, data, source) {
     $e.createPointsWithError($e.baseParse(data))
   ];
 
+  // padded values incase we want to keep plots off the grid edge
+  var yMin = (minMax.minYwithError >= 0 ? minMax.minYwithError - (minMax.minYwithError * 0.05) : minMax.minYwithError + (minMax.minYwithError * 0.05));
+  var yMax = (minMax.maxYwithError >= 0 ? minMax.maxYwithError + (minMax.maxYwithError * 0.05) : minMax.maxYwithError - (minMax.maxYwithError * 0.05));
+  var xMin = (minMax.minX >= 0 ? minMax.minX - (minMax.minX * 0.05) : minMax.minX + (minMax.minX * 0.05));
+  var xMax = (minMax.maxX >= 0 ? minMax.maxX + (minMax.maxX * 0.05) : minMax.maxX - (minMax.maxX * 0.05));
+
   // create options
   var options = {
+    zoom: { interactive: true },
+    pan: { interactive: true },
+    xaxis: {
+      min: minMax.minX,
+      max: minMax.maxX,
+      panRange: [minMax.minX, minMax.maxX]
+    },
+    yaxis: {
+      min: minMax.minYwithError,
+      max: minMax.maxYwithError,
+      panRange: [minMax.minYwithError, minMax.maxYwithError]
+    },
     xaxes: [{ axisLabel: 'Observed' }],
     yaxes: [{ axisLabel: 'Predicted ' + source }]
   };
