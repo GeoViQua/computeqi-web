@@ -1,63 +1,70 @@
-/*
-Flot plugin for error-bars
+/* Flot plugin for plotting error bars.
 
-    series: { 
-        points: {
-            errorbars: "x" or "y" or "xy",
-            xerr: { show: null/false or true, 
-                    asymmetric: null/false or true, 
-                    upperCap: null or "-" or function, 
-                    lowerCap: null or "-" or function, 
-                    color: null or color, 
-                    radius: null or number},
-            yerr: { same options as xerr }
-        }
-    }
+Copyright (c) 2007-2013 IOLA and Ole Laursen.
+Licensed under the MIT license.
 
-This plugin allows you to plot error-bars over points. Set "errorbars"
-inside the points series to the axis name over which there will be
-error values in your data array (*even* if you do not intend to plot
-them later, by setting "show: null" on xerr/yerr).
+Error bars are used to show standard deviation and other statistical
+properties in a plot.
 
-Each data point array is expected to be of the type
+* Created by Rui Pereira  -  rui (dot) pereira (at) gmail (dot) com
 
-"x"  [x,y,xerr]
-"y"  [x,y,yerr]
-"xy" [x,y,xerr,yerr]
+This plugin allows you to plot error-bars over points. Set "errorbars" inside
+the points series to the axis name over which there will be error values in
+your data array (*even* if you do not intend to plot them later, by setting
+"show: null" on xerr/yerr).
 
-where xerr becomes xerr_lower,xerr_upper for the asymmetric error
-case, and equivalently for yerr. Eg., a datapoint for the "xy" case
-with symmetric error-bars on X and asymmetric on Y would be:
+The plugin supports these options:
 
-[x,y,xerr,yerr_lower,yerr_upper]
+	series: {
+		points: {
+			errorbars: "x" or "y" or "xy",
+			xerr: {
+				show: null/false or true,
+				asymmetric: null/false or true,
+				upperCap: null or "-" or function,
+				lowerCap: null or "-" or function,
+				color: null or color,
+				radius: null or number
+			},
+			yerr: { same options as xerr }
+		}
+	}
 
-By default no end caps are drawn. Setting upperCap and/or lowerCap to
-"-" will draw a small cap perpendicular to the error bar. They can
-also be set to a user-defined drawing function, with (ctx, x, y,
-radius) as parameters, as eg.
+Each data point array is expected to be of the type:
 
-    function drawSemiCircle(ctx, x, y, radius){
-        ctx.beginPath();
-        ctx.arc(x, y, radius, 0, Math.PI, false);
-        ctx.moveTo(x - radius, y);
-        ctx.lineTo(x + radius, y);
-        ctx.stroke();
-    }
+	"x"  [ x, y, xerr ]
+	"y"  [ x, y, yerr ]
+	"xy" [ x, y, xerr, yerr ]
 
-Color and radius both default to the same ones of the points series if
-not set. The independent radius parameter on xerr/yerr is useful for
-the case when we may want to add error-bars to a line, without showing
-the interconnecting points (with radius: 0), and still showing end
-caps on the error-bars. shadowSize and lineWidth are derived as well
-from the points series.
+Where xerr becomes xerr_lower,xerr_upper for the asymmetric error case, and
+equivalently for yerr. Eg., a datapoint for the "xy" case with symmetric
+error-bars on X and asymmetric on Y would be:
 
-Rui Pereira
-rui (dot) pereira (at) gmail (dot) com
+	[ x, y, xerr, yerr_lower, yerr_upper ]
+
+By default no end caps are drawn. Setting upperCap and/or lowerCap to "-" will
+draw a small cap perpendicular to the error bar. They can also be set to a
+user-defined drawing function, with (ctx, x, y, radius) as parameters, as eg.
+
+	function drawSemiCircle( ctx, x, y, radius ) {
+		ctx.beginPath();
+		ctx.arc( x, y, radius, 0, Math.PI, false );
+		ctx.moveTo( x - radius, y );
+		ctx.lineTo( x + radius, y );
+		ctx.stroke();
+	}
+
+Color and radius both default to the same ones of the points series if not
+set. The independent radius parameter on xerr/yerr is useful for the case when
+we may want to add error-bars to a line, without showing the interconnecting
+points (with radius: 0), and still showing end caps on the error-bars.
+shadowSize and lineWidth are derived as well from the points series.
+
 */
 
 (function ($) {
     var options = {
-        series: { 
+        series: {
             points: {
                 errorbars: null, //should be 'x', 'y' or 'xy'
                 xerr: { err: 'x', show: null, asymmetric: null, upperCap: null, lowerCap: null, color: null, radius: null},
@@ -65,7 +72,7 @@ rui (dot) pereira (at) gmail (dot) com
             }
         }
     };
-    
+
     function processRawData(plot, series, data, datapoints){
         if (!series.points.errorbars)
             return;
@@ -83,7 +90,7 @@ rui (dot) pereira (at) gmail (dot) com
             if (series.points.xerr.asymmetric) {
                 format.push({ x: true, number: true, required: true });
                 format.push({ x: true, number: true, required: true });
-            } else 
+            } else
                 format.push({ x: true, number: true, required: true });
         }
         if (errors == 'y' || errors == 'xy') {
@@ -91,23 +98,23 @@ rui (dot) pereira (at) gmail (dot) com
             if (series.points.yerr.asymmetric) {
                 format.push({ y: true, number: true, required: true });
                 format.push({ y: true, number: true, required: true });
-            } else 
+            } else
                 format.push({ y: true, number: true, required: true });
         }
         datapoints.format = format;
     }
-    
+
     function parseErrors(series, i){
 
         var points = series.datapoints.points;
 
         // read errors from points array
         var exl = null,
-            exu = null,
-            eyl = null,
-            eyu = null;
-        var xerr = series.points.xerr, 
-            yerr = series.points.yerr;
+                exu = null,
+                eyl = null,
+                eyu = null;
+        var xerr = series.points.xerr,
+                yerr = series.points.yerr;
 
         var eb = series.points.errorbars;
         // error bars - first X
@@ -155,10 +162,10 @@ rui (dot) pereira (at) gmail (dot) com
     function drawSeriesErrors(plot, ctx, s){
 
         var points = s.datapoints.points,
-            ps = s.datapoints.pointsize,
-            ax = [s.xaxis, s.yaxis],
-            radius = s.points.radius,
-            err = [s.points.xerr, s.points.yerr];
+                ps = s.datapoints.pointsize,
+                ax = [s.xaxis, s.yaxis],
+                radius = s.points.radius,
+                err = [s.points.xerr, s.points.yerr];
 
         //sanity check, in case some inverted axis hack is applied to flot
         var invertX = false;
@@ -195,21 +202,21 @@ rui (dot) pereira (at) gmail (dot) com
                         y = points[i + 1];
 
                     //errorbar ranges
-		    var upper = [x, y][e] + errRanges[e * err.length + 1], 
+                    var upper = [x, y][e] + errRanges[e * err.length + 1],
                         lower = [x, y][e] - errRanges[e * err.length];
 
                     //points outside of the canvas
-                    if (err[e].err == 'x') 
-                        if (y > ax[1].max || y < ax[1].min || upper < ax[0].min || lower > ax[0].max) 
+                    if (err[e].err == 'x')
+                        if (y > ax[1].max || y < ax[1].min || upper < ax[0].min || lower > ax[0].max)
                             continue;
-                    if (err[e].err == 'y') 
-                        if (x > ax[0].max || x < ax[0].min || upper < ax[1].min || lower > ax[1].max) 
+                    if (err[e].err == 'y')
+                        if (x > ax[0].max || x < ax[0].min || upper < ax[1].min || lower > ax[1].max)
                             continue;
 
                     // prevent errorbars getting out of the canvas
-                    var drawUpper = true, 
+                    var drawUpper = true,
                         drawLower = true;
-                    
+
                     if (upper > minmax[1]) {
                         drawUpper = false;
                         upper = minmax[1];
@@ -235,15 +242,15 @@ rui (dot) pereira (at) gmail (dot) com
 
                     // convert to pixels
                     x = ax[0].p2c(x),
-                    y = ax[1].p2c(y),
-		    upper = ax[e].p2c(upper);
-		    lower = ax[e].p2c(lower);
+                        y = ax[1].p2c(y),
+                        upper = ax[e].p2c(upper);
+                    lower = ax[e].p2c(lower);
                     minmax[0] = ax[e].p2c(minmax[0]);
                     minmax[1] = ax[e].p2c(minmax[1]);
 
                     //same style as points by default
-                    var lw = err[e].lineWidth? err[e].lineWidth: s.points.lineWidth,
-                        sw = s.points.shadowSize != null? s.points.shadowSize: s.shadowSize
+                    var lw = err[e].lineWidth ? err[e].lineWidth : s.points.lineWidth,
+                        sw = s.points.shadowSize != null ? s.points.shadowSize : s.shadowSize;
 
                     //shadow as for points
                     if (lw > 0 && sw > 0) {
@@ -264,15 +271,15 @@ rui (dot) pereira (at) gmail (dot) com
             }
         }
     }
-    
+
     function drawError(ctx,err,x,y,upper,lower,drawUpper,drawLower,radius,offset,minmax){
 
         //shadow offset
         y += offset;
         upper += offset;
         lower += offset;
-        
-	// error bar - avoid plotting over circles
+
+        // error bar - avoid plotting over circles
         if (err.err == 'x'){
             if (upper > x + radius) drawPath(ctx, [[upper,y],[Math.max(x + radius,minmax[0]),y]]);
             else drawUpper = false;
@@ -292,20 +299,20 @@ rui (dot) pereira (at) gmail (dot) com
 
         // upper cap
         if (drawUpper) {
-	    if (err.upperCap == '-'){
+            if (err.upperCap == '-'){
                 if (err.err=='x') drawPath(ctx, [[upper,y - radius],[upper,y + radius]] );
                 else drawPath(ctx, [[x - radius,upper],[x + radius,upper]] );
-	    } else if ($.isFunction(err.upperCap)){
+            } else if ($.isFunction(err.upperCap)){
                 if (err.err=='x') err.upperCap(ctx, upper, y, radius);
                 else err.upperCap(ctx, x, upper, radius);
             }
         }
         // lower cap
         if (drawLower) {
-	    if (err.lowerCap == '-'){
+            if (err.lowerCap == '-'){
                 if (err.err=='x') drawPath(ctx, [[lower,y - radius],[lower,y + radius]] );
                 else drawPath(ctx, [[x - radius,lower],[x + radius,lower]] );
-	    } else if ($.isFunction(err.lowerCap)){
+            } else if ($.isFunction(err.lowerCap)){
                 if (err.err=='x') err.lowerCap(ctx, lower, y, radius);
                 else err.lowerCap(ctx, x, lower, radius);
             }
@@ -315,7 +322,7 @@ rui (dot) pereira (at) gmail (dot) com
     function drawPath(ctx, pts){
         ctx.beginPath();
         ctx.moveTo(pts[0][0], pts[0][1]);
-        for (p=1; p < pts.length; p++)
+        for (var p=1; p < pts.length; p++)
             ctx.lineTo(pts[p][0], pts[p][1]);
         ctx.stroke();
     }
@@ -338,9 +345,9 @@ rui (dot) pereira (at) gmail (dot) com
     }
 
     $.plot.plugins.push({
-        init: init,
-        options: options,
-        name: 'errorbars',
-        version: '1.0'
-    });
+                init: init,
+                options: options,
+                name: 'errorbars',
+                version: '1.0'
+            });
 })(jQuery);
