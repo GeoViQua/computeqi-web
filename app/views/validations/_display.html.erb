@@ -47,8 +47,6 @@ $(function() {
         <li><a href="#vs-tab" data-toggle="tab">Observed vs. predicted</a></li>
         <li><a href="#standard-score-tab" data-toggle="tab">Standard score</a></li>
         <li><a href="#mean-residual-tab" data-toggle="tab">Mean residual</a></li>
-        <li><a href="#median-residual-tab" data-toggle="tab">Median residual</a></li>
-        <li><a href="#rank-tab" data-toggle="tab">Rank</a></li>
         <li><a href="#reliability-tab" data-toggle="tab">Reliability</a></li>
         <li><a href="#coverage-tab" data-toggle="tab">Coverage</a></li>
         <li><a href="#metrics-tab" data-toggle="tab">Additional metrics</a></li>
@@ -90,17 +88,6 @@ $(function() {
     <div class="span6">
       <div class="plot square" data-type="mean_residual_qq_plot"></div>
     </div>
-  </div>
-  <div class="tab-pane row" id="median-residual-tab">
-    <div class="span6">
-      <div class="plot square" data-type="median_residual_histogram"></div>
-    </div>
-    <div class="span6">
-      <div class="plot square" data-type="median_residual_qq_plot"></div>
-    </div>
-  </div>
-  <div class="tab-pane" id="rank-tab">
-    <div class="plot" data-type="rank_histogram"></div>
   </div>
   <div class="tab-pane" id="reliability-tab">
     <div class="plot square" data-type="reliability_diagram"></div>
