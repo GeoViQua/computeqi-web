@@ -37,14 +37,15 @@ $(function() {
 </script>
 
 
-<%= render partial: "shared/toolbar", locals: { text: "Performed validation on #{pluralize(@validation.predicted_size, 'prediction')}.", parent: @project, object: @validation, export_options: ["json"] } %>
+<%= render partial: "shared/toolbar", locals: { text: "Computed quality indicators for #{pluralize(@validation.validation_size, 'value')}.", parent: @project, object: @validation, export_options: ["json"] } %>
 
 <div class="row">
   <div class="span12">
     <div class="tabbable">
       <ul class="nav nav-tabs">
+        <li class="active"><a href="#quality-tab" data-toggle="tab">Quality indicators</a></li>
         <li><a href="#vs-tab" data-toggle="tab">Observed vs. predicted</a></li>
-        <li class="active"><a href="#standard-score-tab" data-toggle="tab">Standard score</a></li>
+        <li><a href="#standard-score-tab" data-toggle="tab">Standard score</a></li>
         <li><a href="#mean-residual-tab" data-toggle="tab">Mean residual</a></li>
         <li><a href="#median-residual-tab" data-toggle="tab">Median residual</a></li>
         <li><a href="#rank-tab" data-toggle="tab">Rank</a></li>
@@ -57,6 +58,20 @@ $(function() {
 </div>
 
 <div class="tab-content">
+  <div class="tab-pane active" id="quality-tab">
+    <div class="row">
+      <div class="span6">
+        <%=
+        render('metrics_table', {
+          :group => 'Quality indicators',
+          :rows => [
+            { :metric => 'Mean', :value => @validation.quality_indicators['mean'] },
+            { :metric => 'Variance', :value => @validation.quality_indicators['variance'] },
+          ]})
+        %>
+      </div>
+    </div>
+  </div>
   <div class="tab-pane row" id="vs-tab">
     <div class="span6">
       <div class="plot square" data-type="vs_predicted_mean_plot"></div>
@@ -65,7 +80,7 @@ $(function() {
       <div class="plot square" data-type="vs_predicted_median_plot"></div>
     </div>
   </div>
-  <div class="tab-pane active" id="standard-score-tab">
+  <div class="tab-pane row" id="standard-score-tab">
     <div class="plot" data-type="standard_score_plot"></div>
   </div>
   <div class="tab-pane row" id="mean-residual-tab">

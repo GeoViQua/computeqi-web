@@ -19,7 +19,7 @@ class Validation
 
   # compute quality indicators
   field :learning_percentage, type: Integer, default: 80
-
+  field :quality_indicators, type: Hash
 
   field :mean_bias, type: Float
   field :mean_mae, type: Float
@@ -148,6 +148,10 @@ class Validation
     end
   end
 
+  def validation_size
+    (predicted_size - ((self.learning_percentage.to_f / 100) * predicted_size)).round
+  end
+
   def handle(response)
     self.mean_bias = response['meanBias']
     self.mean_mae = response['meanMAE']
@@ -176,5 +180,6 @@ class Validation
     self.rank_histogram_data = response['rankHistogramData']
     self.reliability_diagram_data = response['reliabilityDiagramData']
     self.coverage_plot_data = response['coveragePlotData']
+    self.quality_indicators = response['qualityIndicators']
   end
 end
