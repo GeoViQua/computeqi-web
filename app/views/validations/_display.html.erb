@@ -58,14 +58,87 @@ $(function() {
 
 <div class="tab-content">
   <div class="tab-pane active" id="quality-tab">
+    <h3>Distribution</h3>
     <div class="row">
       <div class="span6">
         <%=
         render('metrics_table', {
-          :group => 'Quality indicators',
+          :group => 'Normal',
           :rows => [
-            { :metric => 'Mean', :value => @validation.quality_indicators['mean'] },
-            { :metric => 'Variance', :value => @validation.quality_indicators['variance'] },
+            { :metric => 'Mean', :value => @validation.quality_indicators_result['struct']['distribution']['normal']['mean'] },
+            { :metric => 'Variance', :value => @validation.quality_indicators_result['struct']['distribution']['normal']['variance'] },
+          ]})
+        %>
+      </div>
+    </div>
+    <br />
+    <h3>Statistics</h3>
+    <div class="row">
+      <div class="span4">
+        <%=
+        render('metrics_table', {
+          :group => 'Standard Deviation',
+          :rows => [
+            { :metric => 'Value', :value => @validation.quality_indicators_result['struct']['statistics']['stdev']['value'] }
+          ]})
+        %>
+      </div>
+      <div class="span4">
+        <%=
+        render('metrics_table', {
+          :group => 'Median',
+          :rows => [
+            { :metric => 'Value', :value => @validation.quality_indicators_result['struct']['statistics']['median']['value'] }
+          ]})
+        %>
+      </div>
+      <div class="span4">
+        <%=
+        render('metrics_table', {
+          :group => 'Kurtosis',
+          :rows => [
+            { :metric => 'Value', :value => @validation.quality_indicators_result['struct']['statistics']['kurtosis']['value'] }
+          ]})
+        %>
+      </div>
+    </div>
+    <div class="row space-top">
+      <div class="span4">
+        <%=
+        render('metrics_table', {
+          :group => 'Skewness',
+          :rows => [
+            { :metric => 'Value', :value => @validation.quality_indicators_result['struct']['statistics']['skewness']['value'] }
+          ]})
+        %>
+      </div>
+      <div class="span4">
+        <%=
+        render('metrics_table', {
+          :group => 'Mean',
+          :rows => [
+            { :metric => 'Value', :value => @validation.quality_indicators_result['struct']['statistics']['mean']['value'] }
+          ]})
+        %>
+      </div>
+      <div class="span4">
+        <%=
+        render('metrics_table', {
+          :group => 'Correlation',
+          :rows => [
+            { :metric => 'Value', :value => @validation.quality_indicators_result['struct']['statistics']['correlation']['value'] }
+          ]})
+        %>
+      </div>
+    </div>
+    <div class="row space-top">
+      <div class="span12">
+        <%=
+        render('metrics_table', {
+          :group => 'Quantiles',
+          :rows => [
+            { :metric => 'Values', :value => @validation.quality_indicators_result['struct']['statistics']['quantiles']['values'] },
+            { :metric => 'Levels', :value => @validation.quality_indicators_result['struct']['statistics']['quantiles']['levels'] }
           ]})
         %>
       </div>
@@ -74,9 +147,6 @@ $(function() {
   <div class="tab-pane row" id="vs-tab">
     <div class="span6">
       <div class="plot square" data-type="vs_predicted_mean_plot"></div>
-    </div>
-    <div class="span6">
-      <div class="plot square" data-type="vs_predicted_median_plot"></div>
     </div>
   </div>
   <div class="tab-pane row" id="standard-score-tab">
@@ -110,44 +180,8 @@ $(function() {
           ]})
         %>
       </div>
-      <div class="span6">
-        <%=
-        render('metrics_table', {
-          :group => 'Median',
-          :rows => [
-            { :metric => 'Bias', :value => @validation.median_bias },
-            { :metric => 'Mean absolute error', :value => @validation.median_mae },
-            { :metric => 'Root-mean-square error', :value => @validation.median_rmse },
-            { :metric => 'Correlation', :value => @validation.median_correlation }
-          ]})
-        %>
-      </div>
     </div>
     <div class="row space-top">
-      <div class="span4">
-        <%=
-        render('metrics_table', {
-          :group => 'Continuous Ranked Probability Score',
-          :rows => [
-            { :metric => 'Score', :value => @validation.crps },
-            { :metric => 'Reliability', :value => @validation.crps_reliability },
-            { :metric => 'Resolution', :value => @validation.crps_resolution },
-            { :metric => 'Uncertainty', :value => @validation.crps_uncertainty }
-          ]})
-        %>
-      </div>
-      <div class="span4">
-        <%=
-        render('metrics_table', {
-          :group => 'Ignorance Score',
-          :rows => [
-            { :metric => 'Score', :value => @validation.ign_score },
-            { :metric => 'Reliability', :value => @validation.ign_reliability },
-            { :metric => 'Resolution', :value => @validation.ign_resolution },
-            { :metric => 'Uncertainty', :value => @validation.ign_uncertainty }
-          ]})
-        %>
-      </div>
       <div class="span4">
         <%=
         render('metrics_table', {
