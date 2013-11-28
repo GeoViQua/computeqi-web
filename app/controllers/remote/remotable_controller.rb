@@ -1,6 +1,6 @@
 module Remote
   class RemotableController < ApplicationController
-    before_filter :clean_projects, :only => :show
+    #before_filter :clean_projects, :only => :show
     before_filter :init_project, :only => :new
     before_filter :find_project, :is_allowed, :except => [:new, :show]
 
