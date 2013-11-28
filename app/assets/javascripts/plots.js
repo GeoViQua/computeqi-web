@@ -246,25 +246,22 @@ $e.plotVsPredicted = function($container, data, source) {
     $e.createPointsWithError($e.baseParse(data))
   ];
 
-  // padded values incase we want to keep plots off the grid edge
-  var yMin = (minMax.minYwithError >= 0 ? minMax.minYwithError - (minMax.minYwithError * 0.05) : minMax.minYwithError + (minMax.minYwithError * 0.05));
-  var yMax = (minMax.maxYwithError >= 0 ? minMax.maxYwithError + (minMax.maxYwithError * 0.05) : minMax.maxYwithError - (minMax.maxYwithError * 0.05));
-  var xMin = (minMax.minX >= 0 ? minMax.minX - (minMax.minX * 0.05) : minMax.minX + (minMax.minX * 0.05));
-  var xMax = (minMax.maxX >= 0 ? minMax.maxX + (minMax.maxX * 0.05) : minMax.maxX - (minMax.maxX * 0.05));
+  var minWithError = (minMax.minYwithError < minMax.min ? minMax.minYwithError : minMax.min);
+  var maxWithError = (minMax.maxYwithError > minMax.max ? minMax.maxYwithError : minMax.max);
 
   // create options
   var options = {
     zoom: { interactive: true },
     pan: { interactive: true },
     xaxis: {
-      min: minMax.minX,
-      max: minMax.maxX,
-      panRange: [minMax.minX, minMax.maxX]
+      min: minWithError,
+      max: maxWithError,
+      panRange: [minWithError, maxWithError]
     },
     yaxis: {
-      min: minMax.minYwithError,
-      max: minMax.maxYwithError,
-      panRange: [minMax.minYwithError, minMax.maxYwithError]
+      min: minWithError,
+      max: maxWithError,
+      panRange: [minWithError, maxWithError]
     },
     xaxes: [{ axisLabel: 'Observed' }],
     yaxes: [{ axisLabel: 'Predicted ' + source }]
