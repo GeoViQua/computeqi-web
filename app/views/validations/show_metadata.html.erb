@@ -1,0 +1,12 @@
+<%= stylesheet_link_tag "syntaxhighlighter/shCore" %>
+<%= stylesheet_link_tag "syntaxhighlighter/shCoreDefault" %>
+<%= javascript_include_tag "syntaxhighlighter/shCore" %>
+<%= javascript_include_tag "syntaxhighlighter/shBrushXml" %>
+
+<pre class="brush: xml">
+<%= render_source partial: "metadata/combined", formats: :xml, locals: { object: @validation } %>
+</pre>
+
+<script type="text/javascript">
+     SyntaxHighlighter.all()
+</script>

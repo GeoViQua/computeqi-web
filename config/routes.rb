@@ -3,8 +3,11 @@ Emulatorization::Application.routes.draw do
   match "api" => "api#index"
   match "service_status" => "service_status#index"
 
-  resources :validations do
-    get 'refresh', :on => :member
+  resources :validations, path: 'reports' do
+    member do
+      get 'refresh'
+      get 'metadata', as: 'show_metadata', to: 'validations#show_metadata'
+    end
   end
 
   resources :uploads

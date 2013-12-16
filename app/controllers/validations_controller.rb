@@ -49,6 +49,10 @@ class ValidationsController < Remote::RemotableController
     redirect_to validation_path(@validation)
   end
 
+  def show_metadata
+    @validation = Validation.find(params[:id])
+  end
+
   private
 
   def parse_value(value)
