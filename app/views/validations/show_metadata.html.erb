@@ -3,10 +3,17 @@
 <%= javascript_include_tag "syntaxhighlighter/shCore" %>
 <%= javascript_include_tag "syntaxhighlighter/shBrushXml" %>
 
+<div class="row">
+  <div class="span12">
+    Tip: double-click anywhere on the code listing below to select all the XML ready to be copy &amp; pasted.
+  </div>
+</div>
+
 <pre class="brush: xml">
 <%= render_source partial: "metadata/combined", formats: :xml, locals: { object: @validation } %>
 </pre>
 
 <script type="text/javascript">
-     SyntaxHighlighter.all()
+    SyntaxHighlighter.defaults.toolbar = false;
+    SyntaxHighlighter.all()
 </script>
