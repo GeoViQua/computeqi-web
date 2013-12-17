@@ -19,7 +19,7 @@ class Validation
 
   # compute quality indicators
   field :learning_percentage, type: Integer, default: 80
-  field :quality_indicators_result, type: Hash
+  field :quality_indicators, type: Hash
 
   field :mean_bias, type: Float
   field :mean_mae, type: Float
@@ -56,7 +56,7 @@ class Validation
       reliabilityDiagramData: self.reliability_diagram_data,
       coveragePlotData: self.coverage_plot_data,
       learningPercentage: self.learning_percentage,
-      qualityIndicatorsResult: self.quality_indicators_result }
+      qualityIndicators: self.quality_indicators }
   end
   
   def generate
@@ -99,6 +99,6 @@ class Validation
     self.rank_histogram_data = response['rankHistogramData']
     self.reliability_diagram_data = response['reliabilityDiagramData']
     self.coverage_plot_data = response['coveragePlotData']
-    self.quality_indicators_result = response['qualityIndicatorsResult']
+    self.quality_indicators = response['qualityIndicatorsResult']['struct']
   end
 end

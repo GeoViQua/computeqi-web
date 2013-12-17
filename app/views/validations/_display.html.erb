@@ -65,8 +65,8 @@ $(function() {
         render('metrics_table', {
           :group => 'Normal',
           :rows => [
-            { :metric => 'Mean', :value => @validation.quality_indicators_result['struct']['distribution']['normal']['mean'] },
-            { :metric => 'Variance', :value => @validation.quality_indicators_result['struct']['distribution']['normal']['variance'] },
+            { :metric => 'Mean', :value => @validation.quality_indicators['distribution']['normal']['mean'] },
+            { :metric => 'Variance', :value => @validation.quality_indicators['distribution']['normal']['variance'] },
           ]})
         %>
       </div>
@@ -79,7 +79,7 @@ $(function() {
         render('metrics_table', {
           :group => 'Standard Deviation',
           :rows => [
-            { :metric => 'Value', :value => @validation.quality_indicators_result['struct']['statistics']['stdev']['value'] }
+            { :metric => 'Value', :value => @validation.quality_indicators['statistics']['stdev']['value'] }
           ]})
         %>
       </div>
@@ -88,7 +88,7 @@ $(function() {
         render('metrics_table', {
           :group => 'Median',
           :rows => [
-            { :metric => 'Value', :value => @validation.quality_indicators_result['struct']['statistics']['median']['value'] }
+            { :metric => 'Value', :value => @validation.quality_indicators['statistics']['median']['value'] }
           ]})
         %>
       </div>
@@ -97,7 +97,7 @@ $(function() {
         render('metrics_table', {
           :group => 'Kurtosis',
           :rows => [
-            { :metric => 'Value', :value => @validation.quality_indicators_result['struct']['statistics']['kurtosis']['value'] }
+            { :metric => 'Value', :value => @validation.quality_indicators['statistics']['kurtosis']['value'] }
           ]})
         %>
       </div>
@@ -108,7 +108,7 @@ $(function() {
         render('metrics_table', {
           :group => 'Skewness',
           :rows => [
-            { :metric => 'Value', :value => @validation.quality_indicators_result['struct']['statistics']['skewness']['value'] }
+            { :metric => 'Value', :value => @validation.quality_indicators['statistics']['skewness']['value'] }
           ]})
         %>
       </div>
@@ -117,7 +117,7 @@ $(function() {
         render('metrics_table', {
           :group => 'Mean',
           :rows => [
-            { :metric => 'Value', :value => @validation.quality_indicators_result['struct']['statistics']['mean']['value'] }
+            { :metric => 'Value', :value => @validation.quality_indicators['statistics']['mean']['value'] }
           ]})
         %>
       </div>
@@ -126,7 +126,7 @@ $(function() {
         render('metrics_table', {
           :group => 'Correlation',
           :rows => [
-            { :metric => 'Value', :value => @validation.quality_indicators_result['struct']['statistics']['correlation']['value'] }
+            { :metric => 'Value', :value => @validation.quality_indicators['statistics']['correlation']['value'] }
           ]})
         %>
       </div>
@@ -137,8 +137,8 @@ $(function() {
         render('metrics_table', {
           :group => 'Quantiles',
           :rows => [
-            { :metric => 'Values', :value => @validation.quality_indicators_result['struct']['statistics']['quantiles']['values'] },
-            { :metric => 'Levels', :value => @validation.quality_indicators_result['struct']['statistics']['quantiles']['levels'] }
+            { :metric => 'Values', :value => @validation.quality_indicators['statistics']['quantiles']['values'] },
+            { :metric => 'Levels', :value => @validation.quality_indicators['statistics']['quantiles']['levels'] }
           ]})
         %>
       </div>
