@@ -94,6 +94,7 @@ GEM
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
     mime-types (1.21)
+    mini_portile (0.5.2)
     mongo (1.6.2)
       bson (~> 1.6.2)
     mongoid (2.4.9)
@@ -115,6 +116,8 @@ GEM
     net-ssh (2.3.0)
     net-ssh-gateway (1.1.0)
       net-ssh (>= 1.99.1)
+    nokogiri (1.6.1)
+      mini_portile (~> 0.5.0)
     orm_adapter (0.0.7)
     polyglot (0.3.3)
     rack (1.4.5)
@@ -208,6 +211,7 @@ DEPENDENCIES
   less-rails-bootstrap
   mongoid
   mongoid-rspec
+  nokogiri
   rails (~> 3.2.11)
   rmagick
   rspec-rails (~> 2.12.0)

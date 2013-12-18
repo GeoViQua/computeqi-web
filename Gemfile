@@ -4,6 +4,7 @@ gem 'rails', '~> 3.2.11'
 
 gem 'simple_form'
 gem 'htmlentities'
+gem 'nokogiri'
 
 # Web server
 gem 'thin'

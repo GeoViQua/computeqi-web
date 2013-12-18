@@ -7,6 +7,7 @@ Emulatorization::Application.routes.draw do
     member do
       get 'refresh'
       get 'metadata', as: 'show_metadata', to: 'validations#show_metadata'
+      post 'metadata', as: 'new_metadata', to: 'validations#new_metadata'
     end
   end
 

@@ -34,6 +34,19 @@ $(function() {
   $('a[data-toggle="tab"]').on('shown', function(e) {
     updatePlots($(e.target).attr('href'));
   });
+
+  $('#insert-button').on('click', function() {
+    $('#insert-dialog').modal({ show: true, keyboard: true, backdrop: 'static' });
+  });
+
+  $('#insert-cancel').on('click', function() {
+    $('#insert-form')[0].reset();
+    $('#insert-dialog').modal('hide');
+  });
+
+  $('#insert-submit').on('click', function() {
+    $('#insert-form').submit();
+  });
 });
 </script>
 
@@ -192,5 +205,27 @@ $(function() {
         %>
       </div>
     </div>
+  </div>
+</div>
+
+<div id="insert-dialog" class="modal hide fade import">
+  <div class="modal-header">
+    <h3>Insert into GVQ document</h3>
+  </div>
+  <div class="modal-body">
+    <form id="insert-form" class="form-horizontal" action="<%= new_metadata_validation_path(@validation, format: :xml) %>" enctype="multipart/form-data" method="post">
+      <fieldset>
+        <div class="control-group">
+          <label class="control-label">File</label>
+          <div class="controls form-toggle">
+            <input type="file" name="file" />
+          </div>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <a id="insert-cancel" href="javascript:;" class="btn">Cancel</a>
+    <button id="insert-submit" href="javascript:;" class="btn btn-primary">Submit</button>
   </div>
 </div>
