@@ -30,4 +30,8 @@ Emulatorization::Application.configure do
 
   # Expands the lines which load the assets
   config.assets.debug = true
+
+  # Gain access to better_errors when running rails remotely (i.e. Vagrant box)
+  # by providing the IP of the host machine e.g. TRUSTED_IP=127.0.0.1 rails s
+  BetterErrors::Middleware.allow_ip! ENV['TRUSTED_IP'] if ENV['TRUSTED_IP']
 end
