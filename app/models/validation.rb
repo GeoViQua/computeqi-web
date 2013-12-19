@@ -6,11 +6,6 @@ class Validation
 
   field :name, type: String
 
-  # only used for emulator
-  field :design_size, type: Integer
-  has_one :design, as: :designable
-  has_one :run, as: :runnable
-
   # only used for non-emulator
   field :observed, type: Array
   field :predicted, type: Object
@@ -37,9 +32,6 @@ class Validation
 
   def calculate_defaults
     project = self.validatable
-    if project.class == EmulatorProject
-      self.design_size = project.emulator.validation_indices.size
-    end
   end
 
   def to_hash

@@ -20,10 +20,6 @@ gem 'daemons'
 # Deploy
 gem 'capistrano'
 
-# Authentication
-gem 'devise', '~> 2.0.0'
-gem 'cancan'
-
 # Uploads
 gem 'carrierwave-mongoid', :require => 'carrierwave/mongoid'
 gem 'rmagick'

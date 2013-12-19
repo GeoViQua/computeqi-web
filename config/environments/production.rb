@@ -1,4 +1,4 @@
-Emulatorization::Application.configure do
+ComputeQI::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
   # Code is not reloaded between requests
@@ -24,7 +24,7 @@ Emulatorization::Application.configure do
   # config.assets.manifest = YOUR_PATH
 
   # Should be somewhere else!
-  config.action_controller.relative_url_root = "/emulatorization"
+  config.action_controller.relative_url_root = "/computeqi"
 
   # Specifies the header that your server uses for sending files
   # config.action_dispatch.x_sendfile_header = "X-Sendfile" # for apache

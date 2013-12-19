@@ -1,4 +1,4 @@
-Emulatorization::Application.routes.draw do
+ComputeQI::Application.routes.draw do
 
   match "api" => "api#index"
   match "service_status" => "service_status#index"
