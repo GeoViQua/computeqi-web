@@ -1,5 +1,5 @@
 class ProjectObserver < Mongoid::Observer
-  observe :input, :design, :run, :emulator, :validation
+  observe :validation
 
   def after_destroy(object)
     # get project and type
@@ -15,35 +15,8 @@ class ProjectObserver < Mongoid::Observer
     project = get_project(object)
     type = object.class
 
-    # special type for input
-    if type == Input
-      # if values changed
-      if object.fixed_value_changed? || object.minimum_value_changed? ||
-        object.maximum_value_changed? || object.sample_values_changed? || object.value_type_changed?
-        input_screening = project.input_screening rescue nil
-        if !input_screening.nil?
-          if object.fixed?
-            # if it's going to fixed, we can keep the rest of the screening
-            object.screening_input_values.each {|siv| siv.destroy }
-          else
-            input_screening.destroy
-          end
-        end
-        design = project.design rescue nil
-        design.destroy if !design.nil?
-        analysis = project.analysis rescue nil
-        analysis.destroy if !analysis.nil?
-        run = project.run rescue nil
-        run.destroy if !run.nil?
-        emulator = project.emulator rescue nil
-        emulator.destroy if !emulator.nil?
-        validation = project.validation rescue nil
-        validation.destroy if !validation.nil?
-      end
-    else
-      # for the rest destroy all dependent objects
-      destroy_dependents(project, type)
-    end
+    # for the rest destroy all dependent objects
+    destroy_dependents(project, type)
   end
 
   private
@@ -63,22 +36,7 @@ class ProjectObserver < Mongoid::Observer
   end
 
   def destroy_dependents(project, type)
-    if project.class == EmulatorProject
-      if [ Design ].include? type
-        run = project.run
-        run.destroy if !run.nil?
-      end
 
-      if [ Design, Run ].include? type
-        emulator = project.emulator
-        emulator.destroy if !emulator.nil?
-      end
-
-      if [ Design, Run, Emulator ].include? type
-        validation = project.validation
-        validation.destroy if !validation.nil?
-      end
-    end
   end
 
 end
