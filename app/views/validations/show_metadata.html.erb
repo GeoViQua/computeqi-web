@@ -3,9 +3,24 @@
 <%= javascript_include_tag "syntaxhighlighter/shCore" %>
 <%= javascript_include_tag "syntaxhighlighter/shBrushXml" %>
 
+<div class="row toolbar">
+  <div class="span8">
+    <div class="toolbar-info">
+        GeoViQua 4.0 compliant metadata has been generated for your quality indicators report.
+    </div>
+  </div>
+  <div class="span4">
+    <div class="btn-toolbar pull-right">
+      <div class="btn-group">
+        <a class="btn" href="<%= validation_path(@validation) %>"><i class="icon-arrow-left"></i> Back to report</a>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="row">
   <div class="span12">
-    Tip: double-click anywhere on the code listing below to select all the XML ready to be copy &amp; pasted.
+    <i>Tip: double-click anywhere on the code listing below to select all the XML ready to be copy &amp; pasted.</i>
   </div>
 </div>
 
