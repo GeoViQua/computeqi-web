@@ -1,5 +1,7 @@
 $(function() {
 
+  $('.busy').hide().spin();
+
   var inputs = {},
       $import_save = $('#import-save'),
       $import_submit = $('#import-submit'),
@@ -10,6 +12,7 @@ $(function() {
     var response = JSON.parse(response.response);
 
     $('.alert').remove();
+    $('.busy').fadeOut('fast');
 
     if (response.error) {
       $('#new_validation').prepend('<div class="alert alert-error"><a class="close" data-dismiss="alert">×</a>' + response.error.message + '</div>');

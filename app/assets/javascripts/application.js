@@ -24,7 +24,6 @@ $.fn.spin.defaults = {
   width: 2, // The line thickness
   radius: 4, // The radius of the inner circle
   rotate: 0, // The rotation offset
-  color: '#000', // #rgb or #rrggbb
   speed: 1.2, // Rounds per second
   trail: 60, // Afterglow percentage
   shadow: false, // Whether to render a shadow

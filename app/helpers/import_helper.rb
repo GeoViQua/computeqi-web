@@ -27,7 +27,7 @@ var uploader;
 
 $(function() {
 
-  var button = $('<div class="btn-group"><button id="upload" class="btn btn-info">Import from CSV</button></div>');
+  var button = $('<div class="btn-group"><button id="upload" class="btn btn-info">Import from CSV<div class="busy button"></div></button></div>');
 
   $('##{container_name}').append(button);
 
@@ -60,10 +60,12 @@ $(function() {
   uploader.init();
 
   uploader.bind('FilesAdded', function(up, files) {
+    $('#upload .busy').fadeIn('fast');
     uploader.start();
   });
 
   uploader.bind('Error', function(up, error) {
+    $('#upload .busy').fadeOut('fast');
     alert(error.message);
   });
 
@@ -88,7 +90,7 @@ var geca_uploader;
 $(function() {
 
   var button = $('<div class="btn-group"> \
-                    <button id="geca-upload" class="btn btn-info">Import from GECA</button> \
+                    <button id="geca-upload" class="btn btn-info">Import from GECA<div class="busy button"></div></button> \
                     <button data-toggle="dropdown" class="btn btn-info dropdown-toggle"><span class="caret"></span></button> \
                     <ul class="dropdown-menu"> \
                       <li><a href="http://geoviqua.dev.52north.org/wps-js-client/" target="_blank"><i class="icon-globe"></i> 52&deg; North WPS client</a></li> \
@@ -129,10 +131,12 @@ $(function() {
   geca_uploader.init();
 
   geca_uploader.bind('FilesAdded', function(up, files) {
+    $('#geca-upload .busy').fadeIn('fast');
     geca_uploader.start();
   });
 
   geca_uploader.bind('Error', function(up, error) {
+    $('#geca-upload .busy').fadeOut('fast');
     alert(error.message);
   });
 
