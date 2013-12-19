@@ -82,7 +82,7 @@ class ValidationsController < Remote::RemotableController
     end
 
     # parse the partial used to generate the XML
-    fragment = doc.fragment render_to_string(partial: "metadata/combined", formats: :xml, locals: { object: @validation })
+    fragment = doc.fragment render_to_string(partial: "metadata", formats: :xml, locals: { object: @validation })
 
     # collect all the namespaces in the document
     namespaces = doc.collect_namespaces
