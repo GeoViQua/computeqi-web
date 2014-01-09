@@ -19,6 +19,7 @@ gem 'daemons'
 
 # Deploy
 gem 'capistrano'
+gem 'rvm-capistrano'
 
 # Uploads
 gem 'carrierwave-mongoid', :require => 'carrierwave/mongoid'
