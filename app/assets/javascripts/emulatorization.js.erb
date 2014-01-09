@@ -1,6 +1,6 @@
 <%
 url = Rails.application.routes.url_helpers
-sub_path = ENV["RAILS_RELATIVE_URL_ROOT"] || ""
+sub_path = Rails.application.config.action_controller.relative_url_root || ""
 %>
 
 var $e = (function ($) {
