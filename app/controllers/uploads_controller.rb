@@ -42,7 +42,7 @@ class UploadsController < ApplicationController
     zip = params[:file].tempfile
 
     # base working directory for the zip contents
-    basedir = "../workspace"
+    basedir = "workspace"
     
     # read the zip
     begin
