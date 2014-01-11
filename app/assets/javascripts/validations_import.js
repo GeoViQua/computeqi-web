@@ -2,6 +2,10 @@ $(function() {
 
   $('.busy').hide().spin();
 
+  $('form').on('submit', function() {
+    $(this).find('button[type="submit"] .busy').fadeIn('fast');
+  });
+
   var inputs = {},
       $import_save = $('#import-save'),
       $import_submit = $('#import-submit'),

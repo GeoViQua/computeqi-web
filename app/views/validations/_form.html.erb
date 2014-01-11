@@ -47,7 +47,9 @@
       <%= f.input :missing_value_code %>
 
       <div class="form-actions">
-        <%= f.button :submit %>
+        <%= button_tag(type: 'submit', class: "btn") do %>
+          Compute Quality Indicators<div class="busy button"></div>
+        <% end %>
       </div>
     <% end %>
   </div>
