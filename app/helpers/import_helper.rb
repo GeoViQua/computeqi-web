@@ -18,7 +18,7 @@ module ImportHelper
     #   parameters into something Rails will actually use.
 
     session_key_name = Rails.application.config.session_options[:key]
-    url_root_string = ENV['RAILS_RELATIVE_URL_ROOT'] || ''
+    url_root_string = Rails.application.config.action_controller.relative_url_root || ''
 
     %Q{
 <script type="text/javascript">
@@ -80,7 +80,7 @@ $(function() {
   def import_geca_button(container_name)
 
     session_key_name = Rails.application.config.session_options[:key]
-    url_root_string = ENV['RAILS_RELATIVE_URL_ROOT'] || ''
+    url_root_string = Rails.application.config.action_controller.relative_url_root || ''
 
     %Q{
 <script type="text/javascript">
