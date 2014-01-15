@@ -58,12 +58,12 @@ $(function() {
     <div class="tabbable">
       <ul class="nav nav-tabs">
         <li class="active"><a href="#quality-tab" data-toggle="tab">Quality indicators</a></li>
-        <li><a href="#vs-tab" data-toggle="tab">Observed vs. predicted</a></li>
-        <li><a href="#standard-score-tab" data-toggle="tab">Standard score</a></li>
-        <li><a href="#mean-residual-tab" data-toggle="tab">Mean residual</a></li>
-        <li><a href="#reliability-tab" data-toggle="tab">Reliability</a></li>
-        <li><a href="#coverage-tab" data-toggle="tab">Coverage</a></li>
-        <li><a href="#metrics-tab" data-toggle="tab">Additional metrics</a></li>
+        <li><a href="#vs-tab" data-toggle="tab">Validation of QI's: reference vs observed</a></li>
+        <li><a href="#standard-score-tab" data-toggle="tab">Standard score from reference</a></li>
+        <li><a href="#mean-residual-tab" data-toggle="tab">Mean residual from reference</a></li>
+        <li><a href="#reliability-tab" data-toggle="tab">Reliability wrt reference</a></li>
+        <li><a href="#coverage-tab" data-toggle="tab">Coverage wrt reference</a></li>
+        <li><a href="#metrics-tab" data-toggle="tab">QI validation metrics</a></li>
       </ul>
     </div>
   </div>
@@ -71,7 +71,7 @@ $(function() {
 
 <div class="tab-content">
   <div class="tab-pane active" id="quality-tab">
-    <h3>Distribution</h3>
+    <h3>Fitted Distribution (residuals wrt reference data)</h3>
     <div class="row">
       <div class="span6">
         <%=
@@ -85,7 +85,7 @@ $(function() {
       </div>
     </div>
     <br />
-    <h3>Statistics</h3>
+    <h3>Computed Statistics (residuals wrt reference data)</h3>
     <div class="row">
       <div class="span4">
         <%=
@@ -128,7 +128,7 @@ $(function() {
       <div class="span4">
         <%=
         render('metrics_table', {
-          :group => 'Mean',
+          :group => 'Mean (bias)',
           :rows => [
             { :metric => 'Value', :value => @validation.quality_indicators['statistics']['mean']['value'] }
           ]})
@@ -137,7 +137,7 @@ $(function() {
       <div class="span4">
         <%=
         render('metrics_table', {
-          :group => 'Correlation',
+          :group => 'Correlation (observed vs reference)',
           :rows => [
             { :metric => 'Value', :value => @validation.quality_indicators['statistics']['correlation']['value'] }
           ]})
@@ -150,8 +150,8 @@ $(function() {
         render('metrics_table', {
           :group => 'Quantiles',
           :rows => [
-            { :metric => 'Values', :value => @validation.quality_indicators['statistics']['quantiles']['values'] },
-            { :metric => 'Levels', :value => @validation.quality_indicators['statistics']['quantiles']['levels'] }
+             { :metric => 'Levels', :value => @validation.quality_indicators['statistics']['quantiles']['levels'] },
+             { :metric => 'Values', :value => @validation.quality_indicators['statistics']['quantiles']['values'] }
           ]})
         %>
       </div>
@@ -184,9 +184,9 @@ $(function() {
       <div class="span6">
         <%=
         render('metrics_table', {
-          :group => 'Mean',
+          :group => 'Values for QIs on the validation data',
           :rows => [
-            { :metric => 'Bias', :value => @validation.mean_bias },
+            { :metric => 'Mean (bias)', :value => @validation.mean_bias },
             { :metric => 'Mean absolute error', :value => @validation.mean_mae },
             { :metric => 'Root-mean-square error', :value => @validation.mean_rmse },
             { :metric => 'Correlation', :value => @validation.mean_correlation }
