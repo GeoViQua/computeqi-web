@@ -24,7 +24,7 @@ ComputeQI::Application.configure do
   # config.assets.manifest = YOUR_PATH
 
   # Should be somewhere else!
-  config.action_controller.relative_url_root = "/computeqi"
+  #config.action_controller.relative_url_root = "/computeqi"
 
   # Specifies the header that your server uses for sending files
   # config.action_dispatch.x_sendfile_header = "X-Sendfile" # for apache
