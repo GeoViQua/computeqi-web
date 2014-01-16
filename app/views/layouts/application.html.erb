@@ -40,10 +40,9 @@
         <%= render "header" rescue nil %>
         <%= content_for?(:content) ? yield(:content) : yield %>
       </div>
-<!--       <div class="footer">
-        <strong>emulatorization</strong> has received funding from the European Community's Seventh Framework Programme (FP7/2007-2013) under grant agreement n° [248488].<br />
-        It was developed as part of the <a href="http://www.uncertweb.org/">UncertWeb - uncertainty-enabled model web</a> project.
-      </div> -->
+      <div class="footer">
+        This work was supported by the European Commission through the Seventh Framework Programme under grant agreement 265178 (QUAlity aware VIsualisation for the Global Earth Observation System of Systems (<a href="http://www.geoviqua.org" target="_blank">GeoViQua</a>)).
+      </div>
     </div>
 
   </body>
