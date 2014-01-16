@@ -39,6 +39,7 @@
         <%= render "shared/flashes" %>
         <%= render "header" rescue nil %>
         <%= content_for?(:content) ? yield(:content) : yield %>
+        <div class="row geoviqua"></div>
       </div>
       <div class="footer">
         This work was supported by the European Commission through the Seventh Framework Programme under grant agreement 265178 (QUAlity aware VIsualisation for the Global Earth Observation System of Systems (<a href="http://www.geoviqua.org" target="_blank">GeoViQua</a>)).
