@@ -5,7 +5,7 @@
 <div class="hero-unit">
   <h1>Welcome</h1>
   <p><%= t ".tag_line" %></p>
-  <p><%= link_to "Get started »", new_validation_path, class: "btn btn-primary btn-large" %></p>
+  <p><%= link_to raw(%Q{Get started <i class="icon-chevron-right icon-white"></i>}), new_validation_path, class: "btn btn-info btn-large" %></p>
 </div>
 
 <div class="row">
@@ -17,14 +17,14 @@
   <div class="span4">
     <h2>GeoViQua</h2>
     <p><%= t ".geoviqua_intro" %></p>
-    <%= link_to "Project website »", "http://www.geoviqua.org", target: "_blank", class: "btn btn-primary" %>
-    <%= link_to "Try the tutorial »", "http://tutorial.geoviqua.org", target: "_blank", class: "btn" %>
+    <%= link_to raw(%Q{Project website <i class="icon-globe icon-white"></i>}), "http://www.geoviqua.org", target: "_blank", class: "btn btn-info" %>
+    <%= link_to raw(%Q{Try the tutorial <i class="icon-globe"></i>}), "http://tutorial.geoviqua.org", target: "_blank", class: "btn" %>
   </div>
 
   <div class="span4">
     <h2>API</h2>
     <p><%= t ".api_intro" %></p>
-    <%= link_to "Learn more »", api_path, class: "btn btn-primary" %>
+    <%= link_to "Learn more", api_path, class: "btn btn-info" %>
   </div>
 
 </div>

@@ -6,7 +6,7 @@
 
 @primary: #B0D1E4;
 @backgroundColor: saturate(@primary, 20%);
-@navbarBackground: #3F809C;
+@navbarBackground: #333333;
 @navbarBackgroundHighlight: lighten(@navbarBackground, 20%);
 @navbarBrandColor: white;
 @navbarLinkColor: lighten(@navbarBackground, 40%);
@@ -19,7 +19,7 @@
 
 body {
   padding-top: 40px;
-  background: @backgroundColor;
+  background: asset-url('struckaxiom.png');
 }
 
 a:hover {
@@ -34,10 +34,14 @@ a:hover {
   text-shadow: 0px -1px 0px #1E4652;
 }
 
+.hero-unit {
+  background: asset-url('hero-bg.png') no-repeat 8px -40px;
+}
+
 .main-content {
   padding: 20px;
   background-color: white;
-  .box-shadow(0 1px 5px rgba(0,0,0,0.5));
+  .box-shadow(0 1px 15px rgba(0,0,0,0.3));
   .border-radius(0 0 15px 15px);
   margin: 0 -20px;
   margin-bottom: 40px;

@@ -27,7 +27,7 @@ var uploader;
 
 $(function() {
 
-  var button = $('<div class="btn-group"><button id="upload" class="btn btn-info">Import from CSV<div class="busy button"></div></button></div>');
+  var button = $('<div class="btn-group"><button id="upload" class="btn">Import from CSV<div class="busy button"></div></button></div>');
 
   $('##{container_name}').append(button);
 
@@ -90,10 +90,10 @@ var geca_uploader;
 $(function() {
 
   var button = $('<div class="btn-group"> \
-                    <button id="geca-upload" class="btn btn-info">Import from GECA<div class="busy button"></div></button> \
-                    <button data-toggle="dropdown" class="btn btn-info dropdown-toggle"><span class="caret"></span></button> \
+                    <button id="geca-upload" class="btn">Import from GECA<div class="busy button"></div></button> \
+                    <button data-toggle="dropdown" class="btn dropdown-toggle"><span class="caret"></span></button> \
                     <ul class="dropdown-menu"> \
-                      <li><a href="http://geoviqua.dev.52north.org/wps-js-client/" target="_blank"><i class="icon-globe"></i> 52&deg; North WPS client</a></li> \
+                      <li><a href="http://geoviqua.dev.52north.org/wps-js-client/" target="_blank">52&deg; North WPS client <i class="icon-globe"></i></a></li> \
                     </ul> \
                   </div>');
 
