@@ -7,8 +7,8 @@ class Validation
   field :name, type: String
 
   # only used for non-emulator
-  field :observed, type: Array
-  field :predicted, type: Object
+  field :reference, type: Array
+  field :observed, type: Object
 
   field :missing_value_code, type: Float, default: -9900.0
 
@@ -22,7 +22,7 @@ class Validation
   field :mean_correlation, type: Float
   field :brier_score, type: Float
 
-  field :vs_predicted_mean_plot_data, type: Hash
+  field :vs_observed_mean_plot_data, type: Hash
   field :standard_score_plot_data, type: Hash
   field :mean_residual_histogram_data, type: Hash
   field :mean_residual_qq_plot_data, type: Hash
@@ -40,7 +40,7 @@ class Validation
       meanRMSE: self.mean_rmse,
       meanCorrelation: self.mean_correlation,
       brierScore: self.brier_score,
-      vsPredictedMeanPlotData: self.vs_predicted_mean_plot_data,
+      vsObservedMeanPlotData: self.vs_observed_mean_plot_data,
       standardScorePlotData: self.standard_score_plot_data,
       meanResidualHistogramData: self.mean_residual_histogram_data,
       meanResidualQQPlotData: self.mean_residual_qq_plot_data,
@@ -52,16 +52,16 @@ class Validation
   end
   
   def generate
-    if self.predicted.first.class == Array
-      predicted_obj = self.predicted.map {|value| { members: value} }
+    if self.observed.first.class == Array
+      observed_obj = self.observed.map {|value| { members: value} }
     else
-      predicted_obj = self.predicted
+      observed_obj = self.observed
     end
 
     {
       type: 'QualityIndicatorsRequest',
-      observed: self.observed,
-      predicted: predicted_obj,
+      reference: self.reference,
+      observed: observed_obj,
       learningPercentage: self.learning_percentage,
       metrics: {
         distribution: Array["normal"],
@@ -70,12 +70,12 @@ class Validation
     }
   end
 
-  def predicted_size
-    self.predicted.size
+  def observed_size
+    self.observed.size
   end
 
   def validation_size
-    (predicted_size - ((self.learning_percentage.to_f / 100) * predicted_size)).round
+    (observed_size - ((self.learning_percentage.to_f / 100) * observed_size)).round
   end
 
   def handle(response)
@@ -84,7 +84,7 @@ class Validation
     self.mean_rmse = response['meanRMSE']
     self.mean_correlation = response['meanCorrelation']
     self.brier_score = response['brierScore']
-    self.vs_predicted_mean_plot_data = response['vsPredictedMeanPlotData']
+    self.vs_observed_mean_plot_data = response['vsObservedMeanPlotData']
     self.standard_score_plot_data = response['standardScorePlotData']
     self.mean_residual_histogram_data = response['meanResidualHistogramData']
     self.mean_residual_qq_plot_data = response['meanResidualQQPlotData']

@@ -4,25 +4,25 @@ class ValidationsController < Remote::RemotableController
 
   def create
     if @project.class == ValidationProject
+      reference_hash = params[:validation][:reference]
       observed_hash = params[:validation][:observed]
-      predicted_hash = params[:validation][:predicted]
 
+      reference = Array.new
       observed = Array.new
-      predicted = Array.new
 
       missing_value = params[:validation][:missing_value_code].to_f
 
-      observed_hash.each do |id, value|
-        parsed_obs = parse_value(value)
-        parsed_pred = parse_value(predicted_hash[id])
-        if parsed_obs != missing_value and parsed_pred != missing_value
+      reference_hash.each do |id, value|
+        parsed_ref = parse_value(value)
+        parsed_obs = parse_value(observed_hash[id])
+        if parsed_ref != missing_value and parsed_obs != missing_value
+          reference << parsed_ref
           observed << parsed_obs
-          predicted << parsed_pred
         end
       end
 
+      params[:validation][:reference] = reference
       params[:validation][:observed] = observed
-      params[:validation][:predicted] = predicted
     end
     super_create
   end

@@ -299,34 +299,34 @@ function createValidationOutputPlot(container, json, options) {
   var ymin;
   var ymax;
   var data = [];
+  var reference = json.reference;
   var observed = json.observed;
-  var predicted = json.predicted;
-  for (var i = 0; i < predicted.length; i++) {
-    var pred = predicted[i];
+  for (var i = 0; i < observed.length; i++) {
+    var obs = observed[i];
     var mean;
     var variance;
 
-    if (typeof(pred.mean) !== 'undefined') {
+    if (typeof(obs.mean) !== 'undefined') {
       // get from object
-      mean = pred.mean;
-      variance = pred.variance;
+      mean = obs.mean;
+      variance = obs.variance;
     } else {
       // calculate mean from members
       var msum = 0.0;
-      for (var j = 0; j < pred.length; j++) {
-        msum += pred[j];
+      for (var j = 0; j < obs.length; j++) {
+        msum += obs[j];
       }
-      mean = msum / pred.length;
+      mean = msum / obs.length;
 
       // calculate variance from members
       var vsum = 0.0;
-      for (var j = 0; j < pred.length; j++) {
-        vsum += Math.pow(pred[j] - mean, 2);
+      for (var j = 0; j < obs.length; j++) {
+        vsum += Math.pow(obs[j] - mean, 2);
       }
-      variance = vsum / (pred.length - 1);
+      variance = vsum / (obs.length - 1);
     }
 
-    var sim = json.observed[i];
+    var sim = json.reference[i];
     var tsds = 2 * Math.sqrt(variance);
     data.push([sim,mean,tsds]);
     if (!xmin || sim < xmin) {

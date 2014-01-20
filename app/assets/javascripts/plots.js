@@ -2,13 +2,13 @@ var e_colour_scheme = ['#edc240', '#afd8f8', '#cb4b4b', '#4da74d', '#9440ed'];
 
 $e.plot = function($container, type, data) {
   switch (type) {
-    case 'vs_predicted_mean_plot':
-      data.title = 'Observed versus predicted mean, with error bars ±1 standard deviation';
-      $e.plotVsPredicted($container, data, 'mean');
+    case 'vs_observed_mean_plot':
+      data.title = 'Reference versus observed mean, with error bars ±1 standard deviation';
+      $e.plotVsObserved($container, data, 'mean');
       break;
-    case 'vs_predicted_median_plot':
-      data.title = 'Observed versus predicted median, with 25-75% confidence intervals';
-      $e.plotVsPredicted($container, data, 'median');
+    case 'vs_observed_median_plot':
+      data.title = 'Reference versus observed median, with 25-75% confidence intervals';
+      $e.plotVsObserved($container, data, 'median');
       break;
     case 'standard_score_plot':
       data.title = 'Standard score plot, 95% should fall within the two blue lines';
@@ -238,7 +238,7 @@ $e.plotHistogram = function($container, data, options) {
   $e.basePlot($container, pdata, options, data.title);
 };
 
-$e.plotVsPredicted = function($container, data, source) {
+$e.plotVsObserved = function($container, data, source) {
   // create data
   var minMax = $e.calculateMinMax(data);
   var pdata = [
@@ -263,8 +263,8 @@ $e.plotVsPredicted = function($container, data, source) {
       max: maxWithError,
       panRange: [minWithError, maxWithError]
     },
-    xaxes: [{ axisLabel: 'Observed' }],
-    yaxes: [{ axisLabel: 'Predicted ' + source }]
+    xaxes: [{ axisLabel: 'Reference' }],
+    yaxes: [{ axisLabel: 'Observed ' + source }]
   };
 
   // custom formatter
@@ -317,7 +317,7 @@ $e.plotReliabilityDiagram = function($container, data) {
       axisLabel: 'Forecast probability'
     }],
     yaxes: [{
-      axisLabel: 'Observed frequency',
+      axisLabel: 'Reference frequency',
     }]
   };
 
@@ -346,10 +346,10 @@ $e.plotResidualQQ = function($container, data, source) {
     xaxis: { min: minMax.min, max: minMax.max },
     yaxis: { min: minMax.min, max: minMax.max },
     xaxes: [{
-      axisLabel: 'Observed residual quantiles'
+      axisLabel: 'Reference residual quantiles'
     }],
     yaxes: [{
-      axisLabel: 'Predicted ' + source + ' residual quantiles',
+      axisLabel: 'Observed ' + source + ' residual quantiles',
     }]
   };
 
@@ -368,7 +368,7 @@ $e.plotCoverage = function($container, data) {
     xaxis: { min: 20, max: 100 },
     yaxis: { min: 0, max: 100 },
     xaxes: [{ axisLabel: 'Theoretical coverage' }],
-    yaxes: [{ axisLabel: 'Observed frequency in coverage interval' }]
+    yaxes: [{ axisLabel: 'Reference frequency in coverage interval' }]
   };
 
   $e.basePlot($container, pdata, options, data.title);
