@@ -10,7 +10,7 @@ class ServiceStatusController < ApplicationController
       format.json {
         # Could be done separately for maximum accuracy!
         # TODO: this call blocks, need to use em-http-request or something
-        render json: Emulatorization::API.send({ type: "StatusRequest" }, { read_timeout: 5.seconds })
+        render json: Emulatorization::API.send({ type: "StatusRequest" }, { read_timeout: 20.seconds })
       }
     end
   end
