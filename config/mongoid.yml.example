@@ -1,0 +1,7 @@
+development:
+  host: localhost
+  database: computeqi_development
+
+test:
+  host: localhost
+  database: computeqi_test

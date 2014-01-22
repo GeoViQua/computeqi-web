@@ -1,0 +1,9 @@
+development:
+  host: localhost
+  port: 8080
+  path: /emulatorization-api/api
+
+test:
+  host: localhost
+  port: 8080
+  path: /emulatorization-api/api
