@@ -23,6 +23,9 @@ $(function() {
       file.status = plupload.FAILED;
     }
     else {
+      // set the import dialog header
+      $('#import-dialog .modal-header h3').text("Select values from " + file.name);
+
       // get data from csv
       var rows = response;
       var first = rows.splice(0, 1)[0];
