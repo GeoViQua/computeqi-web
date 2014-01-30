@@ -59,11 +59,12 @@
 
 <div id="import-dialog" class="modal hide fade import">
   <div class="modal-header">
-    <h3>Import from CSV</h3>
+    <h3></h3>
   </div>
   <div class="modal-body">
     <form class="form-horizontal">
-      <fieldset>
+      <div class="form-left">
+        <fieldset>
         <div class="control-group">
           <label class="control-label">Data</label>
           <div class="controls form-toggle">
@@ -75,65 +76,6 @@
             </div>
           </div>
         </div>
-      </fieldset>
-
-      <div class="form-left">
-        <fieldset>
-          <div class="control-group">
-            <label class="control-label">Identifier type</label>
-            <div class="controls form-toggle">
-              <div id="id-toggle" class="btn-group" data-toggle="buttons-radio">
-                <button type="button" class="btn active" data-value="auto">Auto</button>
-                <button type="button" class="btn" data-value="single">Single column</button>
-                <button type="button" class="btn" data-value="multiple">Multiple columns</button>
-              </div>
-            </div>
-          </div>
-          <div id="auto-params">
-            <div class="control-group">
-              <label class="control-label"></label>
-              <div class="controls">
-                <p class="nothing-block">Identifier will be automatically generated sequentially for each value.</p>
-              </div>
-            </div>
-          </div>
-          <div id="single-params" class="hide">
-            <div class="control-group">
-              <label class="control-label">Identifier column</label>
-              <div class="controls">
-                <select id="id-single"></select>
-              </div>
-            </div>
-          </div>
-          <div id="multiple-params" class="hide">
-            <div class="control-group">
-              <label class="control-label">First identifier column</label>
-              <div class="controls">
-                <select id="id-first"></select>
-              </div>
-            </div>
-            <div class="control-group">
-              <label class="control-label">Last identifier column</label>
-              <div class="controls">
-                <select id="id-last"></select>
-              </div>
-            </div>
-          </div>
-        </fieldset>
-      </div>
-
-      <div class="form-right">
-        <fieldset>
-          <div class="control-group">
-            <label class="control-label">Variable type</label>
-            <div class="controls form-toggle">
-              <div id="var-toggle" class="btn-group" data-toggle="buttons-radio">
-                <button type="button" class="btn active" data-value="scalar">Scalar</button>
-                <button type="button" class="btn disabled" data-value="distribution" disabled>Distribution</button>
-                <button type="button" class="btn disabled" data-value="ensemble" disabled>Ensemble</button>
-              </div>
-            </div>
-          </div>
           <div id="scalar-params" class="params" data-type="variable">
             <div class="control-group">
               <label class="control-label">Value column</label>
@@ -174,6 +116,61 @@
             <label class="control-label"></label>
             <div class="controls">
               <button id="import-save" href="javascript:;" class="btn btn-success">Save Selection</button>
+            </div>
+          </div>
+        </fieldset>
+      </div>
+
+      <div class="form-right">
+        <fieldset>
+          <div class="control-group">
+            <label class="control-label">Variable type</label>
+            <div class="controls form-toggle">
+              <div id="var-toggle" class="btn-group" data-toggle="buttons-radio">
+                <button type="button" class="btn active" data-value="scalar">Scalar</button>
+                <!--<button type="button" class="btn disabled" data-value="distribution" disabled>Distribution</button>
+                <button type="button" class="btn disabled" data-value="ensemble" disabled>Ensemble</button>-->
+              </div>
+            </div>
+          </div>
+          <div class="control-group">
+            <label class="control-label">Identifier type</label>
+            <div class="controls form-toggle">
+              <div id="id-toggle" class="btn-group" data-toggle="buttons-radio">
+                <button type="button" class="btn active" data-value="auto">Auto</button>
+                <!--<button type="button" class="btn" data-value="single">Single column</button>
+                <button type="button" class="btn" data-value="multiple">Multiple columns</button>-->
+              </div>
+            </div>
+          </div>
+          <div id="auto-params">
+            <div class="control-group">
+              <label class="control-label"></label>
+              <div class="controls">
+                <p class="nothing-block">Identifier will be automatically generated sequentially for each value.</p>
+              </div>
+            </div>
+          </div>
+          <div id="single-params" class="hide">
+            <div class="control-group">
+              <label class="control-label">Identifier column</label>
+              <div class="controls">
+                <select id="id-single"></select>
+              </div>
+            </div>
+          </div>
+          <div id="multiple-params" class="hide">
+            <div class="control-group">
+              <label class="control-label">First identifier column</label>
+              <div class="controls">
+                <select id="id-first"></select>
+              </div>
+            </div>
+            <div class="control-group">
+              <label class="control-label">Last identifier column</label>
+              <div class="controls">
+                <select id="id-last"></select>
+              </div>
             </div>
           </div>
         </fieldset>
