@@ -10,19 +10,19 @@
 
 <div class="row">
   <div class="span4">
-    <h2>Validation</h2>
+    <h2><%= t ".validation_title" %></h2>
     <p><%= t ".validation_intro" %></p>
   </div>
 
   <div class="span4">
-    <h2>GeoViQua</h2>
+    <h2><%= t ".geoviqua_title" %></h2>
     <p><%= t ".geoviqua_intro" %></p>
     <%= link_to raw(%Q{Project website <i class="icon-globe icon-white"></i>}), "http://www.geoviqua.org", target: "_blank", class: "btn btn-info" %>
     <%= link_to raw(%Q{Try the tutorial <i class="icon-globe"></i>}), "http://tutorial.geoviqua.org", target: "_blank", class: "btn" %>
   </div>
 
   <div class="span4">
-    <h2>API</h2>
+    <h2><%= t ".api_title" %></h2>
     <p><%= t ".api_intro" %></p>
     <%= link_to "Learn more", api_path, class: "btn btn-info" %>
   </div>

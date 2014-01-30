@@ -5,27 +5,12 @@ en:
   home:
     index:
       tag_line: "Compute and validate quality indicators for continuously-valued data using reference values."
+      api_title: "API"
       api_intro: "Build applications using our services (coming soon)."
+      geoviqua_title: "GeoViQua"
       geoviqua_intro: "GeoViQua provides a set of software components and services to facilitate creation, search and visualization of quality information on EO in the GEOSS Common Infrastructure."
+      validation_title: "Quality Indicators"
       validation_intro: "When computing QIs from reference data, it is important that you are able to trust the values. Thus this service computes QIs but also retains a subset of the data on which to validate these QIs, particularly the Normal distribution fit is probabilistically validated."
-  simulator_specifications:
-    strap: "Set ranges or fixed values on the simulator inputs."
-    description: "Edit the specification to set ranges or fixed values on the simulator inputs. A complete specification allows an emulator to be trained, or sensitivity analysis performed, over the whole space."
-  input_screenings:
-    strap: "Identify important model inputs."
-    description: "Perform screening to identify important inputs; those which have significant effect on the model output."
-  designs:
-    strap: "Create a sample of input points."
-    description: "Create a sample of input points to train and validate your emulator. The sample of points is based on the ranges in your simulator specification."
-  runs:
-    strap: "Evaluate the simulator using your design."
-    description: "Evaluate the simulator using your design. The output from the run is essential so the emulator knows what to fit to, and validate against."
-  emulators:
-    strap: "Train an emulator."
-    description: "Train an emulator using your design and simulator run. Adjust design size, mean and covariance function parameters to gain a better fit."
   validations:
     strap: "See computed QIs and the validation of these on a subset of data."
     description: "Perform validation to assess the accuracy of your observed data using reference values."
-  analyses:
-    strap: "Quantify the contributions of different uncertainty sources."
-    description: "Perform sensitivity analysis to quantify the contributions of different uncertainty sources to the overall output uncertainty of your simulator or emulator."
